@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Canvas test</title>
+		<meta charset="utf-8"/>
+		
+		<script type="text/javascript" src="../Canvas.js"></script>
+		<script type="text/javascript">
+			var canvas;
+			var fullscreen = true;
+			function newCanvas(w, h) {
+				canvas.remove();
+				fullscreen = !fullscreen;
+				if ( fullscreen ) {
+					main();
+				} else {
+					main(w,h);
+				}
+			}
+			
+			function main(w, h) {
+				canvas = new Canvas("myCanvas", w, h);
+				window.addEventListener('resize', function() { 
+						canvas.resize();
+						draw(canvas);
+					});
+				draw(canvas);
+			}
+			
+			function draw(canvas) {
+				canvas.drawBorder();
+				var ctx = canvas.getContext();
+				ctx.fillText("Some stretch text",              20, 50);
+				ctx.fillText("Canvas: " + canvas.getCanvas(),  20, 70);
+				ctx.fillText("Size: "   + canvas.getWidth() + 'x' + canvas.getHeight(),  20, 90);
+				ctx.fillText("Ut: "     + canvas.getUt(),      20, 110);
+				ctx.fillText("Scale: "  + canvas.getScale(),   20, 130);
+			}
+
+		</script>
+	</head>
+	<body onload="main()" onclick="newCanvas(800, 600)">
+	</body>
+</html>

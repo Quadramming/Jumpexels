@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Matrix test</title>
+		<meta charset="utf-8"/>
+		
+		<script type="text/javascript" src="../Matrix.js"></script>
+		<script type="text/javascript">
+			//================================================================
+			// Fake console
+			//================================================================
+			function docWrite(text) {
+				var myBody = document.getElementsByTagName('body')[0];
+				myBody.innerHTML = myBody.innerHTML + text;
+			}
+
+			function fakeConsole() {
+				this.log = function(text) {
+					docWrite('<i class="console">Console: '+text+'</i><br/>');
+				};
+			}
+	
+			var console = new fakeConsole;
+			//================================================================
+		
+			function main() {
+				var A = Matrix.getScale(2, 2);
+				var B = Matrix.getMove(5, 6);
+				console.log(Matrix.getIdentity() + "<br>");
+				console.log(A + "<br>");
+				console.log(B + "<br>");
+				console.log(Matrix.getRotate(90) + "<br>");
+				console.log(Matrix.mul(A, B) + "<br>");
+				console.log(Matrix.inverse(A) + "<br>");
+				console.log(Matrix.determinant(A) + "<br>");
+			}
+		</script>
+	</head>
+	<body onload="main()">
+	</body>
+</html>

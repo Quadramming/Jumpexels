@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Mouse test</title>
+		<meta charset="utf-8"/>
+		
+		<script type="text/javascript" src="../Mouse.js"></script>
+		<script type="text/javascript">
+			var mouse;
+			
+			function main() {
+				mouse = new Mouse;
+				mouse.setM1DownCB(function() {document.getElementById('forCB').innerHTML = 'M1 Down';});
+				mouse.setM1UpCB(function() {document.getElementById('forCB').innerHTML = 'M1 Up';});
+				startAnimation();
+			}
+			
+			function startAnimation() {
+				requestAnimationFrame(startAnimation);
+				document.getElementById('forX').innerHTML  = mouse.getX();
+				document.getElementById('forY').innerHTML  = mouse.getY();
+				document.getElementById('forM1').innerHTML = mouse.getM1();
+			}
+		</script>
+	</head>
+	<body onload="main()">
+		<span>X</span>:<span id="forX"></span><br>
+		<span>Y</span>:<span id="forY"></span><br>
+		<span>M1</span>:<span id="forM1"></span><br>
+		<span>callback</span>:<span id="forCB"></span>
+	</body>
+</html>
