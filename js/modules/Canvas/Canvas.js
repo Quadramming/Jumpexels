@@ -44,10 +44,10 @@ function Canvas(id, w, h) {
 	
 	function init() {
 		calcSize();
-		canvas                = document.createElement("canvas");
+		canvas                = document.createElement('canvas');
 		canvas.id             = id;
-		canvas.style.position = "absolute";
-		context               = canvas.getContext("2d");
+		canvas.style.position = 'absolute';
+		context               = canvas.getContext('2d');
 		calcCanvasSize();
 		document.body.appendChild(canvas);
 	};
@@ -110,9 +110,9 @@ function Canvas(id, w, h) {
 	function calcCanvasSize() {
 		canvas.width      = width;
 		canvas.height     = height;
-		canvas.style.left = (window.innerWidth/2  - width/2)  + "px";
-		canvas.style.top  = (window.innerHeight/2 - height/2) + "px";
-		context.font      = "bold " + Math.floor(20 * self.getScale()) + "px sans-serif";
+		canvas.style.left = (window.innerWidth/2  - width/2)  + 'px';
+		canvas.style.top  = (window.innerHeight/2 - height/2) + 'px';
+		context.font      = 'bold ' + Math.floor(20 * self.getScale()) + 'px sans-serif';
 	}
 	
 	//================================
