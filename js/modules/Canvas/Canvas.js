@@ -1,6 +1,6 @@
 //================================================================
 // Name: Canvas
-// Version: 22.04.16
+// Version: 16.08.19
 // 
 // Interface:
 //
@@ -50,6 +50,9 @@ function Canvas(id, w, h) {
 		context               = canvas.getContext('2d');
 		calcCanvasSize();
 		document.body.appendChild(canvas);
+		window.addEventListener('resize', function() {
+				self.resize();
+			});
 	};
 	
 	//================================

@@ -1,13 +1,10 @@
 var includer = new Includer;
 
-includer.onLoad(function() {
-	
-		var canvas = new Canvas('appCanvas', 600, 800);
-		canvas.drawBorder();
+includer.js('js/Application.js');
+includer.js('js/modules/Canvas/Canvas.js');
+includer.js('js/modules/FpsCounter/FpsCounter.js');
+includer.js('js/modules/Time/Time.js');
 
-		window.addEventListener('resize', function() { 
-				canvas.resize();
-				canvas.drawBorder();
-			});
-			
+includer.onLoad(function() {
+		new Application;
 	});

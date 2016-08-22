@@ -1,8 +1,8 @@
 //================================================================
 // Name: Touch
-// Version: 23.04.16
+// Version: 16.04.23
 // 
-// Class emulate moush on touch devices. Use mouse module.
+// Class emulate mouse on touch devices. Uses mouse module.
 // 
 // Interface:
 // 
