@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Value test</title>
+		<meta charset="utf-8"/>
+		
+		<script type="text/javascript" src="../Value.js"></script>
+		<script type="text/javascript">
+			//================================================================
+			// Fake console
+			//================================================================
+			function docWrite(text) {
+				var myBody = document.getElementsByTagName('body')[0];
+				myBody.innerHTML = myBody.innerHTML + text;
+			}
+
+			function fakeConsole() {
+				this.log = function(text) {
+					docWrite('<i class="console">Console: '+text+'</i><br/>');
+				};
+			}
+	
+			var console = new fakeConsole;
+			//================================================================
+			
+			function main() {
+				console.log('Work with Value()');
+				var x = new Value;
+				console.log('Default: ' + x.v());
+				x.v(5);
+				console.log('After x.v(5): ' + x.v());
+				x.invert();
+				console.log('After x.invert(): ' + x.v());
+				console.log('x.isClear(): ' + x.isClear());
+				x.clear();
+				console.log('After x.clear(): ' + x.v());
+				console.log('x.isClear(): ' + x.isClear());
+				//================
+				console.log('Work with XY()');
+				var x = new XY;
+				console.log('Default: ' + x.x() + ', ' + x.y());
+				x.set(1, 2);
+				console.log('After x.set(1, 2): ' + x.x() + ', ' + x.y());
+				x.clearX();
+				x.invertY();
+				console.log('After x.clearX() and x.invertY(): ' + x.x() + ', ' + x.y());
+				x.clear();
+				console.log('Afeter x.clear(): ' + x.x() + ', ' + x.y());
+				console.log('x.isClear(): ' + x.isClear());
+			}
+		</script>
+	</head>
+	<body onload="main()">
+	</body>
+</html>
