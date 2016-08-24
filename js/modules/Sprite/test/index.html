@@ -50,6 +50,8 @@
 				time.update();
 				sprite.draw(100, 50);
 				walk.draw(100, 100);
+				sprite.draw(Sprite.pivot.LEFTTOP);
+				walk.draw(Sprite.pivot.CENTERBOTTOM);
 				window.document.title = 'Sprite ready is : ' + sprite.isReady();
 				
 				requestAnimationFrame(startAnimation);

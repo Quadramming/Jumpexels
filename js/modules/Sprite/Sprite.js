@@ -50,14 +50,62 @@ Sprite.prototype.setAnimation = function(w, h, fps, time) {
 	}
 };
 
-Sprite.prototype.draw = function(x, y) {
+Sprite.prototype._calcPosition = function(pivot) {
+	var result = { x : 0, y : 0 };
+	if ( pivot === Sprite.pivot.LEFTTOP ) { 
+		return result;
+	}
+	if ( this.animation ) {
+		if ( pivot === Sprite.pivot.CENTER ) {
+			result.x = -this.frameWidth/2;
+			result.y = -this.frameHeight/2;
+		} else if ( pivot === Sprite.pivot.CENTERBOTTOM ) {
+			result.x = -this.frameWidth/2;
+			result.y = -this.frameHeight;
+		}
+	} else {
+		if ( pivot === Sprite.pivot.CENTER ) {
+			result.x = -this.width/2;
+			result.y = -this.height/2;
+		} else if ( pivot === Sprite.pivot.CENTERBOTTOM ) {
+			result.x = -this.width/2;
+			result.y = -this.height;
+		}
+	}
+	return result;
+};
+
+Sprite.prototype.draw = function(inX, inY) {
 	if ( this.isReady() && Sprite.context !== null ) {
+		var pivot, x, y;
+		//================================================================
+		// Input
+		//================================================================
+		if ( typeof inX === 'number' && typeof inY === 'number' ) {
+			pivot = Sprite.pivot.NONE;
+			x     = inX;
+			y     = inY;
+		} else if ( typeof inX === 'number' && typeof inY === 'undefined' ) {
+			pivot = inX;
+		} else {
+			pivot = Sprite.pivot.CENTER;
+		}
+		//================================================================
+		// Calc pivot
+		//================================================================
+		if ( pivot !== Sprite.pivot.NONE ) {
+			var position = this._calcPosition(pivot);
+			x = position.x;
+			y = position.y;
+		}
+		//================================================================
+		// Draw
+		//================================================================
 		if ( this.animation ) {
 			var diff         = this.time.now() - this.startTime;
 			var passedFrames = Math.round(diff/this.tpf);
 			this.curFrame    = passedFrames % this.frames;
-
-			Sprite.context.drawImage(this.img, this.frameWidth*this.curFrame, 0, this.frameHeight, this.frameWidth, x, y, this.frameHeight, this.frameWidth);
+			Sprite.context.drawImage(this.img, this.frameWidth*this.curFrame, 0, this.frameWidth, this.frameHeight, x, y, this.frameWidth, this.frameHeight);
 		} else {
 			Sprite.context.drawImage(this.img, x, y, this.width, this.height);
 		}
@@ -71,7 +119,8 @@ Sprite.setContext = function(ctx) {
 Sprite.context = null;
 
 Sprite.pivot = {
-	CENTER       : 0,
-	LEFTTOP      : 1,
-	CENTERBOTTOM : 2
+	NONE         : 0,
+	CENTER       : 1,
+	LEFTTOP      : 2,
+	CENTERBOTTOM : 3
 };
