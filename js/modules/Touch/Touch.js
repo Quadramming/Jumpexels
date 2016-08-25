@@ -1,6 +1,6 @@
 //================================================================
 // Name: Touch
-// Version: 16.04.23
+// Version: 16.04.25
 // 
 // Class emulate mouse on touch devices. Uses mouse module.
 // 
@@ -15,7 +15,7 @@ function Touch(mouse) {
 	init = function() {
 		window.addEventListener('touchstart', function(e) {
 			var touchobj = e.touches[0];
-			if ( typeof touchobj.clientX === "number" && typeof touchobj.clientY === "number" ) {
+			if ( typeof touchobj.clientX === 'number' && typeof touchobj.clientY === 'number' ) {
 				x = touchobj.clientX;
 				y = touchobj.clientY;
 				mouse.emulate(x, y, true);
@@ -25,7 +25,7 @@ function Touch(mouse) {
 
 		window.addEventListener('touchmove', function(e) {
 			var touchobj = e.touches[0];
-			if ( typeof touchobj.clientX === "number" && typeof touchobj.clientY === "number" ) {
+			if ( typeof touchobj.clientX === 'number' && typeof touchobj.clientY === 'number' ) {
 				x = touchobj.clientX;
 				y = touchobj.clientY;
 				mouse.emulate(x, y, true);

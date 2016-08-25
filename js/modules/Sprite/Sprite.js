@@ -7,10 +7,10 @@
 //================================================================
 
 function Sprite(img) {
-		var self        = this;
-		this.width      = 0;
-		this.height     = 0;
-		this.ready      = false;
+		var self         = this;
+		this.width       = 0;
+		this.height      = 0;
+		this.ready       = false;
 		
 		this.animation   = false;
 		this.frameHeight = 0;
@@ -22,11 +22,11 @@ function Sprite(img) {
 		this.time        = null;
 		this.startTime   = 0;
 		
-		this.img        = img;
-		this.img.onload = function() {
-			self.width  = this.width;
-			self.height = this.height;
-			self.ready  = true;
+		this.img         = img;
+		this.img.onload  = function() {
+			self.width   = this.width;
+			self.height  = this.height;
+			self.ready   = true;
 			if ( self.animation ) {
 				self.frames = self.width / self.frameWidth;
 			}

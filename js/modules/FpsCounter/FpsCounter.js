@@ -42,20 +42,20 @@ function FpsCounter() {
 			ctx.setTransform(1, 0, 0, 1, 0, 0, 0);
 			ctx.font = font;
 			for ( var i in slots ) {
-				ctx.fillStyle = "green";
+				ctx.fillStyle = 'green';
 				if ( slots[i] > 99 ) {
-					ctx.fillStyle = "white";
+					ctx.fillStyle = 'white';
 				}
 				if ( slots[i] < 55 ) {
-					ctx.fillStyle = "yellow";
+					ctx.fillStyle = 'yellow';
 				}
 				if ( slots[i] < 50 ) {
-					ctx.fillStyle = "red";
+					ctx.fillStyle = 'red';
 				}
-				ctx.fillText( slots[i] + " FPS", 10, 20 + 15*i);
+				ctx.fillText( slots[i] + ' FPS', 10, 20 + 15*i);
 			}
 		}
-		document.title = fpsToShow + " FPS";
+		document.title = fpsToShow + ' FPS';
 	};
 	
 	//================================
@@ -69,6 +69,6 @@ function FpsCounter() {
 	var maxSlots    = 30;
 	var details     = false;
 	var slots       = [];
-	var font        = "10px Georgia";
+	var font        = '10px Georgia';
 
 };

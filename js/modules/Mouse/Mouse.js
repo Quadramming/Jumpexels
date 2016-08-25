@@ -28,19 +28,19 @@ function Mouse() {
 	
 	function init() {
 		window.addEventListener('mousemove', function(e) {
-				if ( typeof e.clientX === "number" && typeof e.clientY === "number" && typeof e.buttons === "number" ) {
+				if ( typeof e.clientX === 'number' && typeof e.clientY === 'number' && typeof e.buttons === 'number' ) {
 					process(e.clientX, e.clientY, e.buttons === 1);
 				}
 			});
 	
 		window.addEventListener('mousedown', function(e) {
-				if ( typeof e.clientX === "number" && typeof e.clientY === "number" ) {
+				if ( typeof e.clientX === 'number' && typeof e.clientY === 'number' ) {
 					process(e.clientX, e.clientY, true);
 				}
 			});
 
 		window.addEventListener('mouseup', function(e) {
-				if ( typeof e.clientX === "number" && typeof e.clientY === "number" ) {
+				if ( typeof e.clientX === 'number' && typeof e.clientY === 'number' ) {
 					process(e.clientX, e.clientY, false);
 				}
 			});

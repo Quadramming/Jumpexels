@@ -1,11 +1,12 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Value test</title>
-		<meta charset="utf-8"/>
+		<title>Value & XY test</title>
+		<meta charset='utf-8'/>
 		
-		<script type="text/javascript" src="../Value.js"></script>
-		<script type="text/javascript">
+		<script type='text/javascript' src='../Value.js'></script>
+		<script type='text/javascript' src='../XY.js'></script>
+		<script type='text/javascript'>
 			//================================================================
 			// Fake console
 			//================================================================
@@ -23,19 +24,34 @@
 			var console = new fakeConsole;
 			//================================================================
 			
+			function change(val) {
+				val.v(2);
+			}
+			
+			function changeXY(xy) {
+				xy.set(1, 2);
+			}
+			
 			function main() {
+				//================================================================
+				// Value
+				//================================================================
 				console.log('Work with Value()');
 				var x = new Value;
 				console.log('Default: ' + x.v());
-				x.v(5);
-				console.log('After x.v(5): ' + x.v());
+				x.v(1);
+				console.log('After x.v(1): ' + x.v());
 				x.invert();
 				console.log('After x.invert(): ' + x.v());
 				console.log('x.isClear(): ' + x.isClear());
 				x.clear();
 				console.log('After x.clear(): ' + x.v());
 				console.log('x.isClear(): ' + x.isClear());
-				//================
+				change(x);
+				console.log('After change(): ' + x.v());
+				//================================================================
+				// XY
+				//================================================================
 				console.log('Work with XY()');
 				var x = new XY;
 				console.log('Default: ' + x.x() + ', ' + x.y());
@@ -47,9 +63,11 @@
 				x.clear();
 				console.log('Afeter x.clear(): ' + x.x() + ', ' + x.y());
 				console.log('x.isClear(): ' + x.isClear());
+				changeXY(x);
+				console.log('Afeter changeXY(): ' + x.x() + ', ' + x.y());
 			}
 		</script>
 	</head>
-	<body onload="main()">
+	<body onload='main()'>
 	</body>
 </html>

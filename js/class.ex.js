@@ -9,8 +9,8 @@
 function newClass(input) {
 	
 	function init() {
-		// this - is "window"
-		alert("init " + private + " " + input);
+		// this - is 'window'
+		alert('init ' + private + ' ' + input);
 	};
 	
 	//================================
@@ -19,7 +19,7 @@ function newClass(input) {
 
 	this.oMethod = function() {
 		// this - is me
-		alert("open method " + private);
+		alert('open method ' + private);
 		cMethod();
 	};
 	
@@ -28,9 +28,9 @@ function newClass(input) {
 	//================================
 
 	function cMethod() {
-		// this - is "window"
+		// this - is 'window'
 		// Use self.oMethod()
-		alert("close method " + private);
+		alert('close method ' + private);
 	};
 		
 	//================================
@@ -38,7 +38,7 @@ function newClass(input) {
 	//================================
 	
 	var self    = this;
-	var private = "private var";
+	var private = 'private var';
 	
 	init(); 
 };

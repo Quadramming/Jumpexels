@@ -2,10 +2,10 @@
 <html>
 	<head>
 		<title>Matrix test</title>
-		<meta charset="utf-8"/>
+		<meta charset='utf-8'/>
 		
-		<script type="text/javascript" src="../Matrix.js"></script>
-		<script type="text/javascript">
+		<script type='text/javascript' src='../Matrix.js'></script>
+		<script type='text/javascript'>
 			//================================================================
 			// Fake console
 			//================================================================
@@ -26,16 +26,16 @@
 			function main() {
 				var A = Matrix.getScale(2, 2);
 				var B = Matrix.getMove(5, 6);
-				console.log(Matrix.getIdentity() + "<br>");
-				console.log(A + "<br>");
-				console.log(B + "<br>");
-				console.log(Matrix.getRotate(90) + "<br>");
-				console.log(Matrix.mul(A, B) + "<br>");
-				console.log(Matrix.inverse(A) + "<br>");
-				console.log(Matrix.determinant(A) + "<br>");
+				console.log(Matrix.getIdentity() + '<br>');
+				console.log(A + '<br>');
+				console.log(B + '<br>');
+				console.log(Matrix.getRotate(90) + '<br>');
+				console.log(Matrix.mul(A, B) + '<br>');
+				console.log(Matrix.inverse(A) + '<br>');
+				console.log(Matrix.determinant(A) + '<br>');
 			}
 		</script>
 	</head>
-	<body onload="main()">
+	<body onload='main()'>
 	</body>
 </html>

@@ -2,10 +2,10 @@
 <html>
 	<head>
 		<title>FPS counter test</title>
-		<meta charset="utf-8" />
+		<meta charset='utf-8' />
 		
-		<script type="text/javascript" src="../FpsCounter.js"></script>
-		<script type="text/javascript">
+		<script type='text/javascript' src='../FpsCounter.js'></script>
+		<script type='text/javascript'>
 			
 			var ctx;
 			var nowTime = Date.now();
@@ -13,14 +13,14 @@
 			
 			function clean() {
 				ctx.setTransform(1, 0, 0, 1, 0, 0);
-				ctx.fillStyle = "#FFEBCD";
+				ctx.fillStyle = '#FFEBCD';
 				ctx.fillRect(0, 0, screen.width, screen.height);
 			}
 			
 			function main() {
 				fpsCounter.showDetails();
-				var canvas = document.getElementById("mainCanvas");
-				ctx        = canvas.getContext("2d");
+				var canvas = document.getElementById('mainCanvas');
+				ctx        = canvas.getContext('2d');
 				startAnimation();
 			}
 			
@@ -35,7 +35,7 @@
 
 		</script>
 	</head>
-	<body onload="main()" onclick="fpsCounter.showDetails()">
-		<canvas width="800" height="600" style="border: 2px solid black" id="mainCanvas"></canvas>
+	<body onload='main()' onclick='fpsCounter.showDetails()'>
+		<canvas width='800' height='600' style='border: 2px solid black' id='mainCanvas'></canvas>
 	</body>
 </html>

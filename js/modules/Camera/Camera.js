@@ -8,9 +8,11 @@
 
 function Camera(input) {
 	
-	function init() {
-		// this - is "window"
-		alert("init " + private + " " + input);
+	function init(inX, inY, inWidth, inHeight) {
+		x      = inX;
+		y      = inY;
+		width  = inWidth;
+		height = inHeight;
 	};
 	
 	//================================
@@ -19,7 +21,7 @@ function Camera(input) {
 
 	this.oMethod = function() {
 		// this - is me
-		alert("open method " + private);
+		alert('open method ' + private);
 		cMethod();
 	};
 	
@@ -28,9 +30,9 @@ function Camera(input) {
 	//================================
 
 	function cMethod() {
-		// this - is "window"
+		// this - is 'window'
 		// Use self.oMethod()
-		alert("close method " + private);
+		alert('close method ' + private);
 	};
 		
 	//================================
@@ -38,7 +40,11 @@ function Camera(input) {
 	//================================
 	
 	var self    = this;
-	var private = "private var";
+	
+	var x       = 0;
+	var y       = 0;
+	var width   = 0;
+	var height  = 0;
 	
 	init(); 
 };
