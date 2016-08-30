@@ -1,28 +1,29 @@
 //================================================================
-// Name: Camera
+// Name: Object
 // Version: 16..
 // 
 // Interface:
 // 
 //================================================================
 
-function Camera(input) {
+function Subject(input) {
 	
-	function init(inX, inY, inWidth, inHeight) {
-		x      = inX;
-		y      = inY;
-		width  = inWidth;
-		height = inHeight;
+	function init() {
+		// this - is 'window'
+		alert('init ' + private + ' ' + input);
 	};
 	
 	//================================
 	// Public methods
 	//================================
 
-	this.draw = function(subjects) {
-		for ( var i in subjects ) {
-			var subj = subjects[i];
-			subj.draw();
+	this.isInRect = function(rect) {
+		
+	};
+	
+	this.draw = function() {
+		if ( sprite ) {
+			sprite.draw();
 		}
 	};
 	
@@ -31,6 +32,9 @@ function Camera(input) {
 	//================================
 
 	function cMethod() {
+		// this - is 'window'
+		// Use self.oMethod()
+		alert('close method ' + private);
 	};
 		
 	//================================
@@ -42,6 +46,16 @@ function Camera(input) {
 	var y       = 0;
 	var width   = 0;
 	var height  = 0;
+	var sprite  = null;
+	var physics = null;
+	var pivot   = Subject.pivot.NONE;
 	
 	init(); 
+};
+
+Subject.pivot = {
+	NONE         : 0,
+	CENTER       : 1,
+	LEFTTOP      : 2,
+	CENTERBOTTOM : 3
 };
