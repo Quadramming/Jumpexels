@@ -2,9 +2,11 @@ function Application() {
 	
 	function init() {
 		canvas     = new Canvas('appCanvas', 600, 800);
-		fpsCounter = new FpsCounter();
+		Sprite.setContext(canvas.getContext());
+		fpsCounter = new FpsCounter;
 		fpsCounter.showDetails();
-		time       = new Time();
+		time       = new Time;
+		seizure    = new MainMenu(canvas.getCanvas());
 		process();
 	};
 	
@@ -28,19 +30,15 @@ function Application() {
 	function tick() {
 		var delta = time.update();
 		fpsCounter.tick(delta);
-		/*
 		if ( seizure ) {
-			seizure.process(delta);
+			seizure.tick(delta);
 		}
-		*/
 	}
 
 	function draw() {
-		/*
 		if ( seizure ) {
 			seizure.draw();
 		}
-		*/
 		canvas.drawBorder();
 		fpsCounter.show(canvas.getContext());
 	}
@@ -53,6 +51,7 @@ function Application() {
 	var canvas     = null;
 	var fpsCounter = null;
 	var time       = null;
-	
+	var seizure    = null;
+			
 	init(); 
 };

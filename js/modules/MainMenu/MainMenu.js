@@ -1,27 +1,33 @@
 //================================================================
-// Name: World
+// Name: MainMenu
 // Version: 16..
 // 
 // Interface:
 // 
 //================================================================
 
-function World() {
+function MainMenu(canvas) {
 	
 	function init() {
+		camera = new Camera(canvas, 5, 5);
+		world  = new World;
 	};
 	
 	//================================
 	// Public methods
 	//================================
-	
-	this.addSubject = function(subj) {
-		subjects.push(subj);
-	};
 
 	this.tick = function(delta) {
-		for ( var i in this.subjects ) {
-			this.subjects[i].tick(delta);
+		if ( world ) {
+			world.tick(delta);
+		}
+	};
+	
+	this.draw = function() {
+		if ( camera ) {
+			var rect   = camera.getViewRect();
+			var toDraw = world.getSubjectsInRect(rect);
+			camera.draw(toDraw);
 		}
 	};
 	
@@ -29,25 +35,18 @@ function World() {
 	// Private methods
 	//================================
 
-	this.getSubjectsInRect = function(rect) {
-		var result = [];
-		for ( var i in this.subjects ) {
-			var subj = this.subjects[i];
-			if ( subj.isInRect(rect) ) {
-				result.push(subj); 
-			}
-		}
-		return result;
+	function cMethod() {
+		// this - is 'window'
+		// Use self.oMethod()
 	};
 		
 	//================================
 	// Private vars
 	//================================
 	
-	var self     = this;
-	var subjects = [];
-	
-	var physics  = null; // ?
-	
+	var self    = this;
+	var world   = null;
+	var camera  = null;
+
 	init(); 
 };
