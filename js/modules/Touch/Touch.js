@@ -1,5 +1,5 @@
 //================================================================
-// Name: Touch
+// Name: QQ.Touch
 // Version: 16.04.25
 // 
 // Class emulate mouse on touch devices. Uses mouse module.
@@ -10,7 +10,9 @@
 //   Creates object with help of mouse class.
 //================================================================
 
-function Touch(mouse) {
+var QQ = QQ || {};
+
+QQ.Touch = function(mouse) {
 
 	init = function() {
 		window.addEventListener('touchstart', function(e) {

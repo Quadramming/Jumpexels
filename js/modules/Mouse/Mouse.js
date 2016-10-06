@@ -1,5 +1,5 @@
 //================================================================
-// Name: Mouse
+// Name: QQ.Mouse
 // Version: 16.04.23
 // 
 // Interface:
@@ -24,7 +24,9 @@
 //   
 //================================================================
 
-function Mouse() {
+var QQ = QQ || {};
+
+QQ.Mouse = function() {
 	
 	function init() {
 		window.addEventListener('mousemove', function(e) {

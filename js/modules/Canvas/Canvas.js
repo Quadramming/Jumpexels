@@ -1,5 +1,5 @@
 //================================================================
-// Name: Canvas
+// Name: QQ.Canvas
 // Version: 16.08.19
 // 
 // Interface:
@@ -39,8 +39,9 @@
 //   Remove canvas element from DOM.
 //================================================================
 
+var QQ = QQ || {};
 
-function Canvas(id, w, h) {
+QQ.Canvas = function(id, w, h) {
 	
 	function init() {
 		calcSize();

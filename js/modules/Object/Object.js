@@ -1,12 +1,14 @@
 //================================================================
-// Name: Object
+// Name: QQ.Object
 // Version: 16..
 // 
 // Interface:
 // 
 //================================================================
 
-function Subject(input) {
+var QQ = QQ || {};
+
+QQ.Subject = function(input) {
 	
 	function init() {
 		// this - is 'window'

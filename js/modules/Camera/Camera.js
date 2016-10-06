@@ -1,12 +1,14 @@
 //================================================================
-// Name: Camera
+// Name: QQ.Camera
 // Version: 16..
 // 
 // Interface:
 // 
 //================================================================
 
-function Camera(inCanvas, inWidth, inHeight) {
+var QQ = QQ || {};
+
+QQ.Camera = function(inCanvas, inWidth, inHeight) {
 	
 	function init() {
 		width  = inWidth;

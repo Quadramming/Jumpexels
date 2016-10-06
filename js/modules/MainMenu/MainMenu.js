@@ -1,16 +1,16 @@
 //================================================================
-// Name: MainMenu
+// Name: QQ.MainMenu
 // Version: 16..
 // 
 // Interface:
 // 
 //================================================================
 
-function MainMenu(canvas) {
+QQ.MainMenu = function(canvas) {
 	
 	function init() {
-		camera = new Camera(canvas, 5, 5);
-		world  = new World;
+		camera = new QQ.Camera(canvas, 5, 5);
+		world  = new QQ.World;
 	};
 	
 	//================================

@@ -1,5 +1,5 @@
 //================================================================
-// Name: ImgManager
+// Name: QQ.ImgManager
 // Version: 16.04.22
 // 
 // Interface:
@@ -11,7 +11,9 @@
 //   True if imgObj is loaded.
 //================================================================
 
-function ImgManager() {
+var QQ = QQ || {};
+
+QQ.ImgManager = function() {
 
 	//================================
 	// Public methods

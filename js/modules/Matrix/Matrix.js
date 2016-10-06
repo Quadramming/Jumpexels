@@ -1,5 +1,5 @@
 //================================================================
-// Name: Matrix
+// Name: QQ.Matrix
 // Version: 16.04.23
 // 
 // Creates Matrix namespace for matrix operations
@@ -21,37 +21,40 @@
 // mul(A, B);
 //================================================================
 
-(function( Matrix ) {
+var QQ = QQ || {};
+
+(function() {
+	QQ.Matrix = {};
 
 	//================================
 	// Public methods
 	//================================
 	
-	Matrix.getIdentity = function() {
+	QQ.Matrix.getIdentity = function() {
 		return  [[1, 0, 0], 
 				 [0, 1, 0], 
 				 [0, 0, 1]];
 	};
 	
-	Matrix.getScale = function(x, y) {
+	QQ.Matrix.getScale = function(x, y) {
 		return  [[x, 0, 0], 
 				 [0, y, 0], 
 				 [0, 0, 1]];
 	};
 
-	Matrix.getMove = function(x, y) {
+	QQ.Matrix.getMove = function(x, y) {
 		return  [[1, 0, 0], 
 				 [0, 1, 0], 
 				 [x, y, 1]];
 	};
 
-	Matrix.getRotate = function(a) {
-		return [[cos(a), -sin(a), 0],
-				[sin(a),  cos(a), 0],
+	QQ.Matrix.getRotate = function(A) {
+		return [[cos(A), -sin(A), 0],
+				[sin(A),  cos(A), 0],
 				[     0,       0, 1]];
 	};
 
-	Matrix.determinant = function(A) {
+	QQ.Matrix.determinant = function(A) {
 		var N         = A.length;
 		var B         = [];
 		var denom     = 1; 
@@ -98,8 +101,8 @@
 		}
 	};
 
-	Matrix.inverse = function(A) {
-		var det = Matrix.determinant(A);
+	QQ.Matrix.inverse = function(A) {
+		var det = QQ.Matrix.determinant(A);
 		if ( det === 0 ) {
 			return false;
 		}
@@ -128,13 +131,13 @@
 						B[m-1][n-1] = A[m][n];
 					}
 				}
-				invA[i][j] = sign * Matrix.determinant(B) / det;
+				invA[i][j] = sign * QQ.Matrix.determinant(B) / det;
 			}
 		}
 		return invA;
 	};
 
-	Matrix.mul = function(A, B) {
+	QQ.Matrix.mul = function(A, B) {
 		var rowsA = A.length;
 		var colsA = A[0].length;
 		var rowsB = B.length;
@@ -168,4 +171,4 @@
 	function cos(a)         { return Math.cos(a);     }
 	function abs(a)         { return Math.abs(a);     }
 	
-}( window.Matrix = window.Matrix || {} ));
+}());

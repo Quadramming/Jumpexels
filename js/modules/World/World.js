@@ -1,12 +1,14 @@
 //================================================================
-// Name: World
+// Name: QQ.World
 // Version: 16..
 // 
 // Interface:
 // 
 //================================================================
 
-function World() {
+var QQ = QQ || {};
+
+QQ.World = function() {
 	
 	function init() {
 	};

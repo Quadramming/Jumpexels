@@ -1,4 +1,4 @@
-var includer = new Includer;
+var includer = new QQ.Includer;
 
 includer.js('js/Application.js');
 includer.js('js/modules/Canvas/Canvas.js');

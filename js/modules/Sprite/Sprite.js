@@ -1,12 +1,14 @@
 //================================================================
-// Name: Sprite
+// Name: QQ.Sprite
 // Version: 20.08.16
 // 
 // Interface:
 // 
 //================================================================
 
-function Sprite(img) {
+var QQ = QQ || {};
+
+QQ.Sprite = function(img) {
 		var self         = this;
 		this.width       = 0;
 		this.height      = 0;
@@ -33,11 +35,11 @@ function Sprite(img) {
 		};
 };
 
-Sprite.prototype.isReady = function() {
+QQ.Sprite.prototype.isReady = function() {
 	return this.ready;
 };
 
-Sprite.prototype.setAnimation = function(w, h, fps, time) {
+QQ.Sprite.prototype.setAnimation = function(w, h, fps, time) {
 	this.animation   = true;
 	this.frameWidth  = w;
 	this.frameHeight = h;
@@ -50,24 +52,24 @@ Sprite.prototype.setAnimation = function(w, h, fps, time) {
 	}
 };
 
-Sprite.prototype._calcPosition = function(pivot) {
+QQ.Sprite.prototype._calcPosition = function(pivot) {
 	var result = { x : 0, y : 0 };
-	if ( pivot === Sprite.pivot.LEFTTOP ) { 
+	if ( pivot === QQ.Sprite.pivot.LEFTTOP ) { 
 		return result;
 	}
 	if ( this.animation ) {
-		if ( pivot === Sprite.pivot.CENTER ) {
+		if ( pivot === QQ.Sprite.pivot.CENTER ) {
 			result.x = -this.frameWidth/2;
 			result.y = -this.frameHeight/2;
-		} else if ( pivot === Sprite.pivot.CENTERBOTTOM ) {
+		} else if ( pivot === QQ.Sprite.pivot.CENTERBOTTOM ) {
 			result.x = -this.frameWidth/2;
 			result.y = -this.frameHeight;
 		}
 	} else {
-		if ( pivot === Sprite.pivot.CENTER ) {
+		if ( pivot === QQ.Sprite.pivot.CENTER ) {
 			result.x = -this.width/2;
 			result.y = -this.height/2;
-		} else if ( pivot === Sprite.pivot.CENTERBOTTOM ) {
+		} else if ( pivot === QQ.Sprite.pivot.CENTERBOTTOM ) {
 			result.x = -this.width/2;
 			result.y = -this.height;
 		}
@@ -75,25 +77,25 @@ Sprite.prototype._calcPosition = function(pivot) {
 	return result;
 };
 
-Sprite.prototype.draw = function(inX, inY) {
-	if ( this.isReady() && Sprite.context !== null ) {
+QQ.Sprite.prototype.draw = function(inX, inY) {
+	if ( this.isReady() && QQ.Sprite.context !== null ) {
 		var pivot, x, y;
 		//================================================================
 		// Input
 		//================================================================
 		if ( typeof inX === 'number' && typeof inY === 'number' ) {
-			pivot = Sprite.pivot.NONE;
+			pivot = QQ.Sprite.pivot.NONE;
 			x     = inX;
 			y     = inY;
 		} else if ( typeof inX === 'number' && typeof inY === 'undefined' ) {
 			pivot = inX;
 		} else {
-			pivot = Sprite.pivot.CENTER;
+			pivot = QQ.Sprite.pivot.CENTER;
 		}
 		//================================================================
 		// Calc pivot
 		//================================================================
-		if ( pivot !== Sprite.pivot.NONE ) {
+		if ( pivot !== QQ.Sprite.pivot.NONE ) {
 			var position = this._calcPosition(pivot);
 			x = position.x;
 			y = position.y;
@@ -105,20 +107,20 @@ Sprite.prototype.draw = function(inX, inY) {
 			var diff         = this.time.now() - this.startTime;
 			var passedFrames = Math.round(diff/this.tpf);
 			this.curFrame    = passedFrames % this.frames;
-			Sprite.context.drawImage(this.img, this.frameWidth*this.curFrame, 0, this.frameWidth, this.frameHeight, x, y, this.frameWidth, this.frameHeight);
+			QQ.Sprite.context.drawImage(this.img, this.frameWidth*this.curFrame, 0, this.frameWidth, this.frameHeight, x, y, this.frameWidth, this.frameHeight);
 		} else {
-			Sprite.context.drawImage(this.img, x, y, this.width, this.height);
+			QQ.Sprite.context.drawImage(this.img, x, y, this.width, this.height);
 		}
 	}
 };
 
-Sprite.setContext = function(ctx) {
-	Sprite.context = ctx;
+QQ.Sprite.setContext = function(ctx) {
+	QQ.Sprite.context = ctx;
 };
 
-Sprite.context = null;
+QQ.Sprite.context = null;
 
-Sprite.pivot = {
+QQ.Sprite.pivot = {
 	NONE         : 0,
 	CENTER       : 1,
 	LEFTTOP      : 2,

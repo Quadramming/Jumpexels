@@ -1,30 +1,32 @@
 //================================================================
-// Name: Value
+// Name: QQ.Value
 // Version: 16.08.25
 // 
 // Interface: (TODO)
 // 
 //================================================================
 
-function Value(input) {
+var QQ = QQ || {};
+
+QQ.Value = function(input) {
 	this.val = (input === undefined) ? 0 : input;
 };
 
-Value.prototype.clear = function() { 
+QQ.Value.prototype.clear = function() { 
 	this.val = 0;
 };
 
-Value.prototype.invert = function() {
+QQ.Value.prototype.invert = function() {
 	this.val *= -1;
 };
 
-Value.prototype.v = function(input) {
+QQ.Value.prototype.v = function(input) {
 	if ( input !== undefined && input !== null ) {
 		this.val = input;
 	}
 	return this.val;
 };
 
-Value.prototype.isClear = function() {
+QQ.Value.prototype.isClear = function() {
 	return this.val === 0;
 };

@@ -33,14 +33,14 @@
 			var time;
 			
 			function main() {
-				time    = new Time;
-				manager = new ImgManager;
-				canvas  = new Canvas('myCanvas', 800, 600);
+				time    = new QQ.Time;
+				manager = new QQ.ImgManager;
+				canvas  = new QQ.Canvas('myCanvas', 800, 600);
 				canvas.drawBorder();
-				Sprite.setContext(canvas.getContext());
+				QQ.Sprite.setContext(canvas.getContext());
 				
-				sprite  = new Sprite( manager.get('test.jpg') );
-				walk    = new Sprite( manager.get('walk.jpg') );
+				sprite  = new QQ.Sprite( manager.get('test.jpg') );
+				walk    = new QQ.Sprite( manager.get('walk.jpg') );
 				walk.setAnimation(96, 96, 10, time);
 				
 				startAnimation();
@@ -50,8 +50,8 @@
 				time.update();
 				sprite.draw(100, 50);
 				walk.draw(100, 100);
-				sprite.draw(Sprite.pivot.LEFTTOP);
-				walk.draw(Sprite.pivot.CENTERBOTTOM);
+				sprite.draw(QQ.Sprite.pivot.LEFTTOP);
+				walk.draw(QQ.Sprite.pivot.CENTERBOTTOM);
 				window.document.title = 'Sprite ready is : ' + sprite.isReady();
 				
 				requestAnimationFrame(startAnimation);

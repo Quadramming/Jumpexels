@@ -1,12 +1,14 @@
 //================================================================
-// Name: 
+// Name: QQ.
 // Version: 16..
 // 
 // Interface:
 // 
 //================================================================
 
-function newClass(input) {
+var QQ = QQ || {};
+
+QQ.newClass = function(input) {
 	
 	function init() {
 		// this - is 'window'

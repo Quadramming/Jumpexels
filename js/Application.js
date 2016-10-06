@@ -1,12 +1,12 @@
 function Application() {
 	
 	function init() {
-		canvas     = new Canvas('appCanvas', 600, 800);
-		Sprite.setContext(canvas.getContext());
-		fpsCounter = new FpsCounter;
+		canvas     = new QQ.Canvas('appCanvas', 600, 800);
+		QQ.Sprite.setContext(canvas.getContext());
+		fpsCounter = new QQ.FpsCounter;
 		fpsCounter.showDetails();
-		time       = new Time;
-		seizure    = new MainMenu(canvas.getCanvas());
+		time       = new QQ.Time;
+		seizure    = new QQ.MainMenu(canvas.getCanvas());
 		process();
 	};
 	

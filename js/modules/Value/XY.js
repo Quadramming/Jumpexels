@@ -1,51 +1,53 @@
 //================================================================
-// Name: XY
+// Name: QQ.XY
 // Version: 16.08.25
 // 
 // Interface: (TODO)
 // 
 //================================================================
 
-function XY(inX, inY) {
-	this.m_x = new Value(inX);
-	this.m_y = new Value(inY);
+var QQ = QQ || {};
+
+QQ.XY = function(inX, inY) {
+	this.m_x = new QQ.Value(inX);
+	this.m_y = new QQ.Value(inY);
 };
 
-XY.prototype.x = 
-XY.prototype.X = 
-XY.prototype.w = 
-XY.prototype.W = 
-XY.prototype.width = 
-XY.prototype.Width = 
+QQ.XY.prototype.x = 
+QQ.XY.prototype.X = 
+QQ.XY.prototype.w = 
+QQ.XY.prototype.W = 
+QQ.XY.prototype.width = 
+QQ.XY.prototype.Width = 
 function(input) {
 	return this.m_x.v(input);
 };
 
-XY.prototype.y = 
-XY.prototype.Y = 
-XY.prototype.h = 
-XY.prototype.H = 
-XY.prototype.height = 
-XY.prototype.Height = 
+QQ.XY.prototype.y = 
+QQ.XY.prototype.Y = 
+QQ.XY.prototype.h = 
+QQ.XY.prototype.H = 
+QQ.XY.prototype.height = 
+QQ.XY.prototype.Height = 
 function(input) {
 	return this.m_y.v(input);
 };
 
-XY.prototype.clear = function() {
+QQ.XY.prototype.clear = function() {
 	this.m_x.clear();
 	this.m_y.clear();
 };
 
-XY.prototype.set = function(inX, inY) {
+QQ.XY.prototype.set = function(inX, inY) {
 	this.m_x.v(inX);
 	this.m_y.v(inY);
 };
 
-XY.prototype.isClear = function() {
+QQ.XY.prototype.isClear = function() {
 	return this.m_x.isClear() && this.m_y.isClear();
 };
 
-XY.prototype.clearX  = function() { this.m_x.clear();  };
-XY.prototype.clearY  = function() { this.m_y.clear();  };
-XY.prototype.invertX = function() { this.m_x.invert(); };
-XY.prototype.invertY = function() { this.m_y.invert(); };
+QQ.XY.prototype.clearX  = function() { this.m_x.clear();  };
+QQ.XY.prototype.clearY  = function() { this.m_y.clear();  };
+QQ.XY.prototype.invertX = function() { this.m_x.invert(); };
+QQ.XY.prototype.invertY = function() { this.m_y.invert(); };

@@ -1,36 +1,39 @@
 //================================================================
-// Name: Math
+// Name: QQ.Math
 // Version: 16.04.25
 // 
 // Interface:
 //
-// Math.rand(min, max, round);
+// QQ.Math.rand(min, max, round);
 //   Get random number [min;max] if round === true.
 //   Get random float [min;max) if round !== true.
 //   
-// Math.reduceToSize(w, h, size);
+// QQ.Math.reduceToSize(w, h, size);
 //   Get scale to fit w:h to size
 //   
-// Math.scaleToSize(w, h, size);
+// QQ.Math.scaleToSize(w, h, size);
 //   Scale w:h to size
 //   
-// Math.devidePeriod(val, period);
+// QQ.Math.devidePeriod(val, period);
 //   Get val after devision by period
 // 
-// Math.devideAngle(angle);
+// QQ.Math.devideAngle(angle);
 //   Get angle after division by Math.PI*2
 //   
-// Math.sinBetweenVectors(ax, ay, bx, by);
+// QQ.Math.sinBetweenVectors(ax, ay, bx, by);
 //   Get sin between 2 vectors.
 //   
-// Math.calcProgress(start, duration);
+// QQ.Math.calcProgress(start, duration);
 //   Get progress between [0;1] from start to now using duration.
 //   
-// Math.getSign(x);
+// QQ.Math.getSign(x);
 //   Return -1 or 1 dependent of x sign.
 //================================================================
 
-Math.rand = function(min, max, round) {
+var QQ = QQ || {};
+QQ.Math = {};
+
+QQ.Math.rand = function(min, max, round) {
 	if ( round ) {
 		return Math.round(Math.random() * (max - min)) + min;
 	} else {
@@ -38,7 +41,7 @@ Math.rand = function(min, max, round) {
 	}
 };
 
-Math.reduceToSize = function(w, h, size) {
+QQ.Math.reduceToSize = function(w, h, size) {
 	var scale = 1;
 	if ( w > size ) {
 		scale = size / w;
@@ -52,20 +55,20 @@ Math.reduceToSize = function(w, h, size) {
 	return scale;
 };
 
-Math.scaleToSize = function(w, h, size) {
+QQ.Math.scaleToSize = function(w, h, size) {
 	var scaleW = size / w;
 	var scaleH = size / h;
 	return scaleW < scaleH ? scaleW : scaleH;
 };
 
-Math.devidePeriod = function(val, period) {
+QQ.Math.devidePeriod = function(val, period) {
 	if ( val > period ) {
 		val %= period;
 	}
 	return val;
 };
 
-Math.devideAngle = function(angle) {
+QQ.Math.devideAngle = function(angle) {
 	if ( angle > Math.PI ) {
 		angle -= Math.PI*2;
 	}
@@ -75,7 +78,7 @@ Math.devideAngle = function(angle) {
 	return angle;
 };
 
-Math.sinBetweenVectors = function(ax, ay, bx, by) {
+QQ.Math.sinBetweenVectors = function(ax, ay, bx, by) {
 	var mul  = ax*bx + ay*by;
 	var lenA = Math.sqrt(ax*ax + ay*ay);
 	var lenB = Math.sqrt(bx*bx + by*by);
@@ -87,13 +90,13 @@ Math.sinBetweenVectors = function(ax, ay, bx, by) {
 	return Math.sqrt(arg);
 };
 
-Math.calcProgress = function(start, duration) {
+QQ.Math.calcProgress = function(start, duration) {
 	var passed   = Date.now() - start;
 	var progress = passed / duration;
 	return progress < 1 ? progress : 1;
 };
 
- Math.getSign = function(x) { 
+ QQ.Math.getSign = function(x) { 
 	 return x >= 0 ? 1 : -1;
  };
 

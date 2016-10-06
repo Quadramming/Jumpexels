@@ -1,5 +1,5 @@
 //================================================================
-// Name: FpsCounter
+// Name: QQ.FpsCounter
 // Version: 16.04.21
 // 
 // Interface:
@@ -14,7 +14,9 @@
 //   Show/hide FPS at given context.
 //================================================================
 
-function FpsCounter() {
+var QQ = QQ || {};
+
+QQ.FpsCounter = function() {
 	
 	//================================
 	// Public methods
