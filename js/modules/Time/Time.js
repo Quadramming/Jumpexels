@@ -12,6 +12,7 @@
 //   And get delta between now and last saved time stamp.
 //   Return result is seconds.
 //================================================================
+'use strict';
 
 var QQ = QQ || {};
 

@@ -9,6 +9,7 @@
 // Touch(mouse);
 //   Creates object with help of mouse class.
 //================================================================
+'use strict';
 
 var QQ = QQ || {};
 

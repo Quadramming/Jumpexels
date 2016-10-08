@@ -1,5 +1,9 @@
-function Application() {
-	
+'use strict';
+
+var QQ = QQ || {};
+
+QQ.Application = function () {
+
 	function init() {
 		canvas     = new QQ.Canvas('appCanvas', 600, 800);
 		QQ.Sprite.setContext(canvas.getContext());
@@ -13,7 +17,7 @@ function Application() {
 	//================================
 	// Public methods
 	//================================
-
+	
 	this.oMethod = function() {
 	};
 	
@@ -52,6 +56,6 @@ function Application() {
 	var fpsCounter = null;
 	var time       = null;
 	var seizure    = null;
-			
+
 	init(); 
 };

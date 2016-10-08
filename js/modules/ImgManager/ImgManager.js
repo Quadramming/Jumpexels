@@ -10,6 +10,7 @@
 // isReady(imgObj);
 //   True if imgObj is loaded.
 //================================================================
+'use strict';
 
 var QQ = QQ || {};
 
@@ -32,8 +33,8 @@ QQ.ImgManager = function() {
 		img.obj         = new Image;
 		img.obj.src     = url;
 		img.obj.onload  = function() {
-			this.isReady = true;
-		}.bind(img);
+				this.isReady = true;
+			}.bind(img);
 		imgs.push(img);
 		return img.obj;
 	};

@@ -5,6 +5,7 @@
 // Interface:
 // 
 //================================================================
+'use strict';
 
 var QQ = QQ || {};
 
@@ -29,18 +30,26 @@ QQ.Sprite = function(img) {
 			self.width   = this.width;
 			self.height  = this.height;
 			self.ready   = true;
-			if ( self.animation ) {
+			if ( self.isAnimation ) {
 				self.frames = self.width / self.frameWidth;
 			}
 		};
 };
+
+QQ.Sprite.prototype.getSize = function() {
+	if ( this.ready === false ) {
+		console.log('Warning: Try QQ.Sprite.getSize() when not ready');
+	}
+	return { width: this.width, height: this.height };
+};
+
 
 QQ.Sprite.prototype.isReady = function() {
 	return this.ready;
 };
 
 QQ.Sprite.prototype.setAnimation = function(w, h, fps, time) {
-	this.animation   = true;
+	this.isAnimation = true;
 	this.frameWidth  = w;
 	this.frameHeight = h;
 	this.fps         = fps;
@@ -57,7 +66,7 @@ QQ.Sprite.prototype._calcPosition = function(pivot) {
 	if ( pivot === QQ.Sprite.pivot.LEFTTOP ) { 
 		return result;
 	}
-	if ( this.animation ) {
+	if ( this.isAnimation ) {
 		if ( pivot === QQ.Sprite.pivot.CENTER ) {
 			result.x = -this.frameWidth/2;
 			result.y = -this.frameHeight/2;
@@ -103,7 +112,7 @@ QQ.Sprite.prototype.draw = function(inX, inY) {
 		//================================================================
 		// Draw
 		//================================================================
-		if ( this.animation ) {
+		if ( this.isAnimation ) {
 			var diff         = this.time.now() - this.startTime;
 			var passedFrames = Math.round(diff/this.tpf);
 			this.curFrame    = passedFrames % this.frames;

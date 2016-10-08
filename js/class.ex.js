@@ -5,6 +5,7 @@
 // Interface:
 // 
 //================================================================
+'use strict';
 
 var QQ = QQ || {};
 
@@ -12,7 +13,7 @@ QQ.newClass = function(input) {
 	
 	function init() {
 		// this - is 'window'
-		alert('init ' + private + ' ' + input);
+		alert('init ' + _private + ' ' + input);
 	};
 	
 	//================================
@@ -21,7 +22,7 @@ QQ.newClass = function(input) {
 
 	this.oMethod = function() {
 		// this - is me
-		alert('open method ' + private);
+		alert('open method ' + _private);
 		cMethod();
 	};
 	
@@ -32,15 +33,15 @@ QQ.newClass = function(input) {
 	function cMethod() {
 		// this - is 'window'
 		// Use self.oMethod()
-		alert('close method ' + private);
+		alert('close method ' + _private);
 	};
 		
 	//================================
 	// Private vars
 	//================================
 	
-	var self    = this;
-	var private = 'private var';
+	var self     = this;
+	var _private = 'private var';
 	
 	init(); 
 };

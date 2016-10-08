@@ -16,6 +16,7 @@
 //   Callback will be called when all JS files will be loaded. 
 //   
 //================================================================
+'use strict';
 
 var QQ = QQ || {};
 

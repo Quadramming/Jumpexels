@@ -5,6 +5,7 @@
 // Interface:
 // 
 //================================================================
+'use strict';
 
 var QQ = QQ || {};
 
@@ -33,9 +34,9 @@ QQ.World = function() {
 
 	this.getSubjectsInRect = function(rect) {
 		var result = [];
-		for ( var i in this.subjects ) {
-			var subj = this.subjects[i];
-			if ( subj.isInRect(rect) ) {
+		for ( var i in subjects ) {
+			var subj = subjects[i];
+			if ( QQ.Math.isIntersect(rect, subj.getRect()) ) {
 				result.push(subj); 
 			}
 		}

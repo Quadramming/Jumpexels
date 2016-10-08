@@ -38,6 +38,7 @@
 // remove();
 //   Remove canvas element from DOM.
 //================================================================
+'use strict';
 
 var QQ = QQ || {};
 

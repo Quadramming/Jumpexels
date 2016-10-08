@@ -20,6 +20,7 @@
 // 
 // mul(A, B);
 //================================================================
+'use strict';
 
 var QQ = QQ || {};
 
@@ -167,8 +168,7 @@ var QQ = QQ || {};
 	// Private methods
 	//================================
 	
-	function sin(a)         { return Math.sin(a);     }
-	function cos(a)         { return Math.cos(a);     }
-	function abs(a)         { return Math.abs(a);     }
-	
-}());
+	function sin(a) { return Math.sin(a); }
+	function cos(a) { return Math.cos(a); }
+	function abs(a) { return Math.abs(a); }
+})();

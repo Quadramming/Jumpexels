@@ -13,6 +13,7 @@
 // showDetails();
 //   Show/hide FPS at given context.
 //================================================================
+'use strict';
 
 var QQ = QQ || {};
 
