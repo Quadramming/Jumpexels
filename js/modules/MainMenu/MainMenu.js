@@ -12,9 +12,6 @@ var QQ = QQ || {};
 QQ.MainMenu = function(canvas) {
 	
 	function init() {
-		camera   = new QQ.Camera(canvas, 30, 40, 0, 0);
-		world    = new QQ.World;
-		
 		var logo = new QQ.Subject('img/logo.png', 10, 10, 0, 0);
 		world.addSubject( new QQ.Subject('img/background.png', 30, 40, 0, 0) );
 		world.addSubject(logo);
@@ -52,8 +49,8 @@ QQ.MainMenu = function(canvas) {
 	//================================
 	
 	var self    = this;
-	var world   = null;
-	var camera  = null;
+	var world   = new QQ.World();
+	var camera  = new QQ.Camera(canvas, 30, 40, 0, 0);;
 
 	init(); 
 };
