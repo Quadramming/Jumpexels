@@ -15,7 +15,7 @@ var QQ = QQ || {};
 
 QQ.Touch = function(mouse) {
 
-	init = function() {
+	function init() {
 		window.addEventListener('touchstart', function(e) {
 			var touchobj = e.touches[0];
 			if ( typeof touchobj.clientX === 'number' && typeof touchobj.clientY === 'number' ) {

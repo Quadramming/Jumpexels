@@ -42,12 +42,22 @@ QQ.World = function() {
 		}
 		return result;
 	};
+	
+	this.getSubjectAtPoint = function(x, y) {
+		for ( var i = subjects.length-1; i >= 0 ; --i ) {
+			var subj = subjects[i];
+			if ( QQ.Math.isInside(subj.getRect(), x, y) ) {
+				return subj; 
+			}
+		}
+	};
 		
 	//================================
 	// Private vars
 	//================================
 	
 	var self     = this;
+	
 	var subjects = [];
 	
 	var physics  = null; // ?

@@ -17,7 +17,7 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 		height     = inHeight;
 		x          = inX || 0;
 		y          = inY || 0;
-		mainMatrix = QQ.Matrix.mul(getCameraInverseMatrix(), getScreenMatrix());
+		mainMatrix = QQ.Matrix.mul(getInverseMatrix(), getScreenMatrix());
 	};
 	
 	//================================
@@ -42,6 +42,12 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 	
 	this.getViewRect = function() {
 		return { x1: x-width/2, y1: y+height/2, x2: x+width/2, y2: y-height/2 };
+	};
+	
+	this.getWorldPoint = function(x, y) {
+		var mainMatrix = QQ.Matrix.mul(getInverseMatrix(), getScreenMatrix());
+		var M = QQ.Matrix.mul( [[x, y, 1]], QQ.Matrix.inverse(mainMatrix) );
+		return {x: M[0][0], y: M[0][1]};
 	};
 	
 	//================================
@@ -74,7 +80,7 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 		ctx.fillRect(10, 10, 0.2, 0.2);
 	}
 
-	function getCameraMatrix() {
+	function getMatrix() {
 		var M = QQ.Matrix.getIdentity();
 			M = QQ.Matrix.mul(M, QQ.Matrix.getRotate(0)   );
 			M = QQ.Matrix.mul(M, QQ.Matrix.getScale(1, 1) );
@@ -82,8 +88,8 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 		return M;
 	};
 	
-	function getCameraInverseMatrix() {
-		return QQ.Matrix.inverse( getCameraMatrix() );
+	function getInverseMatrix() {
+		return QQ.Matrix.inverse( getMatrix() );
 	};
 
 	function getScreenMatrix() {

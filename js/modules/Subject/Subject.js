@@ -13,10 +13,6 @@ QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY) {
 	
 	function init() {
 		sprite  = new QQ.Sprite( QQ.imgManager.get(imgSrc) );
-		x       = inX      || 0;
-		y       = inY      || 0;
-		width   = inWidth  || 1;
-		height  = inHeight || 1;
 	};
 	
 	//================================
@@ -51,6 +47,16 @@ QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY) {
 		return { x : scaleX, y : scaleY };
 	};
 	
+	this.onClick = function(fn) {
+		onClickFn = fn;
+	};
+	
+	this.click = function() {
+		if ( onClickFn ) {
+			onClickFn();
+		}
+	};
+	
 	//================================
 	// Private methods
 	//================================
@@ -65,14 +71,16 @@ QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY) {
 	// Private vars
 	//================================
 	
-	var self    = this;
-	var x       = 0;
-	var y       = 0;
-	var width   = 0;
-	var height  = 0;
-	var sprite  = null;
-	var physics = null;
-	var pivot   = QQ.Subject.pivot.NONE;
+	var self      = this;
+	
+	var x         = inX      || 0;
+	var y         = inY      || 0;
+	var width     = inWidth  || 1;
+	var height    = inHeight || 1;
+	var sprite    = null;
+	var physics   = null;
+	var pivot     = QQ.Subject.pivot.NONE;
+	var onClickFn = null;
 	
 	init(); 
 };

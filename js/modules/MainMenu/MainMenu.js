@@ -13,6 +13,9 @@ QQ.MainMenu = function(canvas) {
 	
 	function init() {
 		var logo = new QQ.Subject('img/logo.png', 10, 10, 0, 0);
+		logo.onClick(function() {
+			alert('alarm');
+		});
 		world.addSubject( new QQ.Subject('img/background.png', 30, 40, 0, 0) );
 		world.addSubject(logo);
 	};
@@ -33,6 +36,11 @@ QQ.MainMenu = function(canvas) {
 			var toDraw = world.getSubjectsInRect(rect);
 			camera.draw(toDraw);
 		}
+	};
+	
+	this.click = function(x, y) {
+		var point = camera.getWorldPoint(x, y);
+		world.getSubjectAtPoint(point.x, point.y).click();
 	};
 	
 	//================================
