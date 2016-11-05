@@ -13,7 +13,7 @@ QQ.seizures = QQ.seizures || {};
 QQ.seizures.Levels = function(canvas) {
 
 	function init() {
-		world.addBackground( new QQ.Subject('img/levels.png') );
+		world.addBackground( new QQ.Subject('img/backgrounds/tmpMenu.png') );
 		
 		var level = new QQ.Subject('img/level.png', 5, 5, -5, 5);
 		level.click = function() {

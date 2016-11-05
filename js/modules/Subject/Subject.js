@@ -9,7 +9,7 @@
 
 var QQ = QQ || {};
 
-QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY) {
+QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY, inPivot) {
 
 	//================================
 	// Public methods
@@ -22,13 +22,35 @@ QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY) {
 	};
 	
 	this.getRect = function() {
-		// TODO: Do all pivots
-		return { 
-			x1: x-width/2, 
-			y1: y+height/2, 
-			x2: x+width/2, 
-			y2: y-height/2 
-		};
+		if ( pivot === QQ.Subject.pivot.CENTERTOP ) {
+			return { 
+				x1: x-width/2, 
+				y1: y+height, 
+				x2: x+width/2, 
+				y2: y 
+			};
+		} else if ( pivot === QQ.Subject.pivot.CENTERBOTTOM ) {
+			return { 
+				x1: x-width/2, 
+				y1: y, 
+				x2: x+width/2, 
+				y2: y-height 
+			};
+		} else if ( pivot === QQ.Subject.pivot.CENTER ) {
+			return { 
+				x1: x-width/2, 
+				y1: y+height/2, 
+				x2: x+width/2, 
+				y2: y-height/2 
+			};
+		} else if ( pivot === QQ.Subject.pivot.LEFTTOP ) {
+			return { 
+				x1: x, 
+				y1: y, 
+				x2: x+width, 
+				y2: y-height 
+			};
+		}
 	};
 	
 	this.fitInRect = function(rect) {
@@ -42,6 +64,18 @@ QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY) {
 		x = inX;
 		if ( inY ) {
 			y = inY;
+		}
+	};
+	
+	this.getCenterPos = function() {
+		if ( pivot === QQ.Subject.pivot.CENTERTOP ) {
+			return { x : x, y : y-height/2 };
+		} else if ( pivot === QQ.Subject.pivot.CENTERBOTTOM ) {
+			return { x : x, y : y+height/2 };
+		} else if ( pivot === QQ.Subject.pivot.CENTER ) {
+			return { x : x, y : y };
+		} else if ( pivot === QQ.Subject.pivot.LEFTTOP ) {
+			return { x : x+width/2, y : y-height/2 };
 		}
 	};
 	
@@ -79,14 +113,15 @@ QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY) {
 	var y         = inY      || 0;
 	var width     = inWidth  || 1;
 	var height    = inHeight || 1;
+	var pivot     = inPivot  || QQ.Subject.pivot.CENTER;
 	var sprite    = new QQ.Sprite( QQ.imgManager.get(imgSrc) );
 	var physics   = null;
-	var pivot     = QQ.Subject.pivot.NONE;
 };
 
 QQ.Subject.pivot = {
 	NONE         : 0,
 	CENTER       : 1,
 	LEFTTOP      : 2,
-	CENTERBOTTOM : 3
+	CENTERBOTTOM : 3,
+	CENTERTOP    : 4
 };

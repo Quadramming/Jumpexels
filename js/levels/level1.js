@@ -19,7 +19,7 @@ QQ.level = {
 	},
 	
 	ground : {
-		pos    : { x :  0, y : -7 },
+		pos    : { x :  0, y : 0 },
 		size   : { w : 15, h : 15 }
 	},
 	
@@ -34,7 +34,7 @@ QQ.level = {
 	
 	aliens : [
 		{
-			pos    : { x : 0, y : 1 }
+			pos    : { x : 0, y : 0 }
 		}
 	]
 	

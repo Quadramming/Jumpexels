@@ -119,7 +119,7 @@ function makeEscapeShip(config) {
 }
 
 function makeAlien(config) {
-	var obj = new QQ.Subject('./img/animals/elephant.png', 1, 1, config.pos.x, config.pos.y);
+	var obj = new QQ.Subject('./img/animals/elephant.png', 2, 2, config.pos.x, config.pos.y, QQ.Subject.pivot.CENTERBOTTOM);
 	
 	obj.type = function() {
 		return 'alien';
@@ -129,7 +129,7 @@ function makeAlien(config) {
 }
 
 function makeGround(config) {
-	var obj = new QQ.Subject('./img/earth.png', config.size.w, config.size.h, config.pos.x, config.pos.y);
+	var obj = new QQ.Subject('./img/earth.png', config.size.w, config.size.h, config.pos.x, config.pos.y, QQ.Subject.pivot.CENTERTOP);
 	
 	obj.type = function() {
 		return 'ground';

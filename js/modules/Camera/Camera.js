@@ -19,7 +19,7 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 		cleanCanvas();
 		for ( var i in subjects ) {
 			var subj  = subjects[i];
-			var pos   = subj.getPos();
+			var pos   = subj.getCenterPos();
 			var scale = subj.getScale();
 			var M     = QQ.Matrix.getScale(scale.x, -scale.y); // Important minus
 				M     = QQ.Matrix.mul( M, QQ.Matrix.getMove(pos.x, pos.y));

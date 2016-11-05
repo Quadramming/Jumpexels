@@ -13,7 +13,7 @@ QQ.seizures = QQ.seizures || {};
 QQ.seizures.MainMenu = function(canvas) {
 	
 	function init() {
-		world.addBackground( new QQ.Subject('img/background.png') );
+		world.addBackground( new QQ.Subject('img/backgrounds/tmpMenu.png') );
 		
 		var logo = new QQ.Subject('img/logo.png', 10, 10, 0, 0);
 		logo.click = function() {
@@ -21,7 +21,7 @@ QQ.seizures.MainMenu = function(canvas) {
 		};
 		world.addSubject(logo);
 		
-		var title = new QQ.Subject('img/title.png', 20, 7, 0, 12);
+		var title = new QQ.Subject('img/title.png', 20, 20/7, 0, 12);
 		world.addSubject(title);
 	};
 	

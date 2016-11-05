@@ -70,6 +70,9 @@ QQ.Sprite.prototype._calcPosition = function(pivot) {
 		} else if ( pivot === QQ.Sprite.pivot.CENTERBOTTOM ) {
 			result.x = -this.frameWidth/2;
 			result.y = -this.frameHeight;
+		} else if ( pivot === QQ.Sprite.pivot.CENTERTOP ) {
+			result.x = -this.frameWidth/2;
+			result.y = 0;
 		}
 	} else {
 		if ( pivot === QQ.Sprite.pivot.CENTER ) {
@@ -78,6 +81,9 @@ QQ.Sprite.prototype._calcPosition = function(pivot) {
 		} else if ( pivot === QQ.Sprite.pivot.CENTERBOTTOM ) {
 			result.x = -this.width/2;
 			result.y = -this.height;
+		} else if ( pivot === QQ.Sprite.pivot.CENTERTOP ) {
+			result.x = -this.width/2;
+			result.y = 0;
 		}
 	}
 	return result;
@@ -130,5 +136,6 @@ QQ.Sprite.pivot = {
 	NONE         : 0,
 	CENTER       : 1,
 	LEFTTOP      : 2,
-	CENTERBOTTOM : 3
+	CENTERBOTTOM : 3,
+	CENTERTOP    : 4
 };
