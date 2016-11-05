@@ -10,11 +10,7 @@
 var QQ = QQ || {};
 
 QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY) {
-	
-	function init() {
-		sprite  = new QQ.Sprite( QQ.imgManager.get(imgSrc) );
-	};
-	
+
 	//================================
 	// Public methods
 	//================================
@@ -26,8 +22,27 @@ QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY) {
 	};
 	
 	this.getRect = function() {
-		// Do all
-		return { x1: x-width/2, y1: y+height/2, x2: x+width/2, y2: y-height/2 };
+		// TODO: Do all pivots
+		return { 
+			x1: x-width/2, 
+			y1: y+height/2, 
+			x2: x+width/2, 
+			y2: y-height/2 
+		};
+	};
+	
+	this.fitInRect = function(rect) {
+		width  = rect.x2 - rect.x1;
+		height = rect.y1 - rect.y2;
+		x      = rect.x1 + width/2;
+		y      = rect.y2 + height/2;
+	};
+	
+	this.setPos = function(inX, inY) {
+		x = inX;
+		if ( inY ) {
+			y = inY;
+		}
 	};
 	
 	this.getPos = function() {
@@ -47,26 +62,13 @@ QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY) {
 		return { x : scaleX, y : scaleY };
 	};
 	
-	this.onClick = function(fn) {
-		onClickFn = fn;
+	this.type = function() {
+		return 'subject';
 	};
 	
-	this.click = function() {
-		if ( onClickFn ) {
-			onClickFn();
-		}
-	};
+	this.click = function() { /* Empty */ };
+	this.tick  = function() { /* Empty */ };
 	
-	//================================
-	// Private methods
-	//================================
-
-	function cMethod() {
-		// this - is 'window'
-		// Use self.oMethod()
-		//alert('close method ' + private);
-	};
-		
 	//================================
 	// Private vars
 	//================================
@@ -77,12 +79,9 @@ QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY) {
 	var y         = inY      || 0;
 	var width     = inWidth  || 1;
 	var height    = inHeight || 1;
-	var sprite    = null;
+	var sprite    = new QQ.Sprite( QQ.imgManager.get(imgSrc) );
 	var physics   = null;
 	var pivot     = QQ.Subject.pivot.NONE;
-	var onClickFn = null;
-	
-	init(); 
 };
 
 QQ.Subject.pivot = {

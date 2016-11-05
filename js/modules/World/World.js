@@ -18,13 +18,17 @@ QQ.World = function() {
 	// Public methods
 	//================================
 	
+	this.addBackground = function(subj) {
+		background = subj;
+	};
+	
 	this.addSubject = function(subj) {
 		subjects.push(subj);
 	};
 
 	this.tick = function(delta) {
-		for ( var i in this.subjects ) {
-			this.subjects[i].tick(delta);
+		for ( var i in subjects ) {
+			subjects[i].tick(delta);
 		}
 	};
 	
@@ -34,6 +38,10 @@ QQ.World = function() {
 
 	this.getSubjectsInRect = function(rect) {
 		var result = [];
+		if ( background !== null ) {
+			background.fitInRect(rect);
+			result.push(background);
+		}
 		for ( var i in subjects ) {
 			var subj = subjects[i];
 			if ( QQ.Math.isIntersect(rect, subj.getRect()) ) {
@@ -56,11 +64,12 @@ QQ.World = function() {
 	// Private vars
 	//================================
 	
-	var self     = this;
+	var self       = this;
 	
-	var subjects = [];
+	var subjects   = [];
+	var background = null;
 	
-	var physics  = null; // ?
+	var physics    = null; // ?
 	
 	init(); 
 };

@@ -5,12 +5,9 @@ var QQ = QQ || {};
 QQ.Application = function () {
 
 	function init() {
-		canvas     = new QQ.Canvas('appCanvas', 600, 800);
 		QQ.Sprite.setContext(canvas.getContext());
-		fpsCounter = new QQ.FpsCounter();
 		fpsCounter.showDetails();
-		time       = new QQ.Time();
-		seizure    = new QQ.MainMenu(canvas.getCanvas());
+		self.setSeizure('MainMenu');
 		
 		mouse.setM1DownCB( function() {
 				var x = (mouse.getX() - canvas.getCanvas().offsetLeft);
@@ -28,7 +25,12 @@ QQ.Application = function () {
 	// Public methods
 	//================================
 	
-	this.oMethod = function() {
+	this.setSeizure = function(newSeizure, input) {
+		seizure = loading;
+		QQ.includer.js('js/seizures/'+newSeizure+'/'+newSeizure+'.js');
+		QQ.includer.onLoad(function() {
+			seizure = new QQ.seizures[newSeizure](canvas.getCanvas(), input);
+		});
 	};
 	
 	//================================
@@ -54,7 +56,7 @@ QQ.Application = function () {
 			seizure.draw();
 		}
 		canvas.drawBorder();
-		fpsCounter.show(canvas.getContext());
+		//fpsCounter.show(canvas.getContext());
 	}
 	
 	//================================
@@ -62,12 +64,13 @@ QQ.Application = function () {
 	//================================
 	
 	var self       = this;
-	var canvas     = null;
-	var fpsCounter = null;
-	var time       = null;
+	var canvas     = new QQ.Canvas('appCanvas', 600, 800);
+	var fpsCounter = new QQ.FpsCounter();
+	var time       = new QQ.Time();
 	var seizure    = null;
 	var mouse      = new QQ.Mouse();
 	var touch      = new QQ.Touch(mouse);
+	var loading    = new QQ.seizures.Loading(canvas.getCanvas());
 	
 	init(); 
 };

@@ -29,12 +29,8 @@ QQ.ImgManager = function() {
 		
 		var img         = {};
 		img.url         = url;
-		img.isReady     = false;
 		img.obj         = new Image;
 		img.obj.src     = url;
-		img.obj.onload  = function() {
-				this.isReady = true;
-			}.bind(img);
 		imgs.push(img);
 		return img.obj;
 	};
@@ -42,7 +38,7 @@ QQ.ImgManager = function() {
 	this.isReady = function(imgObj) {
 		for ( var i in imgs ) {
 			if ( imgs[i].obj === imgObj ) {
-				return imgs[i].isReady;
+				return imgs[i].obj.complete;
 			}
 		}
 		return false;

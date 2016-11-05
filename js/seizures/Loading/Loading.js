@@ -1,5 +1,5 @@
 //================================================================
-// Name: QQ.MainMenu
+// Name: QQ.Loading
 // Version: 16..
 // 
 // Interface:
@@ -7,17 +7,13 @@
 //================================================================
 'use strict';
 
-var QQ = QQ || {};
+var QQ      = QQ           || {};
+QQ.seizures = QQ.seizures || {};
 
-QQ.MainMenu = function(canvas) {
-	
+QQ.seizures.Loading = function(canvas) {
+
 	function init() {
-		var logo = new QQ.Subject('img/logo.png', 10, 10, 0, 0);
-		logo.onClick(function() {
-			alert('alarm');
-		});
-		world.addSubject( new QQ.Subject('img/background.png', 30, 40, 0, 0) );
-		world.addSubject(logo);
+		world.addBackground( new QQ.Subject('img/loading.png') );
 	};
 	
 	//================================
@@ -39,8 +35,6 @@ QQ.MainMenu = function(canvas) {
 	};
 	
 	this.click = function(x, y) {
-		var point = camera.getWorldPoint(x, y);
-		world.getSubjectAtPoint(point.x, point.y).click();
 	};
 	
 	//================================
@@ -58,7 +52,7 @@ QQ.MainMenu = function(canvas) {
 	
 	var self    = this;
 	var world   = new QQ.World();
-	var camera  = new QQ.Camera(canvas, 30, 40, 0, 0);;
+	var camera  = new QQ.Camera(canvas, 30, 40, 0, 0);
 
 	init(); 
 };

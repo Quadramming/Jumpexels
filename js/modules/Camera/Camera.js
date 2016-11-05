@@ -10,16 +10,7 @@
 var QQ = QQ || {};
 
 QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
-	
-	function init() {
-		canvas     = inCanvas;
-		width      = inWidth;
-		height     = inHeight;
-		x          = inX || 0;
-		y          = inY || 0;
-		mainMatrix = QQ.Matrix.mul(getInverseMatrix(), getScreenMatrix());
-	};
-	
+
 	//================================
 	// Public methods
 	//================================
@@ -37,7 +28,7 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 			canvas.getContext('2d').setTransform(M[0][0], M[0][1], M[1][0], M[1][1], M[2][0], M[2][1]);
 			subj.draw();
 		}
-		drawAxis();
+		//drawAxis();
 	};
 	
 	this.getViewRect = function() {
@@ -50,9 +41,31 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 		return {x: M[0][0], y: M[0][1]};
 	};
 	
+	this.setPos = function(inX, inY) {
+		x = inX;
+		y = inY;
+		calcMainMatrix();
+	};
+	
+	this.addView = function(w, h) {
+		width  += w;
+		height += h;
+		calcMainMatrix();
+	};
+	
+	this.setView = function(w, h) {
+		width  = w;
+		height = h;
+		calcMainMatrix();
+	};
+	
 	//================================
 	// Private methods
 	//================================
+	
+	function calcMainMatrix() {
+		mainMatrix = QQ.Matrix.mul(getInverseMatrix(), getScreenMatrix());
+	}
 
 	function drawAxis() {
 		var M   = mainMatrix;
@@ -84,13 +97,13 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 		var M = QQ.Matrix.getIdentity();
 			M = QQ.Matrix.mul(M, QQ.Matrix.getRotate(0)   );
 			M = QQ.Matrix.mul(M, QQ.Matrix.getScale(1, 1) );
-			M = QQ.Matrix.mul(M, QQ.Matrix.getMove(x, y)  );
+			M = QQ.Matrix.mul(M, QQ.Matrix.getMove( x, y) );
 		return M;
-	};
+	}
 	
 	function getInverseMatrix() {
 		return QQ.Matrix.inverse( getMatrix() );
-	};
+	}
 
 	function getScreenMatrix() {
 		var M = QQ.Matrix.getIdentity();
@@ -98,7 +111,7 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 			M = QQ.Matrix.mul(M, QQ.Matrix.getScale(canvas.width/width, -canvas.height/height));
 			M = QQ.Matrix.mul(M, QQ.Matrix.getMove( canvas.width/2,      canvas.height/2     ));
 		return M;
-	};
+	}
 	
 	function cleanCanvas() {
 		var ctx       = canvas.getContext('2d');
@@ -111,12 +124,12 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 	//================================
 	
 	var self       = this;
-	var x          = 0;
-	var y          = 0;
-	var width      = 0;
-	var height     = 0;
-	var canvas     = null;
-	var mainMatrix = null;
 	
-	init(); 
+	var canvas     = inCanvas;
+	var width      = inWidth;
+	var height     = inHeight;
+	var x          = inX || 0;
+	var y          = inY || 0;
+	var mainMatrix = 0;
+	calcMainMatrix();
 };

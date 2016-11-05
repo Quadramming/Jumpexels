@@ -123,3 +123,5 @@ QQ.Math.isInside = function(box1, x, y) {
 	}
 	return false;
 };
+
+QQ.Math.PIx2 = Math.PI*2;

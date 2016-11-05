@@ -10,7 +10,6 @@
 var QQ = QQ || {};
 
 QQ.Sprite = function(img) {
-		var self         = this;
 		this.width       = 0;
 		this.height      = 0;
 		this.ready       = false;
@@ -24,27 +23,25 @@ QQ.Sprite = function(img) {
 		this.curFrame    = 0;
 		this.time        = null;
 		this.startTime   = 0;
-		
 		this.img         = img;
-		this.img.onload  = function() {
-			self.width   = this.width;
-			self.height  = this.height;
-			self.ready   = true;
-			if ( self.isAnimation ) {
-				self.frames = self.width / self.frameWidth;
-			}
-		};
 };
 
 QQ.Sprite.prototype.getSize = function() {
-	if ( this.ready === false ) {
+	if ( ! this.isReady() ) {
 		console.log('Warning: Try QQ.Sprite.getSize() when not ready');
 	}
 	return { width: this.width, height: this.height };
 };
 
-
-QQ.Sprite.prototype.isReady = function() {
+QQ.Sprite.prototype.isReady = function me() {
+	if ( this.ready === false && this.img.complete  ) {
+		this.width   = this.img.width;
+		this.height  = this.img.height;
+		if ( this.isAnimation ) {
+			this.frames = this.width / this.frameWidth;
+		}
+		this.ready = true;
+	}
 	return this.ready;
 };
 
