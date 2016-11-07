@@ -9,7 +9,7 @@
 
 var QQ = QQ || {};
 
-QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY, inPivot) {
+QQ.Subject = function(imgSrc, inWidth, inHeight) {
 
 	//================================
 	// Public methods
@@ -22,35 +22,12 @@ QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY, inPivot) {
 	};
 	
 	this.getRect = function() {
-		if ( pivot === QQ.Subject.pivot.CENTERTOP ) {
-			return { 
-				x1: x-width/2, 
-				y1: y+height, 
-				x2: x+width/2, 
-				y2: y 
-			};
-		} else if ( pivot === QQ.Subject.pivot.CENTERBOTTOM ) {
-			return { 
-				x1: x-width/2, 
-				y1: y, 
-				x2: x+width/2, 
-				y2: y-height 
-			};
-		} else if ( pivot === QQ.Subject.pivot.CENTER ) {
-			return { 
-				x1: x-width/2, 
-				y1: y+height/2, 
-				x2: x+width/2, 
-				y2: y-height/2 
-			};
-		} else if ( pivot === QQ.Subject.pivot.LEFTTOP ) {
-			return { 
-				x1: x, 
-				y1: y, 
-				x2: x+width, 
-				y2: y-height 
-			};
-		}
+		return { 
+			x1: x - width/2, 
+			y1: y + height/2, 
+			x2: x + width/2, 
+			y2: y - height/2 
+		};
 	};
 	
 	this.fitInRect = function(rect) {
@@ -60,27 +37,45 @@ QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY, inPivot) {
 		y      = rect.y2 + height/2;
 	};
 	
-	this.setPos = function(inX, inY) {
-		x = inX;
-		if ( inY ) {
-			y = inY;
+	this.setPosition = function(inX, inY, inPivot) {
+		if ( inX !== undefined) {
+			if ( inPivot !== undefined ) {
+				if ( inPivot === QQ.Subject.pivot.CENTERTOP ) {
+					x = inX;
+				} else if ( inPivot === QQ.Subject.pivot.CENTERBOTTOM ) {
+					x = inX;
+				} else if ( inPivot === QQ.Subject.pivot.CENTER ) {
+					x = inX;
+				} else if ( inPivot === QQ.Subject.pivot.LEFTTOP ) {
+					x = inX+width/2;
+				}
+			} else {
+				x = inX;
+			}
+		}
+		if ( inY !== undefined ) {
+			if ( inPivot !== undefined ) {
+				if ( inPivot === QQ.Subject.pivot.CENTERTOP ) {
+					y = inY-height/2;
+				} else if ( inPivot === QQ.Subject.pivot.CENTERBOTTOM ) {
+					y = inY+height/2;
+				} else if ( inPivot === QQ.Subject.pivot.CENTER ) {
+					y = inY;
+				} else if ( inPivot === QQ.Subject.pivot.LEFTTOP ) {
+					y = inY-height/2;
+				}
+			} else {
+				y = inY;
+			}
 		}
 	};
 	
-	this.getCenterPos = function() {
-		if ( pivot === QQ.Subject.pivot.CENTERTOP ) {
-			return { x : x, y : y-height/2 };
-		} else if ( pivot === QQ.Subject.pivot.CENTERBOTTOM ) {
-			return { x : x, y : y+height/2 };
-		} else if ( pivot === QQ.Subject.pivot.CENTER ) {
-			return { x : x, y : y };
-		} else if ( pivot === QQ.Subject.pivot.LEFTTOP ) {
-			return { x : x+width/2, y : y-height/2 };
-		}
-	};
-	
-	this.getPos = function() {
+	this.getPosition = function() {
 		return { x : x, y : y };
+	};
+	
+	this.getAngle = function() {
+		return angle;
 	};
 	
 	this.getScale = function() {
@@ -100,22 +95,47 @@ QQ.Subject = function(imgSrc, inWidth, inHeight, inX, inY, inPivot) {
 		return 'subject';
 	};
 	
-	this.click = function() { /* Empty */ };
-	this.tick  = function() { /* Empty */ };
+	this.setPhysics = function(x, y, w, h, isStatic) {
+		isStatic    = isStatic || false;
+		physicsBody = Matter.Bodies.rectangle(x, y, w, h, { isStatic: isStatic });
+	};
+	
+	this.getPhysicsBody = function() {
+		return physicsBody;
+	};
+	
+	this.isPhysicsBody = function() {
+		return physicsBody !== null;
+	};
+	
+	this.click = function() { 
+		// Empty
+	};
+	
+	this.tick  = function() {
+		if ( this.isPhysicsBody() ) {
+			this.setPosition(physicsBody.position.x, physicsBody.position.y);
+			angle = physicsBody.angle;
+		}
+	};
+	
+	this.test = function() {
+		Matter.Body.setVelocity(physicsBody, { x : 0, y : 0.15 });
+	};
 	
 	//================================
 	// Private vars
 	//================================
 	
-	var self      = this;
+	var self        = this;
 	
-	var x         = inX      || 0;
-	var y         = inY      || 0;
-	var width     = inWidth  || 1;
-	var height    = inHeight || 1;
-	var pivot     = inPivot  || QQ.Subject.pivot.CENTER;
-	var sprite    = new QQ.Sprite( QQ.imgManager.get(imgSrc) );
-	var physics   = null;
+	var x           = 0;
+	var y           = 0;
+	var width       = inWidth  || 1;
+	var height      = inHeight || 1;
+	var angle       = 0;
+	var sprite      = new QQ.Sprite( QQ.imgManager.get(imgSrc) );
+	var physicsBody = null;
 };
 
 QQ.Subject.pivot = {

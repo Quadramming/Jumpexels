@@ -15,13 +15,14 @@ QQ.seizures.MainMenu = function(canvas) {
 	function init() {
 		world.addBackground( new QQ.Subject('img/backgrounds/tmpMenu.png') );
 		
-		var logo = new QQ.Subject('img/logo.png', 10, 10, 0, 0);
+		var logo = new QQ.Subject('img/logo.png', 10, 10);
 		logo.click = function() {
 			QQ.application.setSeizure('Levels');
 		};
 		world.addSubject(logo);
 		
-		var title = new QQ.Subject('img/title.png', 20, 20/7, 0, 12);
+		var title = new QQ.Subject('img/title.png', 20, 20/7);
+		title.setPosition(0, 12);
 		world.addSubject(title);
 	};
 	

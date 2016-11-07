@@ -15,6 +15,7 @@ QQ.seizures.Game = function(canvas, level) {
 	function init() {
 		QQ.includer.js('js/levels/level'+level+'.js');
 		QQ.includer.onLoad(function() {
+			world.createPhysics();
 			camera = new QQ.Camera(
 					canvas, 
 					QQ.level.camera.size.w,   QQ.level.camera.size.h, 
@@ -56,7 +57,7 @@ QQ.seizures.Game = function(canvas, level) {
 	
 	this.click = function(x, y) {
 		if ( camera ) {
-			camera.addView(3, 4);
+			//camera.addView(3, 4);
 			var point   = camera.getWorldPoint(x, y);
 			var clicked = world.getSubjectAtPoint(point.x, point.y);
 			if ( clicked ) {
@@ -109,7 +110,7 @@ function makeEscapeShip(config) {
 		time  = QQ.Math.devidePeriod(time, period);
 		angle = time/period * QQ.Math.PIx2;
 
-		this.setPos(
+		this.setPosition(
 				pivotX + travelX * Math.sin(angle  ),	
 				pivotY + travelY * Math.sin(angle*2)
 			);
@@ -119,7 +120,13 @@ function makeEscapeShip(config) {
 }
 
 function makeAlien(config) {
-	var obj = new QQ.Subject('./img/animals/elephant.png', 2, 2, config.pos.x, config.pos.y, QQ.Subject.pivot.CENTERBOTTOM);
+	var obj = new QQ.Subject('./img/animals/parrot.png', 1, 1);
+	obj.setPosition(config.pos.x, config.pos.y, QQ.Subject.pivot.CENTERBOTTOM);
+	obj.setPhysics(config.pos.x, config.pos.y, 1, 1);
+	
+	obj.click = function() {
+		this.test();
+	};
 	
 	obj.type = function() {
 		return 'alien';
@@ -129,7 +136,9 @@ function makeAlien(config) {
 }
 
 function makeGround(config) {
-	var obj = new QQ.Subject('./img/earth.png', config.size.w, config.size.h, config.pos.x, config.pos.y, QQ.Subject.pivot.CENTERTOP);
+	var obj = new QQ.Subject('./img/earth.png', config.size.w, config.size.h);
+	obj.setPosition(config.pos.x, config.pos.y, QQ.Subject.pivot.CENTERTOP);
+	obj.setPhysics(0, -7.5, 15, 15, true);
 	
 	obj.type = function() {
 		return 'ground';
@@ -139,7 +148,8 @@ function makeGround(config) {
 }
 
 function makeRamp(config) {
-	var obj = new QQ.Subject('./img/earth.png', config.size.w, config.size.h, config.pos.x, config.pos.y);
+	var obj = new QQ.Subject('./img/earth.png', config.size.w, config.size.h);
+	obj.setPosition(config.pos.x, config.pos.y);
 	
 	var pivotX = config.pos.x;
 	var pivotY = config.pos.y;
@@ -159,7 +169,7 @@ function makeRamp(config) {
 	
 		var x = pivotX + range * Math.sin(angle);
 	
-		this.setPos(x);
+		this.setPosition(x);
 	};
 	
 	return obj;

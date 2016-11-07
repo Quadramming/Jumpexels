@@ -7,11 +7,12 @@
 //================================================================
 'use strict';
 
+var Matter = Matter || alert('Need Matter enging');
 var QQ = QQ || {};
 
 QQ.World = function() {
 	
-	function init() {
+	function init() {		
 	};
 	
 	//================================
@@ -24,6 +25,9 @@ QQ.World = function() {
 	
 	this.addSubject = function(subj) {
 		subjects.push(subj);
+		if ( subj.isPhysicsBody() ) {
+			Matter.World.add(physics.world, [subj.getPhysicsBody()]);
+		}
 	};
 
 	this.tick = function(delta) {
@@ -32,6 +36,12 @@ QQ.World = function() {
 		}
 	};
 	
+	this.createPhysics = function() {
+		physics = Matter.Engine.create();
+		physics.world.gravity.y = -0.0098;
+		Matter.Engine.run(physics);
+	};
+		
 	//================================
 	// Private methods
 	//================================
@@ -52,7 +62,7 @@ QQ.World = function() {
 	};
 	
 	this.getSubjectAtPoint = function(x, y) {
-		for ( var i = subjects.length-1; i >= 0 ; --i ) {
+		for ( var i = subjects.length-1 ; i >= 0 ; --i ) {
 			var subj = subjects[i];
 			if ( QQ.Math.isInside(subj.getRect(), x, y) ) {
 				return subj; 
@@ -68,8 +78,7 @@ QQ.World = function() {
 	
 	var subjects   = [];
 	var background = null;
-	
-	var physics    = null; // ?
-	
+	var physics    = null;
+
 	init(); 
 };

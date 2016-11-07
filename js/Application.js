@@ -37,7 +37,7 @@ QQ.Application = function () {
 	// Private methods
 	//================================
 
-	function process() {
+	function process(time) {
 		requestAnimationFrame(process);
 		tick();
 		draw();

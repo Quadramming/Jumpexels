@@ -19,11 +19,14 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 		cleanCanvas();
 		for ( var i in subjects ) {
 			var subj  = subjects[i];
-			var pos   = subj.getCenterPos();
+			var pos   = subj.getPosition();
 			var scale = subj.getScale();
-			var M     = QQ.Matrix.getScale(scale.x, -scale.y); // Important minus
-				M     = QQ.Matrix.mul( M, QQ.Matrix.getMove(pos.x, pos.y));
-				M     = QQ.Matrix.mul( M, mainMatrix);
+			var angle = subj.getAngle();
+			var M     = QQ.Matrix.getIdentity();
+				M     = QQ.Matrix.mul(M, QQ.Matrix.getScale(scale.x, -scale.y)); // Important minus
+				M     = QQ.Matrix.mul(M, QQ.Matrix.getRotate(-angle));
+				M     = QQ.Matrix.mul(M, QQ.Matrix.getMove(pos.x, pos.y));
+				M     = QQ.Matrix.mul(M, mainMatrix);
 
 			canvas.getContext('2d').setTransform(M[0][0], M[0][1], M[1][0], M[1][1], M[2][0], M[2][1]);
 			subj.draw();
@@ -95,9 +98,9 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 
 	function getMatrix() {
 		var M = QQ.Matrix.getIdentity();
-			M = QQ.Matrix.mul(M, QQ.Matrix.getRotate(0)   );
-			M = QQ.Matrix.mul(M, QQ.Matrix.getScale(1, 1) );
-			M = QQ.Matrix.mul(M, QQ.Matrix.getMove( x, y) );
+			M = QQ.Matrix.mul(M, QQ.Matrix.getScale(1, 1));
+			M = QQ.Matrix.mul(M, QQ.Matrix.getRotate(0));
+			M = QQ.Matrix.mul(M, QQ.Matrix.getMove(x, y));
 		return M;
 	}
 	

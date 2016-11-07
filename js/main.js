@@ -11,6 +11,7 @@ var QQ = QQ || {};
 (function() {
 	QQ.includer = new QQ.Includer;
 	
+	QQ.includer.js('js/thirdParty/Matter/matter.js');
 	QQ.includer.js('js/modules/Camera/Camera.js');
 	QQ.includer.js('js/modules/Canvas/Canvas.js');
 	QQ.includer.js('js/modules/FpsCounter/FpsCounter.js');
