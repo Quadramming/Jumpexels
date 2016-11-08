@@ -100,6 +100,11 @@ QQ.Subject = function(imgSrc, inWidth, inHeight) {
 		physicsBody = Matter.Bodies.rectangle(x, y, w, h, { isStatic: isStatic });
 	};
 	
+	this.setDefaultPhysics = function(isStatic) {
+		isStatic    = isStatic || false;
+		physicsBody = Matter.Bodies.rectangle(x, y, width, height, { isStatic: isStatic });
+	};
+	
 	this.getPhysicsBody = function() {
 		return physicsBody;
 	};
@@ -112,15 +117,11 @@ QQ.Subject = function(imgSrc, inWidth, inHeight) {
 		// Empty
 	};
 	
-	this.tick  = function() {
+	this.tick = function() {
 		if ( this.isPhysicsBody() ) {
 			this.setPosition(physicsBody.position.x, physicsBody.position.y);
 			angle = physicsBody.angle;
 		}
-	};
-	
-	this.test = function() {
-		Matter.Body.setVelocity(physicsBody, { x : 0, y : 0.15 });
 	};
 	
 	//================================

@@ -25,6 +25,9 @@ QQ.seizures.Game = function(canvas, level) {
 			world.addBackground( new QQ.Subject(QQ.level.backGround.img) );
 			
 			world.addSubject(makeGround(QQ.level.ground));
+			world.addSubject(makeGround( { pos    : { x :  14, y : 14 }, size   : { w : 15, h : 15 } } ));
+			world.addSubject(makeGround( { pos    : { x :  -14, y : 14 }, size   : { w : 15, h : 15 } } ));
+			
 			world.addSubject(makeEscapeShip(QQ.level.escapeShip));
 			
 			for ( var i in QQ.level.ramps ) {
@@ -56,8 +59,15 @@ QQ.seizures.Game = function(canvas, level) {
 	};
 	
 	this.click = function(x, y) {
+		var units = world.getSubjects(function(subj) {
+				return subj.type() === 'alien';
+			});
+		units.forEach(function(alien) {
+				var x = alien.getPhysicsBody().velocity.x;
+				Matter.Body.setVelocity(alien.getPhysicsBody(), { x : x, y : 0.15 });
+			});
+			
 		if ( camera ) {
-			//camera.addView(3, 4);
 			var point   = camera.getWorldPoint(x, y);
 			var clicked = world.getSubjectAtPoint(point.x, point.y);
 			if ( clicked ) {
@@ -124,10 +134,6 @@ function makeAlien(config) {
 	obj.setPosition(config.pos.x, config.pos.y, QQ.Subject.pivot.CENTERBOTTOM);
 	obj.setPhysics(config.pos.x, config.pos.y, 1, 1);
 	
-	obj.click = function() {
-		this.test();
-	};
-	
 	obj.type = function() {
 		return 'alien';
 	};
@@ -138,18 +144,17 @@ function makeAlien(config) {
 function makeGround(config) {
 	var obj = new QQ.Subject('./img/earth.png', config.size.w, config.size.h);
 	obj.setPosition(config.pos.x, config.pos.y, QQ.Subject.pivot.CENTERTOP);
-	obj.setPhysics(0, -7.5, 15, 15, true);
-	
+	obj.setDefaultPhysics(true);
 	obj.type = function() {
 		return 'ground';
 	};
-	
 	return obj;
 }
 
 function makeRamp(config) {
-	var obj = new QQ.Subject('./img/earth.png', config.size.w, config.size.h);
+	var obj = new QQ.Subject('./img/ramp.png', config.size.w, config.size.h);
 	obj.setPosition(config.pos.x, config.pos.y);
+	obj.setDefaultPhysics(true);
 	
 	var pivotX = config.pos.x;
 	var pivotY = config.pos.y;
@@ -162,14 +167,17 @@ function makeRamp(config) {
 		return 'ramp';
 	};
 	
+	var mainTick = obj.tick.bind(obj);
+	var prevX    = pivotX;
 	obj.tick = function(delta) {
 		time += delta;
 		time  = QQ.Math.devidePeriod(time, period);
 		angle = time/period * QQ.Math.PIx2;
-	
 		var x = pivotX + range * Math.sin(angle);
-	
-		this.setPosition(x);
+		Matter.Body.setVelocity(this.getPhysicsBody(), { x: x-prevX, y: 0 });
+		Matter.Body.setPosition(this.getPhysicsBody(), { x: x, y: pivotY });
+		prevX = x;
+		mainTick();
 	};
 	
 	return obj;

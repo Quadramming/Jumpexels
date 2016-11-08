@@ -41,11 +41,7 @@ QQ.World = function() {
 		physics.world.gravity.y = -0.0098;
 		Matter.Engine.run(physics);
 	};
-		
-	//================================
-	// Private methods
-	//================================
-
+	
 	this.getSubjectsInRect = function(rect) {
 		var result = [];
 		if ( background !== null ) {
@@ -69,7 +65,23 @@ QQ.World = function() {
 			}
 		}
 	};
-		
+	
+	this.getSubjects = function(pred) {
+		var subjs = [];
+		subjects.forEach(function (subj) {
+			if ( pred === undefined || pred(subj) ) {
+				subjs.push(subj);
+			}
+		});
+		return subjs;
+	};
+	
+	//================================
+	// Private methods
+	//================================
+
+	
+
 	//================================
 	// Private vars
 	//================================
