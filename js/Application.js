@@ -25,11 +25,15 @@ QQ.Application = function () {
 	// Public methods
 	//================================
 	
+	this.addSeizure = function(name, newSeizure) {
+		seizures[name] = newSeizure;
+	};
+	
 	this.setSeizure = function(newSeizure, input) {
 		seizure = loading;
-		QQ.includer.js('js/seizures/'+newSeizure+'/'+newSeizure+'.js');
-		QQ.includer.onLoad(function() {
-			seizure = new QQ.seizures[newSeizure](canvas.getCanvas(), input);
+		QQ.Includer.js('js/seizures/'+newSeizure+'/'+newSeizure+'.js');
+		QQ.Includer.onLoad(function() {
+			seizure = new seizures[newSeizure](canvas.getCanvas(), input);
 		});
 	};
 	
@@ -56,7 +60,7 @@ QQ.Application = function () {
 			seizure.draw();
 		}
 		canvas.drawBorder();
-		//fpsCounter.show(canvas.getContext());
+		fpsCounter.show(canvas.getContext());
 	}
 	
 	//================================
@@ -67,10 +71,18 @@ QQ.Application = function () {
 	var canvas     = new QQ.Canvas('appCanvas', 600, 800);
 	var fpsCounter = new QQ.FpsCounter();
 	var time       = new QQ.Time();
-	var seizure    = null;
 	var mouse      = new QQ.Mouse();
 	var touch      = new QQ.Touch(mouse);
-	var loading    = new QQ.seizures.Loading(canvas.getCanvas());
+	var loading    = new QQ.LoadingSeizure(canvas.getCanvas());
+	var seizure    = loading;
+	var seizures   = [];
 	
 	init(); 
+};
+
+QQ.Application.get = function() {
+	if ( ! QQ.Application.instance ) {
+		QQ.Application.instance = new QQ.Application;
+	}
+	return QQ.Application.instance;
 };

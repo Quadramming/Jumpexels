@@ -8,9 +8,8 @@
 'use strict';
 
 var QQ      = QQ          || {};
-QQ.seizures = QQ.seizures || {};
 
-QQ.seizures.Levels = function(canvas) {
+QQ.Application.get().addSeizure('Levels', function(canvas) {
 
 	function init() {
 		world.addBackground( new QQ.Subject('img/backgrounds/tmpMenu.png') );
@@ -18,7 +17,14 @@ QQ.seizures.Levels = function(canvas) {
 		var level = new QQ.Subject('img/level.png', 5, 5);
 		level.setPosition(-5, 5);
 		level.click = function() {
-			QQ.application.setSeizure('Game', 1);
+			QQ.Application.get().setSeizure('Game', 1);
+		};
+		world.addSubject(level);
+	
+		var level = new QQ.Subject('img/level.png', 5, 5);
+		level.setPosition(5, 5);
+		level.click = function() {
+			QQ.Application.get().setSeizure('Game', 2);
 		};
 		world.addSubject(level);
 		
@@ -68,4 +74,4 @@ QQ.seizures.Levels = function(canvas) {
 	var camera  = new QQ.Camera(canvas, 30, 40, 0, 0);
 
 	init(); 
-};
+});

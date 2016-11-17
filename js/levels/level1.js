@@ -8,71 +8,64 @@ QQ.level = {
 	
 	camera : {
 		type   : 'fixed',
-		lookAt : { x :  0, y :  8 },
-		size   : { w : 15, h : 20 }
+		lookAt : { x :  0, y :  200 },
+		size   : { w : 450, h : 600 }
 	},
 	
 	escapeShip : {
-		pos    : { x : 0, y : 8 },
-		travel : { w : 4, h :  1 },
+		pos    : { x : 0, y : 400 },
+		travel : { w : 40, h :  10 },
 		period : 20
 	},
 	
-	ground : {
-		pos    : { x :  0, y : 0 },
-		size   : { w : 15, h : 15 }
-	},
+	grounds : [
+		{
+			pos    : { x :  0,  y : 0 },
+			size   : { w : 450, h : 450 }
+		},
+		{
+			pos    : { x : 450,  y : 500 },
+			size   : { w : 500, h : 500 }
+		},
+		{
+			pos    : { x : -450,  y : 500 },
+			size   : { w : 500, h : 500 }
+		}
+	],
 	
 	
 	ramps : [
 		{
-			pos    : { x :   0, y :  2.5 },
-			size   : { w :  2, h :   0.3 },
-			travel : 5,
-			period : 10
-		},
-		
-		{
-			pos    : { x :   0, y :  4.5 },
-			size   : { w :  3, h :   0.3 },
-			travel : 4,
-			period : 8
-		},
-		
-		{
-			pos    : { x :   0, y :  6.5 },
-			size   : { w :  4, h :   0.3 },
-			travel : 3,
-			period : 6
-		},
-		
-		{
-			pos    : { x :   0, y :  8.5 },
-			size   : { w :  2, h :  0.3 },
-			travel : 2,
-			period : 4
-		},
-		{
-			pos    : { x :   0, y :  10.5 },
-			size   : { w :  1, h :   0.3 },
-			travel : 1,
+			pos    : { x :   0, y :  100 },
+			size   : { w :  100, h :   15 },
+			travel : 50,
 			period : 2
 		},
+		
 		{
-			pos    : { x :   0, y :  12.5 },
-			size   : { w :  0.5, h :   0.3 },
-			travel : 0.5,
+			pos    : { x :   0, y :  200 },
+			size   : { w :  30, h :   15 },
+			travel : 40,
 			period : 1
 		}
-		
 	],
 	
 	aliens : [
-		{ pos : { x : 0, y : 0 } },
-		{ pos : { x : 1.5, y : 0 } },
-		{ pos : { x : -1.5, y : 0 } },
-		{ pos : { x : 4.5, y : 0 } },
-		{ pos : { x : -4.5, y : 0 } },
+		{ pos : { x : 0, y : 60 } },
+		{ pos : { x : 75, y : 60 } },
+		{ pos : { x : -75, y : 60 } },
+		{ pos : { x : 150, y : 60 } },
+		{ pos : { x : -150, y : 60 } },
+		{ pos : { x : 0, y : 160 } },
+		{ pos : { x : 75, y : 160 } },
+		{ pos : { x : -75, y : 160 } },
+		{ pos : { x : 150, y : 160 } },
+		{ pos : { x : -150, y : 160 } },
+		{ pos : { x : 0, y : 260 } },
+		{ pos : { x : 75, y : 260 } },
+		{ pos : { x : -75, y : 260 } },
+		{ pos : { x : 150, y : 260 } },
+		{ pos : { x : -150, y : 260 } }
 	]
 	
 };

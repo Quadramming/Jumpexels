@@ -7,17 +7,16 @@
 //================================================================
 'use strict';
 
-var QQ      = QQ          || {};
-QQ.seizures = QQ.seizures || {};
+var QQ = QQ || {};
 
-QQ.seizures.MainMenu = function(canvas) {
+QQ.Application.get().addSeizure('MainMenu', function(canvas) {
 	
 	function init() {
 		world.addBackground( new QQ.Subject('img/backgrounds/tmpMenu.png') );
 		
 		var logo = new QQ.Subject('img/logo.png', 10, 10);
 		logo.click = function() {
-			QQ.application.setSeizure('Levels');
+			QQ.Application.get().setSeizure('Levels');
 		};
 		world.addSubject(logo);
 		
@@ -70,4 +69,4 @@ QQ.seizures.MainMenu = function(canvas) {
 	var camera  = new QQ.Camera(canvas, 30, 40, 0, 0);
 
 	init(); 
-};
+});

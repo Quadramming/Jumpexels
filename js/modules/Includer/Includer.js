@@ -20,13 +20,46 @@
 
 var QQ = QQ || {};
 
-QQ.Includer = function() {
-		
+QQ.Includer = function () {
+	
 	//================================
 	// Public methods
 	//================================
+
 	
-	this.js = function(file, cb, forced) {
+	function js(file, cb, forced) {
+		queue.push(file);
+		doJs(file, cb, forced);
+	}
+	
+	function onLoad(cb) {
+		var waitLoading = function() {
+			if ( isReady() ) {
+				cb();
+			} else {
+				window.setTimeout(waitLoading, 100);
+			}
+		}.bind(this);
+		waitLoading();
+	};
+	
+	function allowWarnings(isShow) {
+		showWarnings = isShow;
+	};
+	
+	//================================
+	// Private methods
+	//================================
+	
+	function doJs(file, cb, forced) {
+		if ( loading.length > 0 ) { 
+			window.setTimeout( function() { 
+					doJs(file, cb, forced); 
+				}, 1);
+			return;
+		}
+		queue.splice(queue.indexOf(file), 1);
+
 		if ( cb === true ) {
 			cb     = undefined;
 			forced = true;
@@ -74,25 +107,6 @@ QQ.Includer = function() {
 		loading.push(script.src);
 	};
 	
-	this.onLoad = function(cb) {
-		var waitLoading = function() {
-			if ( isReady() ) {
-				cb();
-			} else {
-				window.setTimeout(waitLoading, 100);
-			}
-		}.bind(this);
-		waitLoading();
-	};
-	
-	this.allowWarnings = function(isShow) {
-		showWarnings = isShow;
-	};
-	
-	//================================
-	// Private methods
-	//================================
-	
 	function getScripts() {
 		var result  = [];
 		var scripts = document.getElementsByTagName('script');
@@ -105,7 +119,7 @@ QQ.Includer = function() {
 	};
 	
 	function isReady() {
-		return loading.length === 0;
+		return loading.length === 0 && queue.length === 0;
 	};
 	
 	function showWarning(text) {
@@ -117,7 +131,16 @@ QQ.Includer = function() {
 	//================================
 	// Private vars
 	//================================
-
+	
+	var queue        = [];
 	var loading      = [];
 	var showWarnings = true;
-};
+	
+	//================================
+	
+    return {
+        js:            js,
+		onLoad:        onLoad,
+		allowWarnings: allowWarnings
+    };
+}();

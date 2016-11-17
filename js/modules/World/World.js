@@ -29,17 +29,75 @@ QQ.World = function() {
 			Matter.World.add(physics.world, [subj.getPhysicsBody()]);
 		}
 	};
+	
+	this.deleteSubject = function(subj) {
+		var i = subjects.indexOf(subj);
+		if ( subjects[i].isPhysicsBody() ) {
+			Matter.Composite.remove(physics.world, subjects[i].getPhysicsBody());
+		}
+		if ( i > 0 ) {
+			subjects.splice(i, 1);
+		}
+	};
+	
+	this.getSubjectByPhysics = function(body) {
+		for ( var i in subjects ) {
+			if ( subjects[i].getPhysicsBody() === body ) {
+				return subjects[i];
+			}
+		}
+	};
 
-	this.tick = function(delta) {
+	this.tick = function(delta) {		
 		for ( var i in subjects ) {
 			subjects[i].tick(delta);
 		}
+		if ( physics ) {
+			Matter.Engine.update(physics, delta*1000);
+		}
+	};
+	
+	this.getPhysics = function() {
+		return physics;
 	};
 	
 	this.createPhysics = function() {
 		physics = Matter.Engine.create();
-		physics.world.gravity.y = -0.0098;
-		Matter.Engine.run(physics);
+		physics.world.gravity.y = -1;
+		
+		/*
+		var render = Matter.Render.create({
+			element: document.body,
+			engine: physics,
+			options: {
+				width: 800,
+				height: 600,
+				pixelRatio: 1,
+				background: '#fafafa',
+				wireframeBackground: '#222',
+				hasBounds: false,
+				enabled: true,
+				wireframes: true,
+				showSleeping: true,
+				showDebug: false,
+				showBroadphase: false,
+				showBounds: false,
+				showVelocity: false,
+				showCollisions: false,
+				showSeparations: false,
+				showAxes: false,
+				showPositions: false,
+				showAngleIndicator: false,
+				showIds: false,
+				showShadows: false,
+				showVertexNumbers: false,
+				showConvexHulls: false,
+				showInternalEdges: false,
+				showMousePosition: false
+			}
+		});
+		Matter.Render.run(render);
+		*/
 	};
 	
 	this.getSubjectsInRect = function(rect) {

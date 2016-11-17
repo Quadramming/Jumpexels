@@ -14,28 +14,25 @@
 
 var QQ = QQ || {};
 
-QQ.ImgManager = function() {
-
-	//================================
-	// Public methods
-	//================================
+QQ.ImgManager = function () {
+	var imgs = [];
 	
-	this.get = function(url) {	
+	function get(url) {	
 		for ( var i in imgs ) {
 			if ( imgs[i].url === url ) {
 				return imgs[i].obj;
 			}
 		}
 		
-		var img         = {};
-		img.url         = url;
-		img.obj         = new Image;
-		img.obj.src     = url;
+		var img     = {};
+		img.url     = url;
+		img.obj     = new Image;
+		img.obj.src = url;
 		imgs.push(img);
 		return img.obj;
 	};
 	
-	this.isReady = function(imgObj) {
+	function isReady(imgObj) {
 		for ( var i in imgs ) {
 			if ( imgs[i].obj === imgObj ) {
 				return imgs[i].obj.complete;
@@ -43,10 +40,9 @@ QQ.ImgManager = function() {
 		}
 		return false;
 	};
-	
-	//================================
-	// Private vars
-	//================================
-	
-	var imgs = [];
-};
+		
+    return {
+        isReady: isReady,
+		get:     get
+    };
+}();

@@ -7,10 +7,9 @@
 //================================================================
 'use strict';
 
-var QQ      = QQ           || {};
-QQ.seizures = QQ.seizures || {};
+var QQ = QQ || {};
 
-QQ.seizures.Loading = function(canvas) {
+QQ.LoadingSeizure = function(canvas) {
 
 	function init() {
 		world.addBackground( new QQ.Subject('img/loading.png') );

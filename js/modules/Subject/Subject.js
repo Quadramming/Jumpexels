@@ -7,7 +7,8 @@
 //================================================================
 'use strict';
 
-var QQ = QQ || {};
+var Matter  = Matter || {};
+var QQ      = QQ     || {};
 
 QQ.Subject = function(imgSrc, inWidth, inHeight) {
 
@@ -95,14 +96,12 @@ QQ.Subject = function(imgSrc, inWidth, inHeight) {
 		return 'subject';
 	};
 	
-	this.setPhysics = function(x, y, w, h, isStatic) {
-		isStatic    = isStatic || false;
-		physicsBody = Matter.Bodies.rectangle(x, y, w, h, { isStatic: isStatic });
+	this.setPhysics = function(x, y, w, h, options) {
+		physicsBody = Matter.Bodies.rectangle(x, y, w, h, options);
 	};
 	
-	this.setDefaultPhysics = function(isStatic) {
-		isStatic    = isStatic || false;
-		physicsBody = Matter.Bodies.rectangle(x, y, width, height, { isStatic: isStatic });
+	this.setDefaultPhysics = function(options) {
+		physicsBody = Matter.Bodies.rectangle(x, y, width, height, options);
 	};
 	
 	this.getPhysicsBody = function() {
@@ -117,9 +116,27 @@ QQ.Subject = function(imgSrc, inWidth, inHeight) {
 		// Empty
 	};
 	
-	this.tick = function() {
-		if ( this.isPhysicsBody() ) {
-			this.setPosition(physicsBody.position.x, physicsBody.position.y);
+	this.setTick = function(tick) {
+		customTick = tick;
+	};
+	
+	this.tick = function(delta) {
+		var isFinish = false;
+		if ( customTick ) {
+			isFinish = customTick.call(self, delta);
+		}
+		if ( isFinish === false || isFinish === undefined ) {
+			commonTick(delta);
+		}
+	};
+	
+	//================================
+	// Private methods
+	//================================
+	
+	function commonTick(delta) {
+		if ( self.isPhysicsBody() ) {
+			self.setPosition(physicsBody.position.x, physicsBody.position.y);
 			angle = physicsBody.angle;
 		}
 	};
@@ -130,12 +147,13 @@ QQ.Subject = function(imgSrc, inWidth, inHeight) {
 	
 	var self        = this;
 	
+	var customTick  = undefined;
 	var x           = 0;
 	var y           = 0;
 	var width       = inWidth  || 1;
 	var height      = inHeight || 1;
 	var angle       = 0;
-	var sprite      = new QQ.Sprite( QQ.imgManager.get(imgSrc) );
+	var sprite      = new QQ.Sprite( QQ.ImgManager.get(imgSrc) );
 	var physicsBody = null;
 };
 
