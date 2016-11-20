@@ -34,6 +34,24 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 		//drawAxis();
 	};
 	
+	this.drawHud = function(huds) {
+		for ( var i in huds ) {
+			var hud    = huds[i];
+			var pos    = hud.getPosition();
+			var scale  = hud.getScale();
+			var scaleX = this.widthPercent(scale.x);
+			var scaleY = this.heightPercent(scale.y);
+			if ( scaleY === 0 ) {
+				scaleY = scaleX;
+			}
+			var M = QQ.Matrix.getIdentity();
+				M = QQ.Matrix.mul(M, QQ.Matrix.getScale(scaleX, scaleY)); // Important minus
+			    M = QQ.Matrix.mul(M, QQ.Matrix.getMove(this.widthPercent(pos.x), this.heightPercent(pos.y)));
+			canvas.getContext('2d').setTransform(M[0][0], M[0][1], M[1][0], M[1][1], M[2][0], M[2][1]);
+			hud.draw();
+		}
+	};
+	
 	this.getViewRect = function() {
 		return { x1: x-width/2, y1: y+height/2, x2: x+width/2, y2: y-height/2 };
 	};
@@ -60,6 +78,22 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 		width  = w;
 		height = h;
 		calcMainMatrix();
+	};
+	
+	this.widthToPercent = function(x) {
+		return x/(canvas.width/100);
+	};
+
+	this.heightToPercent = function(y) {
+		return y/(canvas.height/100);
+	};
+	
+	this.widthPercent = function(x) {
+		return canvas.width*x/100;
+	};
+
+	this.heightPercent = function(y) {
+		return canvas.height*y/100;
 	};
 	
 	//================================

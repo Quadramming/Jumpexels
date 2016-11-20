@@ -9,6 +9,10 @@ QQ.GameSeizure.prototype.makeAlien = function(config) {
 	subj.setPosition(config.pos.x, config.pos.y, QQ.Subject.pivot.CENTERBOTTOM);
 	subj.setPhysics(config.pos.x, config.pos.y, 50, 50);
 	var body = subj.getPhysicsBody();
+	var time = self.getApp().getTime();
+	
+	subj._timeToEscape = 300;
+	subj._startEscape  = 0;
 	
 	Matter.Events.on(this.getWorldPhysics(), 'collisionActiv', function(event) {
 			var pairs = event.pairs;
@@ -22,6 +26,26 @@ QQ.GameSeizure.prototype.makeAlien = function(config) {
 			}
 	});
 	
+	subj.setTick( function() {
+		if ( this._startEscape > 0 ) {
+			var alpha = 1-QQ.Math.calcProgress(this._startEscape, this._timeToEscape);
+			this.setAlpha(alpha);
+			if ( alpha === 0 ) {
+				self.getWorld().deleteSubject(this);
+			}
+		} else {
+			if ( self.getApp().isM1Pressed() ) {
+				this.jump();
+			}
+		}
+	});
+	
+	subj.escape = function() {
+		if ( this._startEscape === 0 ) {
+			this._startEscape = Date.now();
+		}
+	};
+	
 	subj.jump = function() {
 		var surfaces = self.getSurfaces();
 		var pairs = [];
@@ -30,7 +54,7 @@ QQ.GameSeizure.prototype.makeAlien = function(config) {
 		});
 		
 		var collisions = Matter.Detector.collisions(pairs, self.getWorldPhysics());
-		c(collisions);
+
 		collisions.forEach( function(collision) {
 			if ( collision.bodyA === body || collision.bodyB === body ) {
 				var x = body.velocity.x;

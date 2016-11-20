@@ -16,6 +16,7 @@ var QQ = QQ || {};
 	QQ.Includer.js('js/modules/Time/Time.js');
 	QQ.Includer.js('js/modules/Touch/Touch.js');
 	QQ.Includer.js('js/modules/Value/Value.js');
+	QQ.Includer.js('js/modules/Hud/Hud.js');
 	QQ.Includer.js('js/modules/Value/XY.js');
 	QQ.Includer.js('js/modules/World/World.js');
 	QQ.Includer.js('js/seizures/Loading/Loading.js');

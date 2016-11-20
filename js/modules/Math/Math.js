@@ -106,6 +106,10 @@ QQ.Math.calcProgress = function(start, duration) {
  QQ.Math.getSign = function(x) { 
 	 return x >= 0 ? 1 : -1;
  };
+ 
+  QQ.Math.secToMs = function(x) { 
+	 return x * 1000;
+ };
 
 QQ.Math.isIntersect = function(box1, box2) {
 	if ( box1.y1 < box2.y2 || box1.y2 > box2.y1 ) {

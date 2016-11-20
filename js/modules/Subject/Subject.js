@@ -125,9 +125,13 @@ QQ.Subject = function(imgSrc, inWidth, inHeight) {
 		if ( customTick ) {
 			isFinish = customTick.call(self, delta);
 		}
-		if ( isFinish === false || isFinish === undefined ) {
+		if ( isFinish === true || isFinish === undefined ) {
 			commonTick(delta);
 		}
+	};
+	
+	this.setAlpha = function(a) {
+		sprite.setAlpha(a);
 	};
 	
 	//================================

@@ -9,7 +9,7 @@
 
 var QQ = QQ || {};
 
-QQ.LoadingSeizure = function(canvas) {
+QQ.LoadingSeizure = function(app) {
 
 	function init() {
 		world.addBackground( new QQ.Subject('img/loading.png') );
@@ -51,7 +51,7 @@ QQ.LoadingSeizure = function(canvas) {
 	
 	var self    = this;
 	var world   = new QQ.World();
-	var camera  = new QQ.Camera(canvas, 30, 40, 0, 0);
+	var camera  = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
 
 	init(); 
 };

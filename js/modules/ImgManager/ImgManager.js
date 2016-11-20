@@ -23,7 +23,6 @@ QQ.ImgManager = function () {
 				return imgs[i].obj;
 			}
 		}
-		
 		var img     = {};
 		img.url     = url;
 		img.obj     = new Image;

@@ -13,7 +13,7 @@ QQ.GameSeizure.prototype.makeEscapeShip = function(config) {
 	var travelY = config.travel.h;
 	var period  = config.period;
 	
-	var subj = new QQ.Subject('./img/spaceShip.png', 100, 100);
+	var subj = new QQ.Subject('./img/spaceShip.png', 150, 150);
 	
 	Matter.Events.on(this.getWorldPhysics(), 'collisionStart', function(event) {
 			var pairs = event.pairs;
@@ -27,7 +27,7 @@ QQ.GameSeizure.prototype.makeEscapeShip = function(config) {
 					escaped = world.getSubjectByPhysics(pair.bodyA);
 				}
 				if ( escaped ) {
-					world.deleteSubject(escaped);
+					escaped.escape();
 				}
 			}
 		});

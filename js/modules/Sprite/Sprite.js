@@ -13,6 +13,7 @@ QQ.Sprite = function(img) {
 		this.width       = 0;
 		this.height      = 0;
 		this.ready       = false;
+		this.alpha       = 1;
 		
 		this.animation   = false;
 		this.frameHeight = 0;
@@ -26,6 +27,13 @@ QQ.Sprite = function(img) {
 		this.img         = img;
 };
 
+QQ.Sprite.prototype.getRatio = function() {
+	if ( ! this.isReady() ) {
+		console.log('Warning: Try QQ.Sprite.getRatio() when not ready');
+	}
+	return this.width/this.height;
+};
+
 QQ.Sprite.prototype.getSize = function() {
 	if ( ! this.isReady() ) {
 		console.log('Warning: Try QQ.Sprite.getSize() when not ready');
@@ -33,7 +41,7 @@ QQ.Sprite.prototype.getSize = function() {
 	return { width: this.width, height: this.height };
 };
 
-QQ.Sprite.prototype.isReady = function me() {
+QQ.Sprite.prototype.isReady = function() {
 	if ( this.ready === false && this.img.complete  ) {
 		this.width   = this.img.width;
 		this.height  = this.img.height;
@@ -56,6 +64,10 @@ QQ.Sprite.prototype.setAnimation = function(w, h, fps, time) {
 	if ( this.isReady() ) {
 		this.frames = this.width / this.frameWidth;
 	}
+};
+
+QQ.Sprite.prototype.setAlpha = function(a) {
+	this.alpha = a;
 };
 
 QQ.Sprite.prototype._calcPosition = function(pivot) {
@@ -115,6 +127,8 @@ QQ.Sprite.prototype.draw = function(inX, inY) {
 		//================================================================
 		// Draw
 		//================================================================
+		var alpha = QQ.Sprite.context.globalAlpha;
+		QQ.Sprite.context.globalAlpha = this.alpha;
 		if ( this.isAnimation ) {
 			var diff         = this.time.now() - this.startTime;
 			var passedFrames = Math.round(diff/this.tpf);
@@ -123,6 +137,7 @@ QQ.Sprite.prototype.draw = function(inX, inY) {
 		} else {
 			QQ.Sprite.context.drawImage(this.img, x, y, this.width, this.height);
 		}
+		QQ.Sprite.context.globalAlpha = alpha ;
 	}
 };
 

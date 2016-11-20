@@ -61,12 +61,13 @@ QQ.Canvas = function(id, w, h) {
 	// Public methods
 	//================================
 	
-	this.getWidth   = function() { return width;   };
-	this.getHeight  = function() { return height;  };
-	this.getUt      = function() { return ut;      };
-	this.getCanvas  = function() { return canvas;  };
-	this.getContext = function() { return context; };
-	this.getScale   = function() { return scale;   };
+	this.getWidth   = function() { return width;        };
+	this.getHeight  = function() { return height;       };
+	this.getUt      = function() { return ut;           };
+	this.getCanvas  = function() { return canvas;       };
+	this.getContext = function() { return context;      };
+	this.getScale   = function() { return scale;        };
+	this.getRatio   = function() { return width/height; };
 	
 	this.resize = function() {
 		calcSize();

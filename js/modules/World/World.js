@@ -47,14 +47,29 @@ QQ.World = function() {
 			}
 		}
 	};
-
-	this.tick = function(delta) {		
-		for ( var i in subjects ) {
-			subjects[i].tick(delta);
+	
+	this.tick = function(delta) {
+		deltaAccum += delta;
+		var ticksDone = 0;
+		if ( deltaAccum < pauseTime ) {
+			while ( deltaAccum > (maxTicks+1)*timeStep ) {
+				deltaAccum -= timeStep;
+			}
+			while ( deltaAccum > timeStep ) {
+				deltaAccum -= timeStep;
+				for ( var i in subjects ) {
+					subjects[i].tick(timeStep);
+				}
+				if ( physics ) {
+					Matter.Engine.update(physics, QQ.Math.secToMs(timeStep));
+				}
+				ticksDone++;
+			}
+		} else {
+			deltaAccum = 0;
+			c('pause');
 		}
-		if ( physics ) {
-			Matter.Engine.update(physics, delta*1000);
-		}
+		//c(ticksDone);
 	};
 	
 	this.getPhysics = function() {
@@ -146,9 +161,13 @@ QQ.World = function() {
 	
 	var self       = this;
 	
+	var maxTicks   = 5;
+	var timeStep   = 0.0166;
+	var deltaAccum = 0;
 	var subjects   = [];
 	var background = null;
 	var physics    = null;
+	var pauseTime  = 0.1;
 
 	init(); 
 };

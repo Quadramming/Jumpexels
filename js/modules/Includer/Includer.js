@@ -25,7 +25,6 @@ QQ.Includer = function () {
 	//================================
 	// Public methods
 	//================================
-
 	
 	function js(file, cb, forced) {
 		queue.push(file);
@@ -53,9 +52,7 @@ QQ.Includer = function () {
 	
 	function doJs(file, cb, forced) {
 		if ( loading.length > 0 ) { 
-			window.setTimeout( function() { 
-					doJs(file, cb, forced); 
-				}, 1);
+			window.setTimeout(doJs, 1, file, cb, forced);
 			return;
 		}
 		queue.splice(queue.indexOf(file), 1);

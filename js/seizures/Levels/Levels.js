@@ -9,7 +9,7 @@
 
 var QQ      = QQ          || {};
 
-QQ.Application.get().addSeizure('Levels', function(canvas) {
+QQ.Application.get().addSeizure('Levels', function(app) {
 
 	function init() {
 		world.addBackground( new QQ.Subject('img/backgrounds/tmpMenu.png') );
@@ -71,7 +71,7 @@ QQ.Application.get().addSeizure('Levels', function(canvas) {
 	
 	var self    = this;
 	var world   = new QQ.World();
-	var camera  = new QQ.Camera(canvas, 30, 40, 0, 0);
+	var camera  = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
 
 	init(); 
 });
