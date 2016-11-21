@@ -10,7 +10,7 @@
 		
 		<script type='text/javascript' src='../Includer.js'></script>
 		<script type='text/javascript'>
-			var include = new QQ.Includer;
+			var include = QQ.Includer;
 			
 			function docWrite(text) {
 				var myBody = document.getElementsByTagName('body')[0];
@@ -37,7 +37,6 @@
 			function main1() {
 				include.js('foo.js', function() {docWrite('Skiped - foo.js already loaded');} );
 				include.js('foo.js', function() {docWrite('Second foo.js callback (Reloaded)<br/>');}, true);
-				
 				include.onLoad(function() { 
 						main2(); 
 					});

@@ -14,18 +14,6 @@ QQ.GameSeizure.prototype.makeAlien = function(config) {
 	subj._timeToEscape = 300;
 	subj._startEscape  = 0;
 	
-	Matter.Events.on(this.getWorldPhysics(), 'collisionActiv', function(event) {
-			var pairs = event.pairs;
-			var me    = subj.getPhysicsBody();
-			for ( var i = 0, j = pairs.length; i !== j; ++i ) {
-				var pair = pairs[i];
-				if ( pair.bodyA === me || pair.bodyB === me ) {
-					var x = me.velocity.x;
-					Matter.Body.setVelocity(me, { x : x, y : 10 });
-				}
-			}
-	});
-	
 	subj.setTick( function() {
 		if ( this._startEscape > 0 ) {
 			var alpha = 1-QQ.Math.calcProgress(this._startEscape, this._timeToEscape);
@@ -57,6 +45,7 @@ QQ.GameSeizure.prototype.makeAlien = function(config) {
 
 		collisions.forEach( function(collision) {
 			if ( collision.bodyA === body || collision.bodyB === body ) {
+				c(body);
 				var x = body.velocity.x;
 				Matter.Body.setVelocity(body, { x : x, y : 10 });
 			}

@@ -1,6 +1,6 @@
 //================================================================
 // Name: QQ.Includer
-// Version: 16.04.19
+// Version: 16.11.21
 // 
 // Interface:
 //
@@ -10,7 +10,7 @@
 //   Callback will happend when ALL JS files will be loaded (Not only this).
 // 
 // allowWarnings(bool);
-//   Show or don't warnings in console.
+//   Show or don't show warnings in console.
 // 
 // onLoad(callback);
 //   Callback will be called when all JS files will be loaded. 
@@ -27,19 +27,14 @@ QQ.Includer = function () {
 	//================================
 	
 	function js(file, cb, forced) {
-		queue.push(file);
-		doJs(file, cb, forced);
+		jsQueue.push(file);
+		doInclude(this, file, cb, forced);
 	}
 	
 	function onLoad(cb) {
-		var waitLoading = function() {
-			if ( isReady() ) {
-				cb();
-			} else {
-				window.setTimeout(waitLoading, 100);
-			}
-		}.bind(this);
-		waitLoading();
+		isReady() ?
+			cb() :
+			window.setTimeout(onLoad, 100, cb);
 	};
 	
 	function allowWarnings(isShow) {
@@ -50,43 +45,40 @@ QQ.Includer = function () {
 	// Private methods
 	//================================
 	
-	function doJs(file, cb, forced) {
-		if ( loading.length > 0 ) { 
-			window.setTimeout(doJs, 1, file, cb, forced);
+	function scriptReady(src, cb) {
+		var i = loading.indexOf(src);
+		if ( i !== -1 ) {
+			loading.splice(i, 1);
+		}
+		if ( cb ) {
+			onLoad(cb);
+		}
+	}
+	
+	function doInclude(self, file, cb, forced) {
+		if ( loading.length !== 0 || jsQueue.indexOf(file) !== 0 ) { 
+			window.setTimeout(doInclude, 100, self, file, cb, forced);
 			return;
 		}
-		queue.splice(queue.indexOf(file), 1);
+		jsQueue.splice(jsQueue.indexOf(file), 1);
 
 		if ( cb === true ) {
 			cb     = undefined;
 			forced = true;
 		}
 		
-		var script   = document.createElement('script');
-		script.src   = file;
-		script.type  = 'text/javascript';
-		script.defer = true;
-
-		var onReady = function() {
-			var i = loading.indexOf(script.src);
-			if ( i !== -1 ) {
-				loading.splice(i, 1);
-			}
-			if ( cb ) {
-				this.onLoad(cb);
-			}
-		}.bind(this);
-		
-		script.onreadystatechange = onReady;
-		script.onload             = onReady;
+		var script                = document.createElement('script');
+		script.src                = file;
+		script.type               = 'text/javascript';
+		script.defer              = true;
+		script.onreadystatechange = scriptReady.bind(null, script.src, cb);
+		script.onload             = scriptReady.bind(null, script.src, cb);
 		
 		var scripts = getScripts();
 		for ( var i in scripts ) {
 			if ( scripts[i].src === script.src ) {
 				if ( loading.indexOf(script.src) !== -1 ) {
-					showWarning(
-							'Warning: File already loading ('+script.src+')'
-						);
+					showWarning( 'Warning: File already loading ('+script.src+')' );
 					return;
 				}
 				if ( ! forced ) {
@@ -97,6 +89,7 @@ QQ.Includer = function () {
 					return;
 				} else {
 					document.getElementsByTagName('head').item(0).removeChild(scripts[i]);
+					break;
 				}
 			}
 		}
@@ -116,7 +109,7 @@ QQ.Includer = function () {
 	};
 	
 	function isReady() {
-		return loading.length === 0 && queue.length === 0;
+		return loading.length === 0 && jsQueue.length === 0;
 	};
 	
 	function showWarning(text) {
@@ -129,7 +122,7 @@ QQ.Includer = function () {
 	// Private vars
 	//================================
 	
-	var queue        = [];
+	var jsQueue      = [];
 	var loading      = [];
 	var showWarnings = true;
 	
