@@ -1,6 +1,6 @@
 //================================================================
 // Name: QQ.Includer
-// Version: 16.11.21
+// Version: 16.11.22
 // 
 // Interface:
 //
@@ -16,9 +16,9 @@
 //   Callback will be called when all JS files will be loaded. 
 //   
 //================================================================
-'use strict';
 
-var QQ = QQ || {};
+/* global QQ */
+'use strict';
 
 QQ.Includer = function () {
 	
@@ -126,6 +126,8 @@ QQ.Includer = function () {
 	var loading      = [];
 	var showWarnings = true;
 	
+	//================================
+	// Interface
 	//================================
 	
     return {

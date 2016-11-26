@@ -1,77 +1,59 @@
 //================================================================
-// Name: QQ.Levels
+// Name: 
 // Version: 16..
 // 
 // Interface:
 // 
 //================================================================
+
+/* global QQ */
 'use strict';
 
-var QQ      = QQ          || {};
+class Levels {
+	
+	constructor(app) {
+		this._world  = new QQ.World();
+		this._camera = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
 
-QQ.Application.get().addSeizure('Levels', function(app) {
-
-	function init() {
-		world.addBackground( new QQ.Subject('img/backgrounds/tmpMenu.png') );
+		this._world.addBackground( new QQ.Subject('img/backgrounds/tmpMenu.png') );
 		
-		var level = new QQ.Subject('img/level.png', 5, 5);
+		let level = new QQ.Subject('img/level.png', 5, 5);
 		level.setPosition(-5, 5);
 		level.click = function() {
 			QQ.Application.get().setSeizure('Game', 1);
 		};
-		world.addSubject(level);
+		this._world.addSubject(level);
 	
-		var level = new QQ.Subject('img/level.png', 5, 5);
+		level = new QQ.Subject('img/level.png', 5, 5);
 		level.setPosition(5, 5);
 		level.click = function() {
 			QQ.Application.get().setSeizure('Game', 2);
 		};
-		world.addSubject(level);
-		
-	};
+		this._world.addSubject(level);
+	}
 	
-	//================================
-	// Public methods
-	//================================
-
-	this.tick = function(delta) {
-		if ( world ) {
-			world.tick(delta);
+	tick(delta) {
+		if ( this._world ) {
+			this._world.tick(delta);
 		}
-	};
+	}
 	
-	this.draw = function() {
-		if ( camera ) {
-			var rect   = camera.getViewRect();
-			var toDraw = world.getSubjectsInRect(rect);
-			camera.draw(toDraw);
+	draw() {
+		if ( this._camera ) {
+			const rect   = this._camera.getViewRect();
+			const toDraw = this._world.getSubjectsInRect(rect);
+			this._camera.draw(toDraw);
 		}
-	};
+	}
 	
-	this.click = function(x, y) {
-		var point = camera.getWorldPoint(x, y);
-		var clicked = world.getSubjectAtPoint(point.x, point.y);
+	click(x, y) {
+		const point   = this._camera.getWorldPoint(x, y);
+		const clicked = this._world.getSubjectAtPoint(point.x, point.y);
 		if ( clicked ) {
 			clicked.click();
 		}
-	};
+	}
 	
-	//================================
-	// Private methods
-	//================================
+}
 
-	function cMethod() {
-		// this - is 'window'
-		// Use self.oMethod()
-	};
-		
-	//================================
-	// Private vars
-	//================================
-	
-	var self    = this;
-	var world   = new QQ.World();
-	var camera  = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
-
-	init(); 
-});
+QQ.Application.get().addSeizure('Levels', Levels);

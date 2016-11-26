@@ -5,11 +5,18 @@
 // Interface:
 // 
 //================================================================
+
+/* global QQ */
 'use strict';
 
-var QQ = QQ || {};
-
-QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
+QQ.Camera = function(inCanvas, inWidth, inHeight, inX = 0, inY = 0) {
+	
+	function init() {
+		calcMainMatrix();
+		window.addEventListener('resize', function() {
+			calcMainMatrix();
+		});
+	};
 
 	//================================
 	// Public methods
@@ -62,9 +69,39 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 		return {x: M[0][0], y: M[0][1]};
 	};
 	
+	this.getPosition = function() {
+		return {x: x, y: y};
+	};
+	
+	this.fixClip = function() {
+		if ( clip !== null ) {
+			if ( x > clip.maxX ) { x = clip.maxX; };
+			if ( x < clip.minX ) { x = clip.minX; };
+			if ( y > clip.maxY ) { y = clip.maxY; };
+			if ( y < clip.minY ) { y = clip.minY; };
+		}
+	};
+	
+	this.setClip = function(maxX, minX, maxY, minY) {
+		clip = {
+			maxX : maxX,
+			minX : minX,
+			maxY : maxY,
+			minY : minY
+		};
+	};
+	
 	this.setPos = function(inX, inY) {
 		x = inX;
 		y = inY;
+		this.fixClip();
+		calcMainMatrix();
+	};
+	
+	this.addPos = function(inX, inY) {
+		x += inX;
+		y += inY;
+		this.fixClip();
 		calcMainMatrix();
 	};
 	
@@ -165,8 +202,10 @@ QQ.Camera = function(inCanvas, inWidth, inHeight, inX, inY) {
 	var canvas     = inCanvas;
 	var width      = inWidth;
 	var height     = inHeight;
-	var x          = inX || 0;
-	var y          = inY || 0;
+	var x          = inX;
+	var y          = inY;
 	var mainMatrix = 0;
-	calcMainMatrix();
+	var clip       = null;
+
+	init();
 };

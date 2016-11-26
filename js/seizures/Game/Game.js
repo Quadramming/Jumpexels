@@ -43,7 +43,7 @@ QQ.GameSeizure = function(app, level) {
 			}
 			
 			var backHud = new QQ.Hud('img/back.png', 15);
-			backHud.setPosition(0, 0, QQ.Hud.pivot.LEFTTOP );
+			backHud.setPosition(1, 1, QQ.Hud.pivot.LEFTTOP );
 			backHud.setClick(function() {
 					QQ.Application.get().setSeizure('Levels');
 				});

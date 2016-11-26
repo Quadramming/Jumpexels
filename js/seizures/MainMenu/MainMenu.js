@@ -5,68 +5,50 @@
 // Interface:
 // 
 //================================================================
+
+/* global QQ */
 'use strict';
 
-var QQ = QQ || {};
-
-QQ.Application.get().addSeizure('MainMenu', function(app) {
+class MainMenu {
 	
-	function init() {
-		world.addBackground( new QQ.Subject('img/backgrounds/tmpMenu.png') );
+	constructor(app) {
+		this._world  = new QQ.World();
+		this._camera = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
+		this._world.addBackground( new QQ.Subject('img/backgrounds/tmpMenu.png') );
 		
-		var logo = new QQ.Subject('img/logo.png', 10, 10);
+		const logo = new QQ.Subject('img/logo.png', 10, 10);
 		logo.click = function() {
-			QQ.Application.get().setSeizure('Levels');
+			app.setSeizure('Levels');
 		};
-		world.addSubject(logo);
+		this._world.addSubject(logo);
 		
-		var title = new QQ.Subject('img/title.png', 20, 20/7);
+		const title = new QQ.Subject('img/title.png', 20, 20/7);
 		title.setPosition(0, 12);
-		world.addSubject(title);
-	};
+		this._world.addSubject(title);
+	}
 	
-	//================================
-	// Public methods
-	//================================
-
-	this.tick = function(delta) {
-		if ( world ) {
-			world.tick(delta);
+	tick(delta) {
+		if ( this._world ) {
+			this._world.tick(delta);
 		}
-	};
+	}
 	
-	this.draw = function() {
-		if ( camera ) {
-			var rect   = camera.getViewRect();
-			var toDraw = world.getSubjectsInRect(rect);
-			camera.draw(toDraw);
+	draw() {
+		if ( this._camera ) {
+			const rect   = this._camera.getViewRect();
+			const toDraw = this._world.getSubjectsInRect(rect);
+			this._camera.draw(toDraw);
 		}
-	};
+	}
 	
-	this.click = function(x, y) {
-		var point = camera.getWorldPoint(x, y);
-		var clicked = world.getSubjectAtPoint(point.x, point.y);
+	click(x, y) {
+		const point   = this._camera.getWorldPoint(x, y);
+		const clicked = this._world.getSubjectAtPoint(point.x, point.y);
 		if ( clicked ) {
 			clicked.click();
 		}
-	};
+	}
 	
-	//================================
-	// Private methods
-	//================================
+}
 
-	function cMethod() {
-		// this - is 'window'
-		// Use self.oMethod()
-	};
-		
-	//================================
-	// Private vars
-	//================================
-	
-	var self    = this;
-	var world   = new QQ.World();
-	var camera  = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
-
-	init(); 
-});
+QQ.Application.get().addSeizure('MainMenu', MainMenu);

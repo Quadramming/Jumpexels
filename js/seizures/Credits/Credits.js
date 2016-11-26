@@ -1,5 +1,5 @@
 //================================================================
-// Name: QQ
+// Name: 
 // Version: 16..
 // 
 // Interface:
@@ -9,18 +9,17 @@
 /* global QQ */
 'use strict';
 
-QQ.LoadingSeizure = class {
-
-	constructor(app) {
-		this._world   = new QQ.World();
-		this._camera  = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
-		this._world.addBackground( new QQ.Subject('img/loading.png') );
-	}
-
-	tick(delta) {
-		if ( this._world ) {
-			this._world.tick(delta);
-		}
+class Credits {
+	
+    constructor(app) {
+		this._myApp  = app;
+		this._world  = new QQ.World();
+		this._camera = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
+		
+		this._world.addBackground( new QQ.Subject('img/credits.png') );
+    }
+	
+	tick() {
 	}
 	
 	draw() {
@@ -30,8 +29,11 @@ QQ.LoadingSeizure = class {
 			this._camera.draw(toDraw);
 		}
 	}
-	
+
 	click(x, y) {
+		this._myApp.setSeizure('MainMenu');
 	}
 	
-};
+}
+
+QQ.Application.get().addSeizure('Credits', Credits);

@@ -42,7 +42,7 @@
 
 var QQ = QQ || {};
 
-QQ.Canvas = function(id, w, h) {
+QQ.Canvas = function(id, w, h, inMaximize) {
 	
 	function init() {
 		calcSize();
@@ -98,18 +98,30 @@ QQ.Canvas = function(id, w, h) {
 			scale  = 1;
 			ut     = width / 100;
 		} else {
-			width  = w;
-			height = h;
-			if ( window.innerWidth < width ) {
-				height = Math.floor( height * (window.innerWidth / width) );
-				width  = Math.floor(window.innerWidth );
-			} 
-			if ( window.innerHeight < height ) {
-				width  = Math.floor( width * (window.innerHeight / height) );
-				height = Math.floor( window.innerHeight );
+			if ( ! maximize ) {
+				width  = w;
+				height = h;
+				if ( window.innerWidth < width ) {
+					height = Math.floor( height * (window.innerWidth / width) );
+					width  = Math.floor(window.innerWidth );
+				} 
+				if ( window.innerHeight < height ) {
+					width  = Math.floor( width * (window.innerHeight / height) );
+					height = Math.floor( window.innerHeight );
+				}
+				scale = width / w;
+				ut    = width / 100;
+			} else {
+				var ratio = w/h;
+				width     = window.innerWidth;
+				height    = Math.floor(width/ratio);
+				if ( window.innerHeight < height ) {
+					height = window.innerHeight;
+					width  = Math.floor(height*ratio);
+				}
+				scale = width / w;
+				ut    = width / 100;
 			}
-			scale = width / w;
-			ut    = width / 100;
 		}
 	}
 	
@@ -125,6 +137,7 @@ QQ.Canvas = function(id, w, h) {
 	// Private vars
 	//================================
 	
+	var maximize   = inMaximize === true;
 	var self       = this;
 	var fullscreen = (w === undefined || h === undefined);
 	var width      = null;

@@ -45,7 +45,6 @@ QQ.GameSeizure.prototype.makeAlien = function(config) {
 
 		collisions.forEach( function(collision) {
 			if ( collision.bodyA === body || collision.bodyB === body ) {
-				c(body);
 				var x = body.velocity.x;
 				Matter.Body.setVelocity(body, { x : x, y : 10 });
 			}

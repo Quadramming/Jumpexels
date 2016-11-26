@@ -46,6 +46,17 @@ QQ.Application = function () {
 		return mouse.getM1();
 	};
 	
+	this.getMouseXY = function() {
+		var x = (mouse.getX() - canvas.getCanvas().offsetLeft);
+		var y = (mouse.getY() - canvas.getCanvas().offsetTop);
+		var isHitX = 0 < x && x < canvas.getCanvas().width;
+		var isHitY = 0 < y && y < canvas.getCanvas().height;
+		if ( isHitX && isHitY ) {
+			return {x: x, y: y};
+		}
+		return {x: -1, y: -1};
+	};
+	
 	this.getTime = function() {
 		return time;
 	};
@@ -77,7 +88,7 @@ QQ.Application = function () {
 		if ( seizure ) {
 			seizure.draw();
 		}
-		canvas.drawBorder();
+		//canvas.drawBorder();
 		//fpsCounter.show(canvas.getContext());
 	}
 		
@@ -86,7 +97,7 @@ QQ.Application = function () {
 	//================================
 	
 	var self       = this;
-	var canvas     = new QQ.Canvas('appCanvas', 600, 800);
+	var canvas     = new QQ.Canvas('appCanvas', 3, 4, true);
 	var fpsCounter = new QQ.FpsCounter();
 	var time       = new QQ.Time();
 	var mouse      = new QQ.Mouse();
