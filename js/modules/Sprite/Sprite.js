@@ -30,6 +30,7 @@ QQ.Sprite = function(img) {
 QQ.Sprite.prototype.getRatio = function() {
 	if ( ! this.isReady() ) {
 		console.log('Warning: Try QQ.Sprite.getRatio() when not ready');
+		return 0;
 	}
 	return this.width/this.height;
 };

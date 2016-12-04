@@ -5,142 +5,126 @@
 // Interface:
 // 
 //================================================================
+
+/* global QQ */
 'use strict';
 
-var QQ = QQ || {};
-
-QQ.Hud = function(imgSrc, inWidth, inHeight) {
-
-	//================================
-	// Public methods
-	//================================
-
-	this.isHit = function(inX, inY) {
+QQ.Hud = class Hud {
+	
+	constructor(imgSrc, width = 0, height = 0) {
+		this._sprite      = new QQ.Sprite( QQ.ImgManager.get(imgSrc) );
+		this._width       = width;
+		this._height      = height;
+		this._canvasRatio = 0;
+		this._x           = 0;
+		this._y           = 0;
+		this._onClick     = null;
+	}
+	
+	isHit(inX, inY) {
 		return QQ.Math.isInside(this.getRect(), inX, inY);
-	};
+	}
 	
-	this.click = function() {
-		if ( onClick ) {
-			onClick();
+	click() {
+		if ( this._onClick ) {
+			this._onClick();
 		}
-	};
+	}
 	
-	this.setClick = function(fn) {
-		onClick = fn;
-	};
+	setClick(fn) {
+		this._onClick = fn;
+	}
 	
-	this.getRect = function() {
+	getRect() {
 		return { 
-			x1: x - width/2, 
-			y1: y + height/2, 
-			x2: x + width/2, 
-			y2: y - height/2 
+			x1: this._x - this._width/2, 
+			y1: this._y + this._height/2, 
+			x2: this._x + this._width/2, 
+			y2: this._y - this._height/2 
 		};
-	};
+	}
 
-	this.draw = function() {
-		if ( sprite ) {
-			sprite.draw();
-		}
-	};
+	draw() {
+		this._sprite.draw();
+	}
 	
-	this.getPosition = function() {
-		return { x : x, y : y };
-	};
+	getPosition() {
+		return { x : this._x, y : this._y };
+	}
 	
-	this.getRatio = function() {
-		var ratio = 0;
-		if ( sprite && sprite.isReady() ) {
-			ratio = sprite.getRatio();
-		}
-		return ratio;
-	};
+	getRatio() {
+		return this._sprite.getRatio();
+	}
 	
-	this.getScale = function() {
-		var scaleX = 0;
-		var scaleY = 0;
-		if ( sprite ) {
-			if ( sprite.isReady() ) {
-				var size = sprite.getSize();
-				scaleX   = width  / size.width;
-				if ( height !== 0 ) {
-					scaleY = height / size.height;
-				}
+	getScale() {
+		let scaleX = 0;
+		let scaleY = 0;
+		if ( this._sprite.isReady() ) {
+			let size = this._sprite.getSize();
+			scaleX   = this._width  / size.width;
+			if ( this._height !== 0 ) {
+				scaleY = this._height / size.height;
 			}
 		}
 		return { x : scaleX, y : scaleY };
-	};
+	}
 	
-	this.setPosition = function(inX, inY, inPivot) {
-		if ( ! sprite.isReady() ) {
+	setPosition(inX, inY, inPivot) {
+		if ( ! this._sprite.isReady() ) {
 			setTimeout(this.setPosition.bind(this), 1, inX, inY, inPivot);
 		} else {
-			fixSize();
+			this._fixSize();
 			if ( inX !== undefined) {
 				if ( inPivot !== undefined ) {
 					if ( inPivot === QQ.Hud.pivot.CENTERTOP ) {
-						x = inX;
+						this._x = inX;
 					} else if ( inPivot === QQ.Hud.pivot.CENTERBOTTOM ) {
-						x = inX;
+						this._x = inX;
 					} else if ( inPivot === QQ.Hud.pivot.CENTER ) {
-						x = inX;
+						this._x = inX;
 					} else if ( inPivot === QQ.Hud.pivot.LEFTTOP ) {
-						x = inX+width/2;
+						this._x = inX+this._width/2;
 					}
 				} else {
-					x = inX;
+					this._x = inX;
 				}
 			}
 			if ( inY !== undefined ) {
 				if ( inPivot !== undefined ) {
 					if ( inPivot === QQ.Hud.pivot.CENTERTOP ) {
-						y = inY+height/2;
+						this._y = inY+this._height/2;
 					} else if ( inPivot === QQ.Hud.pivot.CENTERBOTTOM ) {
-						y = inY-height/2;
+						this._y = inY-this._height/2;
 					} else if ( inPivot === QQ.Hud.pivot.CENTER ) {
-						y = inY;
+						this._y = inY;
 					} else if ( inPivot === QQ.Hud.pivot.LEFTTOP ) {
-						y = inY+height/2;
+						this._y = inY+this._height/2;
 					}
 				} else {
-					y = inY;
+					this._y = inY;
 				}
 			}
 		}
-	};
+	}
 	
-	//================================
-	// Private methods
-	//================================
-	
-	function fixSize() {
-		if ( sprite.isReady() ) {
-			if ( height === 0 ) {
-				height = (width/self.getRatio())*QQ.Hud.canvasRatio;
+	_fixSize() {
+		if ( this._sprite.isReady() ) {
+			if ( this._height === 0 ) {
+				let ratio = QQ.Hud.canvasRatio();
+				this._height = (this._width/this.getRatio())*ratio;
 			}
 		}
-	};
+	}
 	
-	//================================
-	// Private vars
-	//================================
-	
-	var self        = this;
-	
-	var sprite      = new QQ.Sprite( QQ.ImgManager.get(imgSrc) );
-	var width       = inWidth  || 0;
-	var height      = inHeight || 0;
-	var canvasRatio = 0;
-	var x           = 0;
-	var y           = 0;
-	var onClick     = null;
 };
 
-QQ.Hud.setCanvasRatio = function(ratio) {
-	QQ.Hud.canvasRatio = ratio;
+QQ.Hud.canvasRatio = function(ratio) {
+	if ( ratio !== undefined ) {
+		QQ.Hud.canvasRatio.ratio = ratio;
+	} else {
+		return QQ.Hud.canvasRatio.ratio;
+	}	
 };
-
-QQ.Hud.canvasRatio = null;
 
 QQ.Hud.pivot = {
 	NONE         : 0,

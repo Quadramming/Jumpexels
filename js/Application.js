@@ -6,7 +6,7 @@ QQ.Application = function () {
 
 	function init() {
 		QQ.Sprite.setContext(canvas.getContext());
-		QQ.Hud.setCanvasRatio(canvas.getRatio());
+		QQ.Hud.canvasRatio(canvas.getRatio());
 		fpsCounter.showDetails();
 		self.setSeizure('MainMenu');
 		
@@ -15,8 +15,18 @@ QQ.Application = function () {
 				var y = (mouse.getY() - canvas.getCanvas().offsetTop);
 				var isHitX = 0 < x && x < canvas.getCanvas().width;
 				var isHitY = 0 < y && y < canvas.getCanvas().height;
-				if ( isHitX && isHitY ) {
+				if ( isHitX && isHitY && seizure.click !== undefined ) {
 					seizure.click(x, y);
+				}
+			});
+			
+		mouse.setM1UpCB( function() {
+				var x = (mouse.getX() - canvas.getCanvas().offsetLeft);
+				var y = (mouse.getY() - canvas.getCanvas().offsetTop);
+				var isHitX = 0 < x && x < canvas.getCanvas().width;
+				var isHitY = 0 < y && y < canvas.getCanvas().height;
+				if ( isHitX && isHitY && seizure.clickUp !== undefined ) {
+					seizure.clickUp(x, y);
 				}
 			});
 		process();
@@ -89,7 +99,7 @@ QQ.Application = function () {
 			seizure.draw();
 		}
 		//canvas.drawBorder();
-		//fpsCounter.show(canvas.getContext());
+		fpsCounter.show(canvas.getContext());
 	}
 		
 	//================================
@@ -97,7 +107,7 @@ QQ.Application = function () {
 	//================================
 	
 	var self       = this;
-	var canvas     = new QQ.Canvas('appCanvas', 3, 4, true);
+	var canvas     = new QQ.Canvas('appCanvas', 600, 800);
 	var fpsCounter = new QQ.FpsCounter();
 	var time       = new QQ.Time();
 	var mouse      = new QQ.Mouse();

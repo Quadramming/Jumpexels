@@ -20,23 +20,25 @@
 // 
 // mul(A, B);
 //================================================================
+
+/* global QQ */
 'use strict';
 
-var QQ = QQ || {};
+QQ.Matrix = {};
 
-(function() {
-	QQ.Matrix = {};
-
-	//================================
-	// Public methods
-	//================================
+{
 	
+	function sin(a) { return Math.sin(a); }
+	function cos(a) { return Math.cos(a); }
+	function abs(a) { return Math.abs(a); }
+
+
 	QQ.Matrix.getIdentity = function() {
 		return  [[1, 0, 0], 
 				 [0, 1, 0], 
 				 [0, 0, 1]];
 	};
-	
+
 	QQ.Matrix.getScale = function(x, y) {
 		return  [[x, 0, 0], 
 				 [0, y, 0], 
@@ -163,12 +165,4 @@ var QQ = QQ || {};
 		return C;
 	};
 	
-
-	//================================
-	// Private methods
-	//================================
-	
-	function sin(a) { return Math.sin(a); }
-	function cos(a) { return Math.cos(a); }
-	function abs(a) { return Math.abs(a); }
-})();
+}

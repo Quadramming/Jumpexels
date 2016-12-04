@@ -1,26 +1,27 @@
 'use strict';
 
-(function(globals) {
-	var globalsAtStart = Object.keys(window);
+window.QQ           = window.QQ || {};
+window.QQ.Debug     = {
 	
-	globals.QQ           = globals.QQ || {};
-	globals.QQ.Debug     = {
-		log : function(str) {
-			console.log(str);
-		},
-		getCreatedGlobals : function() {
-			var globalsNow = Object.keys(window);
-			this.log(
-				globalsNow.filter(function(x) { return globalsAtStart.indexOf(x) < 0; })
-			);
-		}
-	};
+	initGlobals: Object.keys(window),
+	
+	log(str) {
+		console.log(str);
+	},
+	
+	getCreatedGlobals() {
+		let globalsNow = Object.keys(window);
+		let diff       = globalsNow.filter(function(x) { 
+				return window.QQ.Debug.initGlobals.indexOf(x) < 0; 
+			});
+		diff.push('QQ');
+		return diff;
+	}
+};
 
-	globals.c = function(str) {
-		globals.QQ.Debug.log(str);
-	};
-
-})(window);
+window.c = function(str) {
+	window.QQ.Debug.log(str);
+};
 
 c('Using QQ.Debug:');
 c('function c(str) - Quick log');

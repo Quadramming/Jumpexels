@@ -13,65 +13,63 @@
 // showDetails();
 //   Show/hide FPS at given context.
 //================================================================
+
+/* global QQ */
 'use strict';
 
-var QQ = QQ || {};
-
-QQ.FpsCounter = function() {
+QQ.FpsCounter = class FpsCounter {
 	
-	//================================
-	// Public methods
-	//================================
+	constructor() {
+		this._accumDelta  = 0;
+		this._accumFps    = 0;
+		this._fpsToShow   = 0;
+		this._iSlot       = 0;
+		this._maxSlots    = 30;
+		this._details     = false;
+		this._slots       = [];
+		this._font        = '10px defaultFont';
+	}
 
-	this.showDetails = function() {
-		details = !details;
+	showDetails() {
+		this._details = !this._details;
 	};
 	
-	this.tick = function(delta) {
-		slots[iSlot] = Math.floor(1/delta);
-		iSlot = (iSlot+1) % maxSlots;
+	tick(delta) {
+		this._slots[this._iSlot] = Math.floor(1/delta);
+		this._iSlot = (this._iSlot+1) % this._maxSlots;
 		
-		++accumFps;
-		accumDelta += delta;
-		if ( accumDelta > 1 ) {
-			fpsToShow  = accumFps;
-			accumFps   = 0;
-			accumDelta = 0;
+		++this._accumFps;
+		this._accumDelta += delta;
+		if ( this._accumDelta > 1 ) {
+			this._fpsToShow  = this._accumFps;
+			this._accumFps   = 0;
+			this._accumDelta = 0;
 		}	
-	};
+	}
 	
-	this.show = function(ctx) {
-		if ( details ) {
+	show(ctx) {
+		if ( this._details ) {
 			ctx.setTransform(1, 0, 0, 1, 0, 0, 0);
-			ctx.font = font;
-			for ( var i in slots ) {
+			ctx.font         = this._font;
+			ctx.textBaseline = 'middle'; 
+			ctx.textAlign    = 'center'; 
+			let i = 0;
+			for ( let slot of this._slots ) {
 				ctx.fillStyle = 'green';
-				if ( slots[i] > 99 ) {
+				if ( slot > 99 ) {
 					ctx.fillStyle = 'white';
 				}
-				if ( slots[i] < 55 ) {
+				if ( slot < 55 ) {
 					ctx.fillStyle = 'yellow';
 				}
-				if ( slots[i] < 50 ) {
+				if ( slot < 50 ) {
 					ctx.fillStyle = 'red';
 				}
-				ctx.fillText( slots[i] + ' FPS', 10, 20 + 15*i);
+				ctx.fillText( slot + ' FPS', 20, 20 + 15*i);
+				++i;
 			}
 		}
-		document.title = fpsToShow + ' FPS';
-	};
-	
-	//================================
-	// Private vars
-	//================================
-	
-	var accumDelta  = 0;
-	var accumFps    = 0;
-	var fpsToShow   = 0;
-	var iSlot       = 0;
-	var maxSlots    = 30;
-	var details     = false;
-	var slots       = [];
-	var font        = '10px Georgia';
+		document.title = this._fpsToShow + ' FPS';
+	}
 
 };

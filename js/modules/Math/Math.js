@@ -35,9 +35,10 @@
 //   isInside...
 //   
 //================================================================
+
+/* global QQ */
 'use strict';
 
-var QQ = QQ || {};
 QQ.Math = {};
 
 QQ.Math.rand = function(min, max, round) {
@@ -103,11 +104,11 @@ QQ.Math.calcProgress = function(start, duration) {
 	return progress < 1 ? progress : 1;
 };
 
- QQ.Math.getSign = function(x) { 
+QQ.Math.getSign = function(x) { 
 	 return x >= 0 ? 1 : -1;
  };
  
-  QQ.Math.secToMs = function(x) { 
+QQ.Math.secToMs = function(x) { 
 	 return x * 1000;
  };
 

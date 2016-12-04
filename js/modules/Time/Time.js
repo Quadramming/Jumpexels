@@ -12,30 +12,25 @@
 //   And get delta between now and last saved time stamp.
 //   Return result is seconds.
 //================================================================
+
+/* global QQ */
 'use strict';
 
-var QQ = QQ || {};
+QQ.Time = class Time {
+	
+	constructor() {
+		this._nowTime = Date.now();
+	}
 
-QQ.Time = function() {
-		
-	//================================
-	// Public methods
-	//================================
+	now() {
+		return this._nowTime;
+	}
 	
-	this.now = function() {
-		return nowTime;
-	};
-	
-	this.update = function() {
-		var prevTime = nowTime;
-		nowTime      = Date.now();
-		var diff     = nowTime - prevTime;
+	update() {
+		let prevTime  = this._nowTime;
+		this._nowTime = Date.now();
+		let diff      = this._nowTime - prevTime;
 		return diff / 1000;
-	};
-	
-	//================================
-	// Private vars
-	//================================
-	
-	var nowTime = Date.now();
+	}
+
 };

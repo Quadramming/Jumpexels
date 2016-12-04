@@ -23,70 +23,66 @@
 //   Emulate mouse event.
 //   
 //================================================================
+
+/* global QQ */
 'use strict';
 
-var QQ = QQ || {};
-
-QQ.Mouse = function() {
+QQ.Mouse = class Mouse {
 	
-	function init() {
-		window.addEventListener('mousemove', function(e) {
-				if ( typeof e.clientX === 'number' && typeof e.clientY === 'number' && typeof e.buttons === 'number' ) {
-					process(e.clientX, e.clientY, e.buttons === 1);
-				}
-			});
+	constructor() {
+		
+		window.addEventListener('mousemove', (e) => {
+			if ( this._isNumbers(e.clientX, e.clientY, e.buttons) ) {
+				this._process(e.clientX, e.clientY, e.buttons === 1);
+			}
+		});
 	
-		window.addEventListener('mousedown', function(e) {
-				if ( typeof e.clientX === 'number' && typeof e.clientY === 'number' ) {
-					process(e.clientX, e.clientY, true);
-				}
-			});
+		window.addEventListener('mousedown', (e) => {
+			if ( this._isNumbers(e.clientX, e.clientY) ) {
+				this._process(e.clientX, e.clientY, true);
+			}
+		});
 
-		window.addEventListener('mouseup', function(e) {
-				if ( typeof e.clientX === 'number' && typeof e.clientY === 'number' ) {
-					process(e.clientX, e.clientY, false);
-				}
-			});
-	};
+		window.addEventListener('mouseup', (e) => {
+			if ( this._isNumbers(e.clientX, e.clientY) ) {
+				this._process(e.clientX, e.clientY, false);
+			}
+		});
+		
+		this._x        = 0;
+		this._y        = 0;
+		this._m1       = false;
+		this._m1DownCB = null;
+		this._m1UpCB   = null;
+	}
 	
-	//================================
-	// Public methods
-	//================================
-
-	this.getX        = function()        { return x;         };
-	this.getY        = function()        { return y;         };
-	this.getM1       = function()        { return m1;        };
-	this.setM1DownCB = function(f)       { m1DownCB = f;     };
-	this.setM1UpCB   = function(f)       { m1UpCB   = f;     };
-	this.emulate     = function(x, y, m) { process(x, y, m); };
-
-	//================================
-	// Private methods
-	//================================
+	getX()           { return this._x;         }
+	getY()           { return this._y;         }
+	getM1()          { return this._m1;        }
+	setM1DownCB(f)   { this._m1DownCB = f;     }
+	setM1UpCB(f)     { this._m1UpCB   = f;     }
+	emulate(x, y, m) { this._process(x, y, m); }
 	
-	function process(newX, newY, newM1) {
-		x = newX;
-		y = newY;	
-		if ( newM1 === true && m1 === false ) {
-			m1 = true;
-			if ( m1DownCB ) { m1DownCB(); }
+	_process(newX, newY, newM1) {
+		this._x = newX;
+		this._y = newY;	
+		if ( newM1 === true && this._m1 === false ) {
+			this._m1 = true;
+			if ( this._m1DownCB ) { this._m1DownCB(); }
 		}
-		if ( newM1 === false && m1 === true ) {
-			m1 = false;
-			if ( m1UpCB ) { m1UpCB(); }
+		if ( newM1 === false && this._m1 === true ) {
+			this._m1 = false;
+			if ( this._m1UpCB ) { this._m1UpCB(); }
 		}
-	};
-
-	//================================
-	// Private vars
-	//================================
-
-	var x        = 0;
-	var y        = 0;
-	var m1       = false;
-	var m1DownCB = null;
-	var m1UpCB   = null;
+	}
 	
-	init();
+	_isNumbers() {
+		for ( let i = 0; i < arguments.length; ++i ) {
+			if ( typeof arguments[i] !== 'number' ) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 };
-

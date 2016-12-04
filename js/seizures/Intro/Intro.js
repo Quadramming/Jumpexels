@@ -13,14 +13,10 @@ class Intro {
 	
     constructor(app) {
 		this._myApp    = app;
-		
-		this._isScroll = false;
-		this._scrollX  = 0;
-		this._scrollY  = 0;
-		
+				
 		this._world    = new QQ.World();
-		this._camera   = new QQ.Camera(app.getCanvas(), 30, 40, 0, -15);
-		this._camera.setClip(0, 0, 0, -80);
+		this._camera   = new QQ.Camera(app.getCanvas(), 30, 40, 0, -17.5);
+		this._camera.setClip(0, 0, -17.5, -62.5);
 		this._world.addBackground( new QQ.Subject('img/backgrounds/tmpMenu.png') );
 		this._addBackButton(0, 0, QQ.Subject.pivot.CENTERBOTTOM);
 		
@@ -33,23 +29,7 @@ class Intro {
 		
 	tick() {
 		let mouse = this._myApp.getMouseXY();
-		if ( mouse.x === -1 ) {
-			this._isScroll = false;
-			return;
-		}
-		let position = this._camera.getWorldPoint(mouse.x, mouse.y);
-		if ( this._myApp.isM1Pressed() && ! this._isScroll ) {
-			this._isScroll = true;
-			({x: this._scrollX, y: this._scrollY} = position);
-		}
-		if ( ! this._myApp.isM1Pressed() && this._isScroll ) {
-			this._isScroll = false;
-		}
-		if ( this._isScroll ) {
-			this._camera.addPos(this._scrollX-position.x, this._scrollY-position.y);
-			let newPosition = this._camera.getWorldPoint(mouse.x, mouse.y);
-			({x: this._scrollX, y: this._scrollY} = newPosition);
-		}
+		this._camera.tickScroll(mouse.x, mouse.y, this._myApp.isM1Pressed());
 	}
 	
 	draw() {
@@ -58,11 +38,13 @@ class Intro {
 		this._camera.draw(toDraw);
 	}
 
-	click(x, y) {
-		const point   = this._camera.getWorldPoint(x, y);
-		const clicked = this._world.getSubjectAtPoint(point.x, point.y);
-		if ( clicked ) {
-			clicked.click();
+	clickUp(x, y) {
+		if ( ! this._camera.isScrolling() ) {
+			const point   = this._camera.getWorldPoint(x, y);
+			const clicked = this._world.getSubjectAtPoint(point.x, point.y);
+			if ( clicked ) {
+				clicked.click();
+			}
 		}
 	}
 	

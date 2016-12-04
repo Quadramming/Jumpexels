@@ -20,6 +20,13 @@ QQ.Subject = function(imgSrc, inWidth, inHeight) {
 		if ( sprite ) {
 			sprite.draw();
 		}
+		if ( extraDraw ) {
+			extraDraw();
+		}
+	};
+	
+	this.setExtraDraw = function(fn) {
+		extraDraw = fn;
 	};
 	
 	this.getRect = function() {
@@ -159,6 +166,7 @@ QQ.Subject = function(imgSrc, inWidth, inHeight) {
 	var angle       = 0;
 	var sprite      = new QQ.Sprite( QQ.ImgManager.get(imgSrc) );
 	var physicsBody = null;
+	var extraDraw   = null;
 };
 
 QQ.Subject.pivot = {

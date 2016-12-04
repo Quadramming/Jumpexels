@@ -5,29 +5,34 @@
 // Interface: (TODO)
 // 
 //================================================================
+
+/* global QQ */
 'use strict';
 
 var QQ = QQ || {};
 
-QQ.Value = function(input) {
-	this.val = (input === undefined) ? 0 : input;
-};
-
-QQ.Value.prototype.clear = function() { 
-	this.val = 0;
-};
-
-QQ.Value.prototype.invert = function() {
-	this.val *= -1;
-};
-
-QQ.Value.prototype.v = function(input) {
-	if ( input !== undefined && input !== null ) {
-		this.val = input;
+QQ.Value = class Value {
+	
+	constructor(input = 0) {
+		this._val = input;
 	}
-	return this.val;
-};
-
-QQ.Value.prototype.isClear = function() {
-	return this.val === 0;
+	
+	clear() {
+		this._val = 0;
+	}
+	
+	invert() {
+		this._val *= -1;
+	}
+	
+	v(input) {
+		if ( input !== undefined ) {
+			this._val = input;
+		}
+		return this._val;
+	}
+	
+	isClear() {
+		return this._val === 0;
+	}
 };

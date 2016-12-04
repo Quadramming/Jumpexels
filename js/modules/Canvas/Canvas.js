@@ -38,114 +38,126 @@
 // remove();
 //   Remove canvas element from DOM.
 //================================================================
+
+/* global QQ */
 'use strict';
 
-var QQ = QQ || {};
-
-QQ.Canvas = function(id, w, h, inMaximize) {
+QQ.Canvas = class Canvas {
 	
-	function init() {
-		calcSize();
-		canvas                = document.createElement('canvas');
-		canvas.id             = id;
-		canvas.style.position = 'absolute';
-		context               = canvas.getContext('2d');
-		calcCanvasSize();
-		document.body.appendChild(canvas);
-		window.addEventListener('resize', function() {
-				self.resize();
-			});
-	};
+	constructor(id, initW, initH, maximize = false) {
+		this._maximize   = maximize;
+		this._fullscreen = (initW === undefined || initH === undefined);
+		this._width      = null;
+		this._w          = initW;
+		this._height     = null;
+		this._h          = initH;
+		this._scale      = 1;
+		this._ut         = null;
+		this._canvas     = document.createElement('canvas');
+		this._context    = this._canvas.getContext('2d');
+		
+		this._canvas.id             = id;
+		this._canvas.style.position = 'absolute';
+		
+		this._calcSize();
+		document.body.appendChild(this._canvas);
+		window.addEventListener('resize', () => this.resize() );
+	}
 	
-	//================================
-	// Public methods
-	//================================
+	getWidth() { 
+		return this._width;        
+	}
 	
-	this.getWidth   = function() { return width;        };
-	this.getHeight  = function() { return height;       };
-	this.getUt      = function() { return ut;           };
-	this.getCanvas  = function() { return canvas;       };
-	this.getContext = function() { return context;      };
-	this.getScale   = function() { return scale;        };
-	this.getRatio   = function() { return width/height; };
+	getHeight() { 
+		return this._height;       
+	}
 	
-	this.resize = function() {
-		calcSize();
-		calcCanvasSize();
-	};
+	getUt() { 
+		return this._ut;           
+	}
 	
-	this.drawBorder = function() {
+	getCanvas() { 
+		return this._canvas;       
+	}
+	
+	getContext() { 
+		return this._context;     
+	}
+	
+	getScale() { 
+		return this._scale;
+	}
+	
+	getRatio() { 
+		return this._width / this._height; 
+	}
+	
+	resize() {
+		this._calcSize();
+	}
+	
+	drawBorder() {
+		let context = this._context;
 		context.setTransform(1, 0, 0, 1, 0, 0, 0);
 		context.beginPath();
-		context.rect(0, 0, width, height);
-		context.lineWidth   = ut;
+		context.rect(0, 0, this._width, this._height);
+		context.lineWidth   = this._ut;
 		context.strokeStyle = 'black';
 		context.stroke();
-	};
+	}
 	
-	this.remove = function() {
-		document.body.removeChild(canvas);
-	};
+	remove() {
+		document.body.removeChild(this._canvas);
+	}
 	
-	//================================
-	// Private methods
-	//================================
-
-	function calcSize() {
-		if ( fullscreen ) {
-			width  = window.innerWidth;
-			height = window.innerHeight;
-			scale  = 1;
-			ut     = width / 100;
+	_calcSize() {
+		if ( this._fullscreen ) {
+			this._width  = window.innerWidth;
+			this._height = window.innerHeight;
+			this._scale  = 1;
+			this._ut     = this._width / 100;
 		} else {
-			if ( ! maximize ) {
-				width  = w;
-				height = h;
-				if ( window.innerWidth < width ) {
-					height = Math.floor( height * (window.innerWidth / width) );
-					width  = Math.floor(window.innerWidth );
+			if ( ! this._maximize ) {
+				this._width  = this._w;
+				this._height = this._h;
+				if ( window.innerWidth < this._width ) {
+					this._height = Math.floor( 
+							this._height * (window.innerWidth / this._width) 
+						);
+					this._width  = Math.floor(window.innerWidth );
 				} 
-				if ( window.innerHeight < height ) {
-					width  = Math.floor( width * (window.innerHeight / height) );
-					height = Math.floor( window.innerHeight );
+				if ( window.innerHeight < this._height ) {
+					this._width  = Math.floor( 
+							this._width * (window.innerHeight / this._height) 
+						);
+					this._height = Math.floor( window.innerHeight );
 				}
-				scale = width / w;
-				ut    = width / 100;
+				this._scale = this._width / this._w;
+				this._ut    = this._width / 100;
 			} else {
-				var ratio = w/h;
-				width     = window.innerWidth;
-				height    = Math.floor(width/ratio);
-				if ( window.innerHeight < height ) {
-					height = window.innerHeight;
-					width  = Math.floor(height*ratio);
+				let ratio = this._w/this._h;
+				this._width     = window.innerWidth;
+				this._height    = Math.floor(this._width/ratio);
+				if ( window.innerHeight < this._height ) {
+					this._height = window.innerHeight;
+					this._width  = Math.floor(this._height*ratio);
 				}
-				scale = width / w;
-				ut    = width / 100;
+				this._scale = this._width / this._w;
+				this._ut    = this._width / 100;
 			}
 		}
+		this._calcCanvasSize();
 	}
 	
-	function calcCanvasSize() {
-		canvas.width      = width;
-		canvas.height     = height;
-		canvas.style.left = (window.innerWidth/2  - width/2)  + 'px';
-		canvas.style.top  = (window.innerHeight/2 - height/2) + 'px';
-		context.font      = 'bold ' + Math.floor(20 * self.getScale()) + 'px sans-serif';
+	_calcCanvasSize() {
+		let canvas = this._canvas;
+		canvas.width       = this._width;
+		canvas.height      = this._height;
+		canvas.style.left  = (window.innerWidth/2  - this._width/2)  + 'px';
+		canvas.style.top   = (window.innerHeight/2 - this._height/2) + 'px';
+		this._context.font = 'bold ' + 
+							 Math.floor(20 * this.getScale()) + 'px' +
+							 'defaultFont';
 	}
 	
-	//================================
-	// Private vars
-	//================================
-	
-	var maximize   = inMaximize === true;
-	var self       = this;
-	var fullscreen = (w === undefined || h === undefined);
-	var width      = null;
-	var height     = null;
-	var scale      = 1;
-	var ut         = null;
-	var canvas     = null;
-	var context    = null;
-	
-	init(); 
 };

@@ -30,8 +30,5 @@ QQ.LoadingSeizure = class {
 			this._camera.draw(toDraw);
 		}
 	}
-	
-	click(x, y) {
-	}
-	
+
 };

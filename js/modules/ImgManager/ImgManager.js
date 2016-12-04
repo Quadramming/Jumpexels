@@ -10,38 +10,41 @@
 // isReady(imgObj);
 //   True if imgObj is loaded.
 //================================================================
+
+/* global QQ */
 'use strict';
 
-var QQ = QQ || {};
+{
+	let ImgManager = class {
 
-QQ.ImgManager = function () {
-	var imgs = [];
-	
-	function get(url) {	
-		for ( var i in imgs ) {
-			if ( imgs[i].url === url ) {
-				return imgs[i].obj;
-			}
+		constructor(t) {
+			this._imgs = [];
 		}
-		var img     = {};
-		img.url     = url;
-		img.obj     = new Image;
-		img.obj.src = url;
-		imgs.push(img);
-		return img.obj;
-	};
-	
-	function isReady(imgObj) {
-		for ( var i in imgs ) {
-			if ( imgs[i].obj === imgObj ) {
-				return imgs[i].obj.complete;
+
+		get(url) {	
+			for ( let img in this._imgs ) {
+				if ( img.url === url ) {
+					return img.obj;
+				}
 			}
-		}
-		return false;
+			let img     = {};
+			img.url     = url;
+			img.obj     = new Image;
+			img.obj.src = url;
+			this._imgs.push(img);
+			return img.obj;
+		};
+
+		isReady(imgObj) {
+			for ( let img in this._imgs ) {
+				if ( img.obj === imgObj ) {
+					return img.obj.complete;
+				}
+			}
+			return false;
+		};
+
 	};
-		
-    return {
-        isReady: isReady,
-		get:     get
-    };
-}();
+
+	QQ.ImgManager = new ImgManager();
+}
