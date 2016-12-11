@@ -5,168 +5,137 @@
 // Interface:
 // 
 //================================================================
+
+/* global Matter */
 'use strict';
 
-var Matter  = Matter || {};
-var QQ      = QQ     || {};
-
-QQ.Subject = function(imgSrc, inWidth, inHeight) {
-
-	//================================
-	// Public methods
-	//================================
+QQ.Subject = class Subject {
 	
-	this.draw = function() {
-		if ( sprite ) {
-			sprite.draw();
-		}
-		if ( extraDraw ) {
-			extraDraw();
-		}
-	};
+	constructor(imgSrc, width=1, height=1) {
+		this._x           = 0;
+		this._y           = 0;
+		this._width       = width;
+		this._height      = height;
+		this._angle       = 0;
+		this._sprite      = new QQ.Sprite( QQ.imgManager.get(imgSrc) );
+		this._physicsBody = null;
+	}
 	
-	this.setExtraDraw = function(fn) {
-		extraDraw = fn;
-	};
+	draw() {
+		this._sprite.draw();
+	}
 	
-	this.getRect = function() {
-		return { 
-			x1: x - width/2, 
-			y1: y + height/2, 
-			x2: x + width/2, 
-			y2: y - height/2 
+	getRect() { // TODO: MB TOP LEFT BOTTOM RIGHT
+		return {
+			x1: this._x - this._width/2, 
+			y1: this._y + this._height/2, 
+			x2: this._x + this._width/2, 
+			y2: this._y - this._height/2 
 		};
-	};
+	}
 	
-	this.fitInRect = function(rect) {
-		width  = rect.x2 - rect.x1;
-		height = rect.y1 - rect.y2;
-		x      = rect.x1 + width/2;
-		y      = rect.y2 + height/2;
-	};
+	fitInRect(rect) {
+		this._width  = rect.x2 - rect.x1;
+		this._height = rect.y1 - rect.y2;
+		this._x      = rect.x1 + this._width/2;
+		this._y      = rect.y2 + this._height/2;
+	}
 	
-	this.setPosition = function(inX, inY, inPivot) {
+	getPosition() {
+		return {x: this._x, y: this._y};
+	}
+	
+	getAngle() {
+		return this._angle;
+	}
+	
+	type() {
+		return 'subject';
+	}
+	
+	setPhysics(x, y, w, h, options) {
+		this._physicsBody = Matter.Bodies.rectangle(x, y, w, h, options);
+	}
+	
+	setDefaultPhysics(options) {
+		this._physicsBody = Matter.Bodies.rectangle(
+				this._x,     this._y, 
+				this._width, this._height, 
+				options
+			);
+	}
+	
+	getPhysicsBody() {
+		return this._physicsBody;
+	}
+	
+	isPhysicsBody() {
+		return this._physicsBody !== null;
+	}
+	
+	click() { 
+		// Empty
+	}
+	
+	tick(delta) {
+		this._physicsTick(delta);
+	}
+	
+	setAlpha(a) {
+		this._sprite.setAlpha(a);
+	}
+	
+	getScale() {
+		let scaleX = 0;
+		let scaleY = 0;
+		if ( this._sprite.isReady() ) {
+			let size = this._sprite.getSize();
+			scaleX   = this._width  / size.width;
+			scaleY   = this._height / size.height;
+		}
+		return {x : scaleX, y : scaleY};
+	}
+	
+	setPosition(inX, inY, inPivot) {
 		if ( inX !== undefined) {
 			if ( inPivot !== undefined ) {
 				if ( inPivot === QQ.Subject.pivot.CENTERTOP ) {
-					x = inX;
+					this._x = inX;
 				} else if ( inPivot === QQ.Subject.pivot.CENTERBOTTOM ) {
-					x = inX;
+					this._x = inX;
 				} else if ( inPivot === QQ.Subject.pivot.CENTER ) {
-					x = inX;
+					this._x = inX;
 				} else if ( inPivot === QQ.Subject.pivot.LEFTTOP ) {
-					x = inX+width/2;
+					this._x = inX+this._width/2;
 				}
 			} else {
-				x = inX;
+				this._x = inX;
 			}
 		}
 		if ( inY !== undefined ) {
 			if ( inPivot !== undefined ) {
 				if ( inPivot === QQ.Subject.pivot.CENTERTOP ) {
-					y = inY-height/2;
+					this._y = inY-this._height/2;
 				} else if ( inPivot === QQ.Subject.pivot.CENTERBOTTOM ) {
-					y = inY+height/2;
+					this._y = inY+this._height/2;
 				} else if ( inPivot === QQ.Subject.pivot.CENTER ) {
-					y = inY;
+					this._y = inY;
 				} else if ( inPivot === QQ.Subject.pivot.LEFTTOP ) {
-					y = inY-height/2;
+					this._y = inY-this._height/2;
 				}
 			} else {
-				y = inY;
+				this._y = inY;
 			}
 		}
-	};
+	}
 	
-	this.getPosition = function() {
-		return { x : x, y : y };
-	};
-	
-	this.getAngle = function() {
-		return angle;
-	};
-	
-	this.getScale = function() {
-		var scaleX = 0;
-		var scaleY = 0;
-		if ( sprite ) {
-			if ( sprite.isReady() ) {
-				var size = sprite.getSize();
-				scaleX   = width  / size.width;
-				scaleY   = height / size.height;
-			}
+	_physicsTick(delta) {
+		if ( this.isPhysicsBody() ) {
+			this.setPosition(this._physicsBody.position.x, this._physicsBody.position.y);
+			this._angle = this._physicsBody.angle;
 		}
-		return { x : scaleX, y : scaleY };
-	};
+	}
 	
-	this.type = function() {
-		return 'subject';
-	};
-	
-	this.setPhysics = function(x, y, w, h, options) {
-		physicsBody = Matter.Bodies.rectangle(x, y, w, h, options);
-	};
-	
-	this.setDefaultPhysics = function(options) {
-		physicsBody = Matter.Bodies.rectangle(x, y, width, height, options);
-	};
-	
-	this.getPhysicsBody = function() {
-		return physicsBody;
-	};
-	
-	this.isPhysicsBody = function() {
-		return physicsBody !== null;
-	};
-	
-	this.click = function() { 
-		// Empty
-	};
-	
-	this.setTick = function(tick) {
-		customTick = tick;
-	};
-	
-	this.tick = function(delta) {
-		var isFinish = false;
-		if ( customTick ) {
-			isFinish = customTick.call(self, delta);
-		}
-		if ( isFinish === true || isFinish === undefined ) {
-			commonTick(delta);
-		}
-	};
-	
-	this.setAlpha = function(a) {
-		sprite.setAlpha(a);
-	};
-	
-	//================================
-	// Private methods
-	//================================
-	
-	function commonTick(delta) {
-		if ( self.isPhysicsBody() ) {
-			self.setPosition(physicsBody.position.x, physicsBody.position.y);
-			angle = physicsBody.angle;
-		}
-	};
-	
-	//================================
-	// Private vars
-	//================================
-	
-	var self        = this;
-	
-	var customTick  = undefined;
-	var x           = 0;
-	var y           = 0;
-	var width       = inWidth  || 1;
-	var height      = inHeight || 1;
-	var angle       = 0;
-	var sprite      = new QQ.Sprite( QQ.ImgManager.get(imgSrc) );
-	var physicsBody = null;
-	var extraDraw   = null;
 };
 
 QQ.Subject.pivot = {

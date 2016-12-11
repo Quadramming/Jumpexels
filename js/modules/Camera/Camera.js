@@ -6,7 +6,6 @@
 // 
 //================================================================
 
-/* global QQ */
 'use strict';
 
 QQ.Camera = class Camera {
@@ -31,7 +30,7 @@ QQ.Camera = class Camera {
 	
 	draw(subjects) {
 		//this._cleanCanvas();
-		for ( let subj of subjects ) {
+		for ( const subj of subjects ) {
 			let pos   = subj.getPosition();
 			let scale = subj.getScale();
 			let angle = subj.getAngle();
@@ -52,7 +51,7 @@ QQ.Camera = class Camera {
 	}
 	
 	drawHud(huds) {
-		for ( let hud of huds ) {
+		for ( const hud of huds ) {
 			let pos    = hud.getPosition();
 			let scale  = hud.getScale();
 			let scaleX = this.widthPercent(scale.x);

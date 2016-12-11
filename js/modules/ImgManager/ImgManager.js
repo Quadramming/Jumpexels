@@ -11,40 +11,36 @@
 //   True if imgObj is loaded.
 //================================================================
 
-/* global QQ */
 'use strict';
 
-{
-	let ImgManager = class {
 
-		constructor(t) {
-			this._imgs = [];
+QQ.imgManager = new class ImgManager {
+
+	constructor() {
+		this._imgs = [];
+	}
+
+	get(url) {	
+		for ( let img in this._imgs ) {
+			if ( img.url === url ) {
+				return img.obj;
+			}
 		}
+		let img     = {};
+		img.url     = url;
+		img.obj     = new Image;
+		img.obj.src = url;
+		this._imgs.push(img);
+		return img.obj;
+	}
 
-		get(url) {	
-			for ( let img in this._imgs ) {
-				if ( img.url === url ) {
-					return img.obj;
-				}
+	isReady(imgObj) {
+		for ( let img in this._imgs ) {
+			if ( img.obj === imgObj ) {
+				return img.obj.complete;
 			}
-			let img     = {};
-			img.url     = url;
-			img.obj     = new Image;
-			img.obj.src = url;
-			this._imgs.push(img);
-			return img.obj;
-		};
+		}
+		return false;
+	}
 
-		isReady(imgObj) {
-			for ( let img in this._imgs ) {
-				if ( img.obj === imgObj ) {
-					return img.obj.complete;
-				}
-			}
-			return false;
-		};
-
-	};
-
-	QQ.ImgManager = new ImgManager();
-}
+}();

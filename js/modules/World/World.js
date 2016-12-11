@@ -5,85 +5,92 @@
 // Interface:
 // 
 //================================================================
+
+/* global Matter */
 'use strict';
 
-var Matter = Matter || alert('Need Matter enging');
-var QQ = QQ || {};
-
-QQ.World = function() {
+QQ.World = class World {
 	
-	function init() {		
-	};
+	constructor() {
+		this._maxTicks   = 5;
+		this._timeStep   = 0.0166;
+		this._deltaAccum = 0;
+		this._subjects   = [];
+		this._background = null;
+		this._physics    = null;
+		this._pauseTime  = 0.1;
+	}
 	
-	//================================
-	// Public methods
-	//================================
+	addBackground(url) {
+		this._background = new QQ.Subject(url);
+	}
 	
-	this.addBackground = function(subj) {
-		background = subj;
-	};
-	
-	this.addSubject = function(subj) {
-		subjects.push(subj);
+	addSubject(subj) {
+		this._subjects.push(subj);
 		if ( subj.isPhysicsBody() ) {
-			Matter.World.add(physics.world, [subj.getPhysicsBody()]);
+			Matter.World.add(this._physics.world, [subj.getPhysicsBody()]);
 		}
-	};
+	}
 	
-	this.deleteSubject = function(subj) {
-		var i = subjects.indexOf(subj);
-		if ( subjects[i].isPhysicsBody() ) {
-			Matter.Composite.remove(physics.world, subjects[i].getPhysicsBody());
+	deleteSubject(subj) {
+		const i = this._subjects.indexOf(subj);
+		if ( this._subjects[i].isPhysicsBody() ) {
+			Matter.Composite.remove(
+					this._physics.world, 
+					this._subjects[i].getPhysicsBody()
+				);
 		}
 		if ( i > 0 ) {
-			subjects.splice(i, 1);
+			this._subjects.splice(i, 1);
 		}
-	};
+	}
 	
-	this.getSubjectByPhysics = function(body) {
-		for ( var i in subjects ) {
-			if ( subjects[i].getPhysicsBody() === body ) {
-				return subjects[i];
+	getSubjectByPhysics(body) {
+		for ( const subj of this._subjects ) {
+			if ( subj.getPhysicsBody() === body ) {
+				return subj;
 			}
 		}
-	};
+	}
 	
-	this.tick = function(delta) {
-		deltaAccum += delta;
-		var ticksDone = 0;
-		if ( deltaAccum < pauseTime ) {
-			while ( deltaAccum > (maxTicks+1)*timeStep ) {
-				deltaAccum -= timeStep;
+	tick(delta) {
+		this._deltaAccum += delta;
+		let ticksDone = 0;
+		if ( this._deltaAccum < this._pauseTime ) {
+			while ( this._deltaAccum > (this._maxTicks+1)*this._timeStep ) {
+				this._deltaAccum -= this._timeStep;
 			}
-			while ( deltaAccum > timeStep ) {
-				deltaAccum -= timeStep;
-				for ( var i in subjects ) {
-					subjects[i].tick(timeStep);
+			while ( this._deltaAccum > this._timeStep ) {
+				this._deltaAccum -= this._timeStep;
+				for ( const subj of this._subjects ) {
+					subj.tick(this._timeStep);
 				}
-				if ( physics ) {
-					Matter.Engine.update(physics, QQ.Math.secToMs(timeStep));
+				if ( this._physics ) {
+					Matter.Engine.update(
+							this._physics, 
+							QQ.Math.secToMs(this._timeStep)
+						);
 				}
 				ticksDone++;
 			}
 		} else {
-			deltaAccum = 0;
+			this._deltaAccum = 0;
 			c('pause');
 		}
-		//c(ticksDone);
-	};
+	}
 	
-	this.getPhysics = function() {
-		return physics;
-	};
+	getPhysics() {
+		return this._physics;
+	}
 	
-	this.createPhysics = function() {
-		physics = Matter.Engine.create();
-		physics.world.gravity.y = -1;
+	createPhysics() {
+		this._physics = Matter.Engine.create();
+		this._physics.world.gravity.y = -1;
 		
 		/*
-		var render = Matter.Render.create({
+		const render = Matter.Render.create({
 			element: document.body,
-			engine: physics,
+			engine: this._physics,
 			options: {
 				width: 800,
 				height: 600,
@@ -113,61 +120,39 @@ QQ.World = function() {
 		});
 		Matter.Render.run(render);
 		*/
-	};
+	}
 	
-	this.getSubjectsInRect = function(rect) {
-		var result = [];
-		if ( background !== null ) {
-			background.fitInRect(rect);
-			result.push(background);
+	getSubjectsInRect(rect) {
+		const result = [];
+		if ( this._background !== null ) {
+			this._background.fitInRect(rect);
+			result.push(this._background);
 		}
-		for ( var i in subjects ) {
-			var subj = subjects[i];
+		for ( const subj of this._subjects ) {
 			if ( QQ.Math.isIntersect(rect, subj.getRect()) ) {
 				result.push(subj); 
 			}
 		}
 		return result;
-	};
+	}
 	
-	this.getSubjectAtPoint = function(x, y) {
-		for ( var i = subjects.length-1 ; i >= 0 ; --i ) {
-			var subj = subjects[i];
+	getSubjectAtPoint(x, y) {
+		for ( let i = this._subjects.length-1 ; i >= 0 ; --i ) {
+			const subj = this._subjects[i];
 			if ( QQ.Math.isInside(subj.getRect(), x, y) ) {
 				return subj; 
 			}
 		}
-	};
+	}
 	
-	this.getSubjects = function(pred) {
-		var subjs = [];
-		subjects.forEach(function (subj) {
-			if ( pred === undefined || pred(subj) ) {
+	getSubjects(pred = ()=>true) {
+		const subjs = [];
+		this._subjects.forEach(function (subj) {
+			if ( pred(subj) ) {
 				subjs.push(subj);
 			}
 		});
 		return subjs;
-	};
+	}
 	
-	//================================
-	// Private methods
-	//================================
-
-	
-
-	//================================
-	// Private vars
-	//================================
-	
-	var self       = this;
-	
-	var maxTicks   = 5;
-	var timeStep   = 0.0166;
-	var deltaAccum = 0;
-	var subjects   = [];
-	var background = null;
-	var physics    = null;
-	var pauseTime  = 0.1;
-
-	init(); 
 };

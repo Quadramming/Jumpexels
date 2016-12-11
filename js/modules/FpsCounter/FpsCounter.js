@@ -14,7 +14,6 @@
 //   Show/hide FPS at given context.
 //================================================================
 
-/* global QQ */
 'use strict';
 
 QQ.FpsCounter = class FpsCounter {
@@ -32,7 +31,7 @@ QQ.FpsCounter = class FpsCounter {
 
 	showDetails() {
 		this._details = !this._details;
-	};
+	}
 	
 	tick(delta) {
 		this._slots[this._iSlot] = Math.floor(1/delta);
@@ -54,7 +53,7 @@ QQ.FpsCounter = class FpsCounter {
 			ctx.textBaseline = 'middle'; 
 			ctx.textAlign    = 'center'; 
 			let i = 0;
-			for ( let slot of this._slots ) {
+			for ( const slot of this._slots ) {
 				ctx.fillStyle = 'green';
 				if ( slot > 99 ) {
 					ctx.fillStyle = 'white';

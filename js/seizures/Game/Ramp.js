@@ -1,33 +1,39 @@
 'use strict';
 
-var Matter  = Matter || {};
-var QQ      = QQ     || {};
-
-QQ.GameSeizure.prototype.makeRamp = function(config) {
-	var obj = new QQ.Subject('./img/ramp.png', config.size.w, config.size.h);
-	obj.setDefaultPhysics({ isStatic: true});
+QQ.Seizures.SeizureGame.Ramp = class Ramp extends QQ.Subject {
 	
-	var pivotX = config.pos.x;
-	var prevX  = pivotX;
-	var pivotY = config.pos.y;
-	var period = config.period;
-	var time   = config.time || 0;
-	var range  = config.travel;
-	var angle  = 0;
+	constructor(config) {
+		super('./img/ramp.png', config.size.w, config.size.h);
+		this.setDefaultPhysics({ isStatic: true});
+		this._pivotX = config.pos.x;
+		this._prevX  = this._pivotX;
+		this._pivotY = config.pos.y;
+		this._period = config.period;
+		this._time   = config.time || 0;
+		this._range  = config.travel;
+		this._angle  = 0;
+	}
 	
-	obj.setTick( function(delta) {
-			time += delta;
-			time  = QQ.Math.devidePeriod(time, period);
-			angle = time/period * QQ.Math.PIx2;
-			var x = pivotX + range * Math.sin(angle);
-			Matter.Body.setVelocity(this.getPhysicsBody(), { x: x-prevX, y: 0 });
-			Matter.Body.setPosition(this.getPhysicsBody(), { x: x, y: pivotY });
-			prevX = x;
-		});
 	
-	obj.type = function() {
+	tick(delta) {
+		this._time += delta;
+		this._time  = QQ.Math.devidePeriod(this._time, this._period);
+		this._angle = this._time/this._period * QQ.Math.PIx2;
+		const x = this._pivotX + this._range * Math.sin(this._angle);
+		Matter.Body.setVelocity(this.getPhysicsBody(), { x: x-this._prevX, y: 0 });
+		Matter.Body.setPosition(this.getPhysicsBody(), { x: x, y: this._pivotY });
+		this._prevX = x;
+		this._physicsTick(delta);
+	}
+	
+	type() {
 		return 'ramp';
-	};
+	}
 	
-	return obj;
-};
+}
+
+	
+
+	
+
+

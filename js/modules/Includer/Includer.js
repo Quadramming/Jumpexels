@@ -19,10 +19,9 @@
 //   
 //================================================================
 
-/* global QQ */
 'use strict';
 
-QQ.Includer = function () {
+QQ.includer = function () {
 	
 	//================================
 	// Public methods

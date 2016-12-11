@@ -6,22 +6,21 @@
 // 
 //================================================================
 
-/* global QQ */
 'use strict';
 
-class Credits {
-	
-    constructor(app) {
+QQ.seizures.add('Credits', class Credits {
+
+	constructor(app) {
 		this._myApp  = app;
 		this._world  = new QQ.World();
 		this._camera = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
 		this._click  = false;
-		this._world.addBackground( new QQ.Subject('img/credits.png') );
-    }
-	
+		this._world.addBackground('img/credits.png');
+	}
+
 	tick() {
 	}
-	
+
 	draw() {
 		if ( this._camera ) {
 			const rect   = this._camera.getViewRect();
@@ -29,17 +28,15 @@ class Credits {
 			this._camera.draw(toDraw);
 		}
 	}
-	
+
 	click() {
 		this._click = true;
 	}
 
 	clickUp() {
 		if ( this._click ) {
-			this._myApp.setSeizure('MainMenu');
+			QQ.seizures.set('MainMenu');
 		}
 	}
-	
-}
 
-QQ.Application.get().addSeizure('Credits', Credits);
+});

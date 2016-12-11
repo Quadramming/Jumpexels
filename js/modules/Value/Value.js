@@ -6,10 +6,7 @@
 // 
 //================================================================
 
-/* global QQ */
 'use strict';
-
-var QQ = QQ || {};
 
 QQ.Value = class Value {
 	
@@ -35,4 +32,5 @@ QQ.Value = class Value {
 	isClear() {
 		return this._val === 0;
 	}
+	
 };

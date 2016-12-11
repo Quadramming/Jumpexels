@@ -6,13 +6,12 @@
 // 
 //================================================================
 
-/* global QQ */
 'use strict';
 
 QQ.Hud = class Hud {
 	
 	constructor(imgSrc, width = 0, height = 0) {
-		this._sprite      = new QQ.Sprite( QQ.ImgManager.get(imgSrc) );
+		this._sprite      = new QQ.Sprite( QQ.imgManager.get(imgSrc) );
 		this._width       = width;
 		this._height      = height;
 		this._canvasRatio = 0;

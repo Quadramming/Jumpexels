@@ -5,141 +5,159 @@
 // Interface:
 // 
 //================================================================
+
 'use strict';
 
-var QQ = QQ || {};
-
-QQ.Sprite = function(img) {
-		this.width       = 0;
-		this.height      = 0;
-		this.ready       = false;
-		this.alpha       = 1;
-		
-		this.animation   = false;
-		this.frameHeight = 0;
-		this.frameWidth  = 0;
-		this.fps         = 0;
-		this.tpf         = 0;
-		this.frames      = 0;
-		this.curFrame    = 0;
-		this.time        = null;
-		this.startTime   = 0;
-		this.img         = img;
-};
-
-QQ.Sprite.prototype.getRatio = function() {
-	if ( ! this.isReady() ) {
-		console.log('Warning: Try QQ.Sprite.getRatio() when not ready');
-		return 0;
+QQ.Sprite = class Sprite {
+	
+	constructor(img) {
+		this._width       = 0;
+		this._height      = 0;
+		this._ready       = false;
+		this._alpha       = 1;
+		this._animation   = false;
+		this._frameHeight = 0;
+		this._frameWidth  = 0;
+		this._fps         = 0;
+		this._tpf         = 0;
+		this._frames      = 0;
+		this._curFrame    = 0;
+		this._time        = null;
+		this._startTime   = 0;
+		this._img         = img;
 	}
-	return this.width/this.height;
-};
-
-QQ.Sprite.prototype.getSize = function() {
-	if ( ! this.isReady() ) {
-		console.log('Warning: Try QQ.Sprite.getSize() when not ready');
-	}
-	return { width: this.width, height: this.height };
-};
-
-QQ.Sprite.prototype.isReady = function() {
-	if ( this.ready === false && this.img.complete  ) {
-		this.width   = this.img.width;
-		this.height  = this.img.height;
-		if ( this.isAnimation ) {
-			this.frames = this.width / this.frameWidth;
+	
+	getRatio() {
+		if ( ! this.isReady() ) {
+			console.log('Warning: Try QQ.Sprite.getRatio() when not ready');
+			return 0;
 		}
-		this.ready = true;
+		return this._width/this._height;
 	}
-	return this.ready;
-};
 
-QQ.Sprite.prototype.setAnimation = function(w, h, fps, time) {
-	this.isAnimation = true;
-	this.frameWidth  = w;
-	this.frameHeight = h;
-	this.fps         = fps;
-	this.tpf         = Math.round(1000 / fps); // Time per frame
-	this.time        = time;
-	this.startTime   = this.time.now();
-	if ( this.isReady() ) {
-		this.frames = this.width / this.frameWidth;
+	getSize() {
+		if ( ! this.isReady() ) {
+			console.log('Warning: Try QQ.Sprite.getSize() when not ready');
+		}
+		return { width: this._width, height: this._height };
 	}
-};
 
-QQ.Sprite.prototype.setAlpha = function(a) {
-	this.alpha = a;
-};
+	isReady() {
+		if ( this._ready === false && this._img.complete  ) {
+			this._width  = this._img.width;
+			this._height = this._img.height;
+			if ( this._isAnimation ) {
+				this._frames = this._width / this._frameWidth;
+			}
+			this._ready = true;
+		}
+		return this._ready;
+	}
 
-QQ.Sprite.prototype._calcPosition = function(pivot) {
-	var result = { x : 0, y : 0 };
-	if ( pivot === QQ.Sprite.pivot.LEFTTOP ) { 
+	setAnimation(w, h, fps, time) {
+		this._isAnimation = true;
+		this._frameWidth  = w;
+		this._frameHeight = h;
+		this._fps         = fps;
+		this._tpf         = Math.round(1000 / fps); // Time per frame
+		this._time        = time;
+		this._startTime   = this._time.now();
+		if ( this.isReady() ) {
+			this._frames  = this._width / this._frameWidth;
+		}
+	}
+
+	setAlpha(a) {
+		this._alpha = a;
+	}
+
+	draw(inX, inY) {
+		const isX = (typeof inX === 'number');
+		const isY = (typeof inY === 'number');
+		if ( this.isReady() && QQ.Sprite.context !== null ) {
+			let pivot, x, y;
+			//================================================================
+			// Input
+			//================================================================
+			if ( isX && isY ) {
+				pivot = QQ.Sprite.pivot.NONE;
+				x     = inX;
+				y     = inY;
+			} else if ( isX && ! isY ) {
+				pivot = inX;
+			} else {
+				pivot = QQ.Sprite.pivot.CENTER;
+			}
+			//================================================================
+			// Calc pivot
+			//================================================================
+			if ( pivot !== QQ.Sprite.pivot.NONE ) {
+				const position = this._calcPosition(pivot);
+				x = position.x;
+				y = position.y;
+			}
+			//================================================================
+			// Draw
+			//================================================================
+			const alpha = QQ.Sprite.context.globalAlpha;
+			QQ.Sprite.context.globalAlpha = this._alpha;
+			if ( this._isAnimation ) {
+				const diff         = this._time.now() - this._startTime;
+				const passedFrames = Math.round(diff/this._tpf);
+				this._curFrame     = passedFrames % this._frames;
+				QQ.Sprite.context.drawImage(
+						this._img, 
+						this._frameWidth * this._curFrame, 0, 
+						this._frameWidth, this._frameHeight, 
+						x, y, 
+						this._frameWidth, this._frameHeight
+					);
+			} else {
+				QQ.Sprite.context.drawImage(
+						this._img, 
+						x, y, 
+						this._width, this._height
+					);
+			}
+			QQ.Sprite.context.globalAlpha = alpha ;
+		}
+	}
+	
+	getContext() {
+		return QQ.Sprite.context;
+	}
+	
+	_calcPosition(pivot) {
+		const result = { x : 0, y : 0 };
+		if ( pivot === QQ.Sprite.pivot.LEFTTOP ) { 
+			return result;
+		}
+		if ( this._isAnimation ) {
+			if ( pivot === QQ.Sprite.pivot.CENTER ) {
+				result.x = -this._frameWidth/2;
+				result.y = -this._frameHeight/2;
+			} else if ( pivot === QQ.Sprite.pivot.CENTERBOTTOM ) {
+				result.x = -this._frameWidth/2;
+				result.y = -this._frameHeight;
+			} else if ( pivot === QQ.Sprite.pivot.CENTERTOP ) {
+				result.x = -this._frameWidth/2;
+				result.y = 0;
+			}
+		} else {
+			if ( pivot === QQ.Sprite.pivot.CENTER ) {
+				result.x = -this._width/2;
+				result.y = -this._height/2;
+			} else if ( pivot === QQ.Sprite.pivot.CENTERBOTTOM ) {
+				result.x = -this._width/2;
+				result.y = -this._height;
+			} else if ( pivot === QQ.Sprite.pivot.CENTERTOP ) {
+				result.x = -this._width/2;
+				result.y = 0;
+			}
+		}
 		return result;
 	}
-	if ( this.isAnimation ) {
-		if ( pivot === QQ.Sprite.pivot.CENTER ) {
-			result.x = -this.frameWidth/2;
-			result.y = -this.frameHeight/2;
-		} else if ( pivot === QQ.Sprite.pivot.CENTERBOTTOM ) {
-			result.x = -this.frameWidth/2;
-			result.y = -this.frameHeight;
-		} else if ( pivot === QQ.Sprite.pivot.CENTERTOP ) {
-			result.x = -this.frameWidth/2;
-			result.y = 0;
-		}
-	} else {
-		if ( pivot === QQ.Sprite.pivot.CENTER ) {
-			result.x = -this.width/2;
-			result.y = -this.height/2;
-		} else if ( pivot === QQ.Sprite.pivot.CENTERBOTTOM ) {
-			result.x = -this.width/2;
-			result.y = -this.height;
-		} else if ( pivot === QQ.Sprite.pivot.CENTERTOP ) {
-			result.x = -this.width/2;
-			result.y = 0;
-		}
-	}
-	return result;
-};
 
-QQ.Sprite.prototype.draw = function(inX, inY) {
-	if ( this.isReady() && QQ.Sprite.context !== null ) {
-		var pivot, x, y;
-		//================================================================
-		// Input
-		//================================================================
-		if ( typeof inX === 'number' && typeof inY === 'number' ) {
-			pivot = QQ.Sprite.pivot.NONE;
-			x     = inX;
-			y     = inY;
-		} else if ( typeof inX === 'number' && typeof inY === 'undefined' ) {
-			pivot = inX;
-		} else {
-			pivot = QQ.Sprite.pivot.CENTER;
-		}
-		//================================================================
-		// Calc pivot
-		//================================================================
-		if ( pivot !== QQ.Sprite.pivot.NONE ) {
-			var position = this._calcPosition(pivot);
-			x = position.x;
-			y = position.y;
-		}
-		//================================================================
-		// Draw
-		//================================================================
-		var alpha = QQ.Sprite.context.globalAlpha;
-		QQ.Sprite.context.globalAlpha = this.alpha;
-		if ( this.isAnimation ) {
-			var diff         = this.time.now() - this.startTime;
-			var passedFrames = Math.round(diff/this.tpf);
-			this.curFrame    = passedFrames % this.frames;
-			QQ.Sprite.context.drawImage(this.img, this.frameWidth*this.curFrame, 0, this.frameWidth, this.frameHeight, x, y, this.frameWidth, this.frameHeight);
-		} else {
-			QQ.Sprite.context.drawImage(this.img, x, y, this.width, this.height);
-		}
-		QQ.Sprite.context.globalAlpha = alpha ;
-	}
 };
 
 QQ.Sprite.setContext = function(ctx) {

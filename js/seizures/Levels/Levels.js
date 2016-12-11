@@ -6,17 +6,16 @@
 // 
 //================================================================
 
-/* global QQ */
 'use strict';
 
-class Levels {
+QQ.Seizures.SeizureLevels = class SeizureLevels {
 	
 	constructor(app) {
 		this._myApp       = app;
 		this._camera      = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
 		this._camera.setClip(0, 0, 0, -55);
 		this._world       = new QQ.World();
-		this._world.addBackground( new QQ.Subject('img/backgrounds/tmpMenu.png') );
+		this._world.addBackground('img/backgrounds/tmpMenu.png');
 		this._addLevels(50);
 		this._clickStart  = false;
 	}
@@ -41,17 +40,16 @@ class Levels {
 	}
 	
 	clickUp(x, y) {
-		if ( ! this._clickStart ) {
-			return;
-		}
-		if ( ! this._camera.isScrolling() ) {
-			const point   = this._camera.getWorldPoint(x, y);
-			const clicked = this._world.getSubjectAtPoint(point.x, point.y);
-			if ( clicked ) {
-				clicked.click();
+		if ( this._clickStart ) {
+			if ( ! this._camera.isScrolling() ) {
+				const point   = this._camera.getWorldPoint(x, y);
+				const clicked = this._world.getSubjectAtPoint(point.x, point.y);
+				if ( clicked ) {
+					clicked.click();
+				}
 			}
+			this._clickStart = false;	
 		}
-		this._clickStart = false;
 	}
 	
 	_addLevels(n) {
@@ -74,23 +72,37 @@ class Levels {
 	}
 	
 	_addLevel(x, y, n) {
-		let level = new QQ.Subject('img/level.png', 5, 5);
-		level.setPosition(x, y);
-		level.click = function() {
-			QQ.Application.get().setSeizure('Game', n);
-		};
-		level.setExtraDraw(function() {
-			QQ.Sprite.context.textBaseline = 'middle';
-			QQ.Sprite.context.textAlign    = 'center';
-			QQ.Sprite.context.fillStyle    = 'black';
-			QQ.Sprite.context.font         = '15px KenPixel';
-			QQ.Sprite.context.fillText('level', 0, -15);
-			QQ.Sprite.context.font         = '25px KenPixel';
-			QQ.Sprite.context.fillText(n, 0, 10);
-		});
-		this._world.addSubject(level);
+		this._world.addSubject(
+				new	SeizureLevels.Level(n, x, y)
+			);
 	}
 	
-}
+};
 
-QQ.Application.get().addSeizure('Levels', Levels);
+QQ.Seizures.SeizureLevels.Level = class Level extends QQ.Subject {
+	
+	constructor(n, x, y) {
+		super('img/level.png', 5, 5);
+		this._levelN = n;
+		this.setPosition(x, y);
+	}
+	
+	click() {
+		QQ.seizures.set('Game', QQ.levels[this._levelN]);
+	}
+	
+	draw() {
+		super.draw();
+		var context = this._sprite.getContext();
+		context.textBaseline = 'middle';
+		context.textAlign    = 'center';
+		context.fillStyle    = 'black';
+		context.font         = '15px KenPixel';
+		context.fillText('level', 0, -15);
+		context.font         = '25px KenPixel';
+		context.fillText(this._levelN, 0, 10);
+	}
+	
+};
+
+QQ.seizures.add('Levels', QQ.Seizures.SeizureLevels);

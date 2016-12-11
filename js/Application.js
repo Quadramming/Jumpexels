@@ -1,127 +1,101 @@
 'use strict';
 
-var QQ = QQ || {};
+QQ.Application = class Application {
 
-QQ.Application = function () {
-
-	function init() {
-		QQ.Sprite.setContext(canvas.getContext());
-		QQ.Hud.canvasRatio(canvas.getRatio());
-		fpsCounter.showDetails();
-		self.setSeizure('MainMenu');
+	constructor() {
+		this._canvas     = new QQ.Canvas('appCanvas', 600, 800);
+		this._fpsCounter = new QQ.FpsCounter();
+		this._time       = new QQ.Time();
+		this._mouse      = new QQ.Mouse();
+		this._touch      = new QQ.Touch(this._mouse);
+		this._skipFrames = 0;
+		this._frame      = 0;
+	}
+	
+	init() {
+		QQ.Sprite.setContext(this._canvas.getContext());
+		QQ.Hud.canvasRatio(this._canvas.getRatio());
+		this._fpsCounter.showDetails();
+		QQ.seizures.set('MainMenu');
 		
-		mouse.setM1DownCB( function() {
-				var x = (mouse.getX() - canvas.getCanvas().offsetLeft);
-				var y = (mouse.getY() - canvas.getCanvas().offsetTop);
-				var isHitX = 0 < x && x < canvas.getCanvas().width;
-				var isHitY = 0 < y && y < canvas.getCanvas().height;
-				if ( isHitX && isHitY && seizure.click !== undefined ) {
-					seizure.click(x, y);
+		this._mouse.setM1DownCB( () => {
+				if ( this._isMouseInCanvas() ) {
+					let {x, y} = this._getMousePosition();
+					QQ.seizures.click(x, y);
 				}
 			});
 			
-		mouse.setM1UpCB( function() {
-				var x = (mouse.getX() - canvas.getCanvas().offsetLeft);
-				var y = (mouse.getY() - canvas.getCanvas().offsetTop);
-				var isHitX = 0 < x && x < canvas.getCanvas().width;
-				var isHitY = 0 < y && y < canvas.getCanvas().height;
-				if ( isHitX && isHitY && seizure.clickUp !== undefined ) {
-					seizure.clickUp(x, y);
+		this._mouse.setM1UpCB( () => {
+				if ( this._isMouseInCanvas() ) {
+					let {x, y} = this._getMousePosition();
+					QQ.seizures.clickUp(x, y);
 				}
 			});
-		process();
-	};
+		this._process();
+	}
 	
-	//================================
-	// Public methods
-	//================================
+	getCanvas() {
+		return this._canvas.getCanvas();
+	}
 	
-	this.addSeizure = function(name, newSeizure) {
-		seizures[name] = newSeizure;
-	};
+	isM1Pressed() {
+		return this._mouse.getM1();
+	}
 	
-	this.setSeizure = function(newSeizure, input) {
-		seizure = loading;
-		QQ.Includer.js('js/seizures/'+newSeizure+'/'+newSeizure+'.js');
-		QQ.Includer.onLoad(function() {
-			seizure = new seizures[newSeizure](self, input);
-		});
-	};
-	
-	this.getCanvas = function() {
-		return canvas.getCanvas();
-	};
-	
-	this.isM1Pressed = function() {
-		return mouse.getM1();
-	};
-	
-	this.getMouseXY = function() {
-		var x = (mouse.getX() - canvas.getCanvas().offsetLeft);
-		var y = (mouse.getY() - canvas.getCanvas().offsetTop);
-		var isHitX = 0 < x && x < canvas.getCanvas().width;
-		var isHitY = 0 < y && y < canvas.getCanvas().height;
-		if ( isHitX && isHitY ) {
-			return {x: x, y: y};
+	getMouseXY() {
+		if ( this._isMouseInCanvas() ) {
+			return this._getMousePosition();
 		}
-		return {x: -1, y: -1};
-	};
+		return { x: -1, y: -1 };
+	}
 	
-	this.getTime = function() {
-		return time;
-	};
+	getTime() {
+		return this._time;
+	}
 	
-	//================================
-	// Private methods
-	//================================
+	_getMousePosition() {
+		let canvas = this._canvas.getCanvas();
+		let x      = this._mouse.getX() - canvas.offsetLeft;
+		let y      = this._mouse.getY() - canvas.offsetTop;
+		return {x, y};
+	}
 	
-	var skipFrames = 0;
-	var frame      = 0;
-	function process(time) {
-		requestAnimationFrame(process);
-		frame = ++frame % (skipFrames+1);
-		if ( frame === 0 ) {
-			tick();
-			draw();
+	_isMouseInCanvas() {
+		let canvas = this._canvas.getCanvas();
+		let {x, y} = this._getMousePosition();
+		let isHitX = 0 < x && x < canvas.width;
+		let isHitY = 0 < y && y < canvas.height;
+		return isHitX && isHitY;
+	}
+	
+	_process(time) {
+		requestAnimationFrame(this._process.bind(this));
+		this._frame = ++this._frame % (this._skipFrames+1);
+		if ( this._frame === 0 ) {
+			this._tick();
+			this._draw();
 		}
-	};
+	}
 	
-	function tick() {
-		var delta = time.update();
-		fpsCounter.tick(delta);
-		if ( seizure ) {
-			seizure.tick(delta);
-		}
+	_tick() {
+		let delta = this._time.update();
+		this._fpsCounter.tick(delta);
+		QQ.seizures.tick(delta);
 	}
 
-	function draw() {
-		if ( seizure ) {
-			seizure.draw();
-		}
-		//canvas.drawBorder();
-		fpsCounter.show(canvas.getContext());
+	_draw() {
+		QQ.seizures.draw();
+		//this._canvas.drawBorder();
+		this._fpsCounter.show(this._canvas.getContext());
 	}
-		
-	//================================
-	// Private vars
-	//================================
-	
-	var self       = this;
-	var canvas     = new QQ.Canvas('appCanvas', 600, 800);
-	var fpsCounter = new QQ.FpsCounter();
-	var time       = new QQ.Time();
-	var mouse      = new QQ.Mouse();
-	var touch      = new QQ.Touch(mouse);
-	var loading    = new QQ.LoadingSeizure(this);
-	var seizure    = loading;
-	var seizures   = [];
-	
-	init(); 
+
 };
 
+/*
 QQ.Application.get = function() {
 	if ( ! QQ.Application.instance ) {
 		QQ.Application.instance = new QQ.Application;
 	}
 	return QQ.Application.instance;
 };
+*/

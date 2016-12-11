@@ -5,147 +5,124 @@
 // Interface:
 // 
 //================================================================
+
 'use strict';
 
-var Matter  = Matter || {};
-var QQ      = QQ     || {};
+QQ.Seizures.SeizureGame = class Game {
 
-QQ.GameSeizure = function(app, level) {
+	constructor(app, level) {
+		const my      = QQ.Seizures.SeizureGame;
+		this._app     = app;
+		this._huds    = [];
+		this._world   = new QQ.World();
+		this._camera  = null;
+		this._started = false;
+		
+		this._world.createPhysics();
+		this._camera = new QQ.Camera(
+				app.getCanvas(), 
+				level.camera.size.w,   level.camera.size.h, 
+				level.camera.lookAt.x, level.camera.lookAt.y
+			);
 
-	function init() {
-		QQ.Includer.js('js/seizures/Game/Alien.js');
-		QQ.Includer.js('js/seizures/Game/EscapeShip.js');
-		QQ.Includer.js('js/seizures/Game/Ground.js');
-		QQ.Includer.js('js/seizures/Game/Ramp.js');
-		QQ.Includer.js('js/levels/level'+level+'.js', true);
-		QQ.Includer.onLoad(function() {
-			world.createPhysics();
-			camera = new QQ.Camera(
-					app.getCanvas(), 
-					QQ.level.camera.size.w,   QQ.level.camera.size.h, 
-					QQ.level.camera.lookAt.x, QQ.level.camera.lookAt.y
-				);
-		
-			world.addBackground( new QQ.Subject(QQ.level.backGround.img) );
-		
-			world.addSubject(self.makeEscapeShip(QQ.level.escapeShip));
-			
-			for ( var i in QQ.level.grounds ) {
-				world.addSubject(self.makeGround(QQ.level.grounds[i]));
-			}
-			
-			for ( var i in QQ.level.ramps ) {
-				world.addSubject(self.makeRamp(QQ.level.ramps[i]));
-			}
-			
-			for ( var i in QQ.level.aliens ) {
-				world.addSubject(self.makeAlien(QQ.level.aliens[i]));
-			}
-			
-			var backHud = new QQ.Hud('img/back.png', 15);
-			backHud.setPosition(1, 1, QQ.Hud.pivot.LEFTTOP );
-			backHud.setClick(function() {
-					QQ.Application.get().setSeizure('Levels');
-				});
-			huds.push(backHud);
-			
-			started = true;
-		});
-	};
-	
-	//================================
-	// Public methods
-	//================================
+		this._world.addBackground(level.backGround.img);
 
-	this.tick = function(delta) {
-		if ( ! started ) return;
+		this._world.addSubject(new my.EscapeShip(level.escapeShip, this));
+
+		for ( const ground of level.grounds ) {
+			this._world.addSubject(new my.Ground(ground));
+		}
+		for ( const ramp of level.ramps ) {
+			this._world.addSubject(new my.Ramp(ramp));
+		}
+		for ( const alien of level.aliens ) {
+			this._world.addSubject(new my.Alien(alien, this));
+		}
+
+		const backHud = new QQ.Hud('img/back.png', 15);
+		backHud.setPosition(1, 1, QQ.Hud.pivot.LEFTTOP );
+		backHud.setClick( () => {
+				QQ.seizures.set('Levels');
+			});
+		this._huds.push(backHud);
 		
-		var aliens = getSubjectsByType('alien');
-		if ( aliens.length === 0 ) {
-			QQ.Application.get().setSeizure('Levels');
+		this._started = true;
+	}
+
+	tick(delta) {
+		if ( this._started ) {
+			const aliens = this._getSubjectsByType('alien');
+			if ( aliens.length === 0 ) {
+				QQ.Application.get().setSeizure('Levels');
+			}
+			if ( this._world ) {
+				this._world.tick(delta);
+			}
 		}
-		if ( world ) {
-			world.tick(delta);
-		}
-	};
+	}
 	
-	this.draw = function() {
-		if ( camera ) {
-			var rect   = camera.getViewRect();
-			var toDraw = world.getSubjectsInRect(rect);
-			camera.draw(toDraw);
-			camera.drawHud(huds);
+	draw() {
+		if ( this._camera ) {
+			const rect   = this._camera.getViewRect();
+			const toDraw = this._world.getSubjectsInRect(rect);
+			this._camera.draw(toDraw);
+			this._camera.drawHud(this._huds);
 		}
-	};
+	}
 	
-	this.click = function(x, y) {
-		for ( var i in huds ) {
-			var isHit = huds[i].isHit(
-					camera.widthToPercent(x), 
-					camera.heightToPercent(y)
+	click(x, y) {
+		for ( const hud of this._huds ) {
+			const isHit = hud.isHit(
+					this._camera.widthToPercent(x), 
+					this._camera.heightToPercent(y)
 				);
 			if ( isHit ) {
-				huds[i].click();
+				hud.click();
 			}
 		}
 		/*
-		var units = world.getSubjects(function(subj) {
+		var units = this._world.getSubjects(function(subj) {
 				return subj.type() === 'alien';
 			});
 		units.forEach(function(alien) {
 				alien.jump();
 			});
 			
-		if ( camera ) {
-			var point   = camera.getWorldPoint(x, y);
-			var clicked = world.getSubjectAtPoint(point.x, point.y);
+		if ( this._camera ) {
+			var point   = this._camera.getWorldPoint(x, y);
+			var clicked = this._world.getSubjectAtPoint(point.x, point.y);
 			if ( clicked ) {
 				clicked.click();
 			}
 		}
 		*/
-	};
+	}
 	
-	this.getWorld = function() {
-		return world;
-	};
+	getWorld() {
+		return this._world;
+	}
 	
-	this.getWorldPhysics = function() {
-		return world.getPhysics();
-	};
+	getWorldPhysics() {
+		return this._world.getPhysics();
+	}
 	
-	this.getSurfaces = function() {
-		var grounds = getSubjectsByType('ground');
-		var ramps = getSubjectsByType('ramp');
+	getSurfaces() {
+		let grounds = this._getSubjectsByType('ground');
+		let ramps   = this._getSubjectsByType('ramp');
 		return [].concat(grounds, ramps);
-	};
+	}
 	
-	this.getApp = function() {
-		return app;
-	};
-	
-	//================================
-	// Private methods
-	//================================
+	getApp() {
+		return this._app;
+	}
 
-	function getSubjectsByType(type) {
-		var units = world.getSubjects(function(subj) {
-				return subj.type() === type;
-			});
+	_getSubjectsByType(type) {
+		let units = this._world.getSubjects(
+				subj => (subj.type() === type)
+			);
 		return units;
-	};
-		
-	//================================
-	// Private vars
-	//================================
-	var self    = this;
-	
-	var huds    = [];
-	var world   = new QQ.World();
-	var camera  = null;
-	var started = false;
+	}
 
-	init(); 
 };
 
-QQ.Application.get().addSeizure('Game', QQ.GameSeizure);
+QQ.seizures.add('Game', QQ.Seizures.SeizureGame);

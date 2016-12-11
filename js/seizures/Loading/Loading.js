@@ -6,15 +6,14 @@
 // 
 //================================================================
 
-/* global QQ */
 'use strict';
 
-QQ.LoadingSeizure = class {
+QQ.Seizures.SeizureLoading = class SeizureLoading {
 
 	constructor(app) {
-		this._world   = new QQ.World();
-		this._camera  = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
-		this._world.addBackground( new QQ.Subject('img/loading.png') );
+		this._world  = new QQ.World();
+		this._camera = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
+		this._world.addBackground('img/loading.png');
 	}
 
 	tick(delta) {

@@ -13,7 +13,6 @@
 //   Return result is seconds.
 //================================================================
 
-/* global QQ */
 'use strict';
 
 QQ.Time = class Time {

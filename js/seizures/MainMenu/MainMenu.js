@@ -6,18 +6,17 @@
 // 
 //================================================================
 
-/* global QQ */
 'use strict';
 
-class MainMenu {
+QQ.seizures.add('MainMenu', class MainMenu {
 	
 	constructor(app) {
 		this._world  = new QQ.World();
 		this._camera = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
-		this._world.addBackground( new QQ.Subject('img/backgrounds/tmpMenu.png') );
+		this._world.addBackground('img/backgrounds/tmpMenu.png');
 		
 		const logo = new QQ.Subject('img/logo.png', 10, 10);
-		logo.click = () => app.setSeizure('Levels');
+		logo.click = () => QQ.seizures.set('Levels');
 		this._world.addSubject(logo);
 		
 		const title = new QQ.Subject('img/title.png', 20, 20/7);
@@ -25,12 +24,12 @@ class MainMenu {
 		this._world.addSubject(title);
 		
 		const intro = new QQ.Subject('img/introBt.png', 10, 2);
-		intro.click = () => app.setSeizure('Intro');
+		intro.click = () => QQ.seizures.set('Intro');
 		intro.setPosition(0, 8);
 		this._world.addSubject(intro);
 		
 		const credits = new QQ.Subject('img/creditsBt.png', 10, 2);
-		credits.click = () => app.setSeizure('Credits');
+		credits.click = () => QQ.seizures.set('Credits');
 		credits.setPosition(0, -12);
 		this._world.addSubject(credits);		
 	}
@@ -57,6 +56,4 @@ class MainMenu {
 		}
 	}
 	
-}
-
-QQ.Application.get().addSeizure('MainMenu', MainMenu);
+});

@@ -10,7 +10,6 @@
 //   Creates object with help of mouse class.
 //================================================================
 
-/* global QQ */
 'use strict';
 
 QQ.Touch = class Touch {

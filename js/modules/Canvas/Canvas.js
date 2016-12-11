@@ -39,7 +39,6 @@
 //   Remove canvas element from DOM.
 //================================================================
 
-/* global QQ */
 'use strict';
 
 QQ.Canvas = class Canvas {
