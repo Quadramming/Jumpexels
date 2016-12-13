@@ -11,13 +11,14 @@
 QQ.Seizures.SeizureGame = class Game {
 
 	constructor(app, level) {
-		const my      = QQ.Seizures.SeizureGame;
-		this._app     = app;
-		this._huds    = [];
-		this._world   = new QQ.World();
-		this._camera  = null;
-		this._started = false;
-		
+		const my       = QQ.Seizures.SeizureGame;
+		this._app      = app;
+		this._huds     = [];
+		this._world    = new QQ.World();
+		this._camera   = null;
+		this._isFinish = false;
+
+		this._world.setPauseable(true);
 		this._world.createPhysics();
 		this._camera = new QQ.Camera(
 				app.getCanvas(), 
@@ -41,23 +42,21 @@ QQ.Seizures.SeizureGame = class Game {
 
 		const backHud = new QQ.Hud('img/back.png', 15);
 		backHud.setPosition(1, 1, QQ.Hud.pivot.LEFTTOP );
-		backHud.setClick( () => {
-				QQ.seizures.set('Levels');
-			});
+		backHud.setClick( () => QQ.seizures.popUp('Pause') );
 		this._huds.push(backHud);
-		
-		this._started = true;
 	}
 
 	tick(delta) {
-		if ( this._started ) {
-			const aliens = this._getSubjectsByType('alien');
-			if ( aliens.length === 0 ) {
-				QQ.Application.get().setSeizure('Levels');
-			}
-			if ( this._world ) {
-				this._world.tick(delta);
-			}
+		const aliens = this._getSubjectsByType('alien');
+		if ( aliens.length === 0 && ! this._isFinish ) {
+			this._isFinish = true;
+			setTimeout(
+					() => QQ.seizures.popUp('EndLevel'),
+					500
+				);
+		}
+		if ( this._world ) {
+			this._world.tick(delta);
 		}
 	}
 	
@@ -71,6 +70,10 @@ QQ.Seizures.SeizureGame = class Game {
 	}
 	
 	click(x, y) {
+		if ( this._isFinish ) {
+			return;
+		}
+		
 		for ( const hud of this._huds ) {
 			const isHit = hud.isHit(
 					this._camera.widthToPercent(x), 

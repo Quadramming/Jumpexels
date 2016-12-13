@@ -30,10 +30,4 @@ QQ.Seizures.SeizureGame.Ramp = class Ramp extends QQ.Subject {
 		return 'ramp';
 	}
 	
-}
-
-	
-
-	
-
-
+};

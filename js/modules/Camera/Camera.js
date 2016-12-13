@@ -15,14 +15,14 @@ QQ.Camera = class Camera {
 			isActive : false,
 			prevM1   : false
 		};
-		this._posEpsilon  = 5;
-		this._canvas      = canvas;
-		this._width       = width;
-		this._height      = height;
-		this._x           = x;
-		this._y           = y;
-		this._mainMatrix  = 0;
-		this._clip        = null;
+		this._posEpsilon = 5;
+		this._canvas     = canvas;
+		this._width      = width;
+		this._height     = height;
+		this._x          = x;
+		this._y          = y;
+		this._mainMatrix = 0;
+		this._clip       = null;
 		
 		this._calcMainMatrix();
 		window.addEventListener('resize', () => this._calcMainMatrix() );
@@ -46,6 +46,12 @@ QQ.Camera = class Camera {
 					M[2][0], M[2][1]
 				);
 			subj.draw();
+			M = QQ.Matrix.getIdentity();
+			this._canvas.getContext('2d').setTransform(
+					M[0][0], M[0][1], 
+					M[1][0], M[1][1], 
+					M[2][0], M[2][1]
+				);
 		}
 		//this._drawAxis();
 	}

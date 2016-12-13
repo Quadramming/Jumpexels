@@ -33,6 +33,8 @@ QQ.Seizures.SeizureGame.EscapeShip = class EscapeShip extends QQ.Subject {
 				}
 			}
 		);
+
+		this.tick(0);
 	}
 	
 	tick(delta) {
@@ -51,4 +53,4 @@ QQ.Seizures.SeizureGame.EscapeShip = class EscapeShip extends QQ.Subject {
 		return 'escapeShip';
 	}
 	
-}
+};

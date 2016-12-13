@@ -34,8 +34,16 @@ QQ.Application = class Application {
 		this._process();
 	}
 	
+	pause() {
+		QQ.seizures.popUp('Pause');
+	}
+	
 	getCanvas() {
 		return this._canvas.getCanvas();
+	}
+	
+	getContext() {
+		return this._canvas.getContext();
 	}
 	
 	isM1Pressed() {

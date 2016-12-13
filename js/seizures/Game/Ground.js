@@ -12,4 +12,4 @@ QQ.Seizures.SeizureGame.Ground = class Ground extends QQ.Subject {
 		return 'ground';
 	}
 	
-}
+};

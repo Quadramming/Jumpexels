@@ -19,6 +19,11 @@ QQ.World = class World {
 		this._background = null;
 		this._physics    = null;
 		this._pauseTime  = 0.1;
+		this._pauseable  = false;
+	}
+	
+	setPauseable(v) {
+		this._pauseable = v;
 	}
 	
 	addBackground(url) {
@@ -75,7 +80,9 @@ QQ.World = class World {
 			}
 		} else {
 			this._deltaAccum = 0;
-			c('pause');
+			if ( this._pauseable ) {
+				QQ.application.pause();
+			}
 		}
 	}
 	
