@@ -129,3 +129,37 @@ QQ.Math.isInside = function(box1, x, y) {
 };
 
 QQ.Math.PIx2 = Math.PI*2;
+
+QQ.Math.calcPivotX = function(p, x, w) {
+	const pivot = QQ.Math.pivot;
+	if ( p === pivot.CENTERTOP ) {
+		return x;
+	} else if ( p === pivot.CENTERBOTTOM ) {
+		return x;
+	} else if ( p === pivot.CENTER ) {
+		return x;
+	} else if ( p === pivot.LEFTTOP ) {
+		return x + w/2;
+	}
+};
+
+QQ.Math.calcPivotY = function(p, y, h, yAxis = 1) {
+	const pivot = QQ.Math.pivot;
+	if ( p === pivot.CENTERTOP ) {
+		return y - (yAxis)*(h/2);
+	} else if ( p === pivot.CENTERBOTTOM ) {
+		return y + (yAxis)*(h/2);
+	} else if ( p === pivot.CENTER ) {
+		return y;
+	} else if ( p === pivot.LEFTTOP ) {
+		return y - (yAxis)*(h/2);
+	}
+};
+
+QQ.Math.pivot = {
+	NONE         : 1,
+	CENTER       : 2,
+	LEFTTOP      : 3,
+	CENTERBOTTOM : 4,
+	CENTERTOP    : 5
+};

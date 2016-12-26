@@ -20,8 +20,14 @@ QQ.Seizures.SeizureGame.Ramp = class Ramp extends QQ.Subject {
 		this._time  = QQ.Math.devidePeriod(this._time, this._period);
 		this._angle = this._time/this._period * QQ.Math.PIx2;
 		const x = this._pivotX + this._range * Math.sin(this._angle);
-		Matter.Body.setVelocity(this.getPhysicsBody(), { x: x-this._prevX, y: 0 });
-		Matter.Body.setPosition(this.getPhysicsBody(), { x: x, y: this._pivotY });
+		Matter.Body.setVelocity(this.getPhysicsBody(), { 
+				x: x-this._prevX, 
+				y: 0 
+			});
+		Matter.Body.setPosition(this.getPhysicsBody(), {
+				x: x, 
+				y: this._pivotY 
+			});
 		this._prevX = x;
 		this._physicsTick(delta);
 	}

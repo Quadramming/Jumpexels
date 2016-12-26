@@ -1,76 +1,42 @@
-seizure.loadLevel({
+QQ.levels[8] = {
 	
 	backGround : {
-		img : "./img/jump/bg.jpg"
+		img : './img/backgrounds/tmp.png'
 	},
 	
 	camera : {
-		type   : "fixed",
-		lookAt : { x :   0, y :  80 },
-		size   : { w : 150, h : 200 }
+		type   : 'fixed',
+		lookAt : { x :  0,   y :  200 },
+		size   : { w : 450,  h : 600 }
 	},
 	
 	escapeShip : {
-		pos    : { x :  0, y :  110 },
-		travel : { w : 3, h :  3 },
+		size   : { w : 100,  h :  100 },
+		pos    : { x : 150,   y : 280 },
+		travel : { w : 10,  h :  40 },
 		period : 20
 	},
 	
-	ground : {
-		pos    : { x :    0, y : -70 },
-		size   : { w : 1150, h : 150 }
-	},
+	grounds : [{
+			pos    : { x :  0,  y : 0 },
+			size   : { w : 500, h : 100 }
+		}, {
+			pos    : { x : 300,  y : 500 },
+			size   : { w : 100, h : 600 }
+		}, {
+			pos    : { x : -300,  y : 500 },
+			size   : { w : 100, h : 600 }
+	}],
 	
-	ramps : [
-		{
-			pos    : { x :   50, y :  20 },
-			size   : { w :  20, h :   3 },
-			travel : 20,
-			period : 3,
-			time   : 0
-		},
-		
-		{
-			pos    : { x :  -50, y :  20 },
-			size   : { w :  20, h :   3 },
-			travel : 20,
-			period : 3,
-			time   : 1.5
-		},
-		
-		{
-			pos    : { x :  0, y :  35 },
-			size   : { w :  20, h :   3 },
+	ramps : [{
+			pos    : { x :   -200, y :  150 },
+			size   : { w :  15, h :   15 },
 			travel : 0,
-			period : 1,
-			time   : 0
-		},
-		{
-			pos    : { x :  0, y :  55 },
-			size   : { w :  20, h :   3 },
-			travel : 80,
-			period : 7,
-			time   : 0
-		},
-		
-		{
-			pos    : { x :  0, y :  75 },
-			size   : { w :  20, h :   3 },
-			travel : 80,
-			period : 5,
-			time   : 0
-		}
-		
-	],
+			period : 1
+		}],
 	
 	aliens : [
-		{
-			pos    : { x : -30, y : 10 }
-		},
-		
-		{
-			pos    : { x :  30, y : 10 }
-		}
+		{ pos : { x : -180,    y : 60 } }
 	]
 	
-});
+};

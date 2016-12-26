@@ -6,12 +6,13 @@ QQ.Seizures.SeizureGame.Alien = class Alien extends QQ.Subject {
 		super('./img/animals/parrotSquare.png', 50, 50);
 		this.setPosition(
 				config.pos.x, config.pos.y, 
-				QQ.Subject.pivot.CENTERBOTTOM
+				QQ.Math.pivot.CENTERBOTTOM
 			);
 		this.setPhysics(config.pos.x, config.pos.y, 50, 50);
 		this._game         = game;
 		this._timeToEscape = 300;
 		this._startEscape  = 0;
+		this._jumped       = false;
 	}
 	
 	escape() {
@@ -23,18 +24,29 @@ QQ.Seizures.SeizureGame.Alien = class Alien extends QQ.Subject {
 	jump() {
 		const body     = this._physicsBody;
 		const surfaces = this._game.getSurfaces();
-		const pairs    = [];
+		const surfs    = [];
 		for ( const surface of surfaces ) {
-			pairs.push([ body, surface.getPhysicsBody() ]);
+			surfs.push(surface.getPhysicsBody());
 		}
-		const collisions = Matter.Detector.collisions(
-				pairs, 
-				this._game.getWorldPhysics()
-			);
+		const collisions = this._game.getWorld().getCollisions();
+
 		for ( const collision of collisions ) {
-			if ( collision.bodyA === body || collision.bodyB === body ) {
+			var isBodyA = 
+					collision.bodyA === body && 
+					collision.bodyA.position.y > collision.bodyB.bounds.max.y &&
+					surfs.includes(collision.bodyB);
+			var isBodyB = 
+					collision.bodyB === body && 
+					collision.bodyB.position.y > collision.bodyA.bounds.max.y &&
+					surfs.includes(collision.bodyA);
+			if ( isBodyA || isBodyB ) {
 				const x = body.velocity.x;
 				Matter.Body.setVelocity(body, { x : x, y : 10 });
+                if ( body.angularSpeed < 1e-5 ) {
+                    const angularSpeed = QQ.Math.rand(-1, 1)/1000;
+                    Matter.Body.setAngularVelocity(body, angularSpeed);
+                }
+				this._jumped = true;
 			}
 		}
 	}
@@ -50,8 +62,11 @@ QQ.Seizures.SeizureGame.Alien = class Alien extends QQ.Subject {
 				this._game.getWorld().deleteSubject(this);
 			}
 		} else {
-			if ( this._game.getApp().isM1Pressed() ) {
+			if ( this._game.getApp().isM1Pressed() && ! this._jumped ) {
 				this.jump();
+			}
+			if ( ! this._game.getApp().isM1Pressed() && this._jumped ) {
+				this._jumped = false;
 			}
 		}
 		this._physicsTick(delta);

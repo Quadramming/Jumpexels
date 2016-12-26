@@ -17,13 +17,13 @@ QQ.seizures.add('Intro', class Intro {
 		this._camera   = new QQ.Camera(app.getCanvas(), 30, 40, 0, -17.5);
 		this._camera.setClip(0, 0, -17.5, -62.5);
 		this._world.addBackground('img/backgrounds/tmpMenu.png');
-		this._addBackButton(0, 0, QQ.Subject.pivot.CENTERBOTTOM);
+		this._addBackButton(0, 0, QQ.Math.pivot.CENTERBOTTOM);
 
 		let intro = new QQ.Subject('img/intro.png', 30, 80);
-		intro.setPosition(0, 0, QQ.Subject.pivot.CENTERTOP);
+		intro.setPosition(0, 0, QQ.Math.pivot.CENTERTOP);
 		this._world.addSubject(intro);
 
-		this._addBackButton(0, -80, QQ.Subject.pivot.CENTERTOP);
+		this._addBackButton(0, -80, QQ.Math.pivot.CENTERTOP);
 	}
 
 	tick() {

@@ -10,9 +10,9 @@
 
 QQ.Seizures.SeizureGame = class Game {
 
-	constructor(app, level) {
-		const my       = QQ.Seizures.SeizureGame;
+	constructor(app, level, levelN) {
 		this._app      = app;
+		this._levelN   = levelN;
 		this._huds     = [];
 		this._world    = new QQ.World();
 		this._camera   = null;
@@ -28,20 +28,20 @@ QQ.Seizures.SeizureGame = class Game {
 
 		this._world.addBackground(level.backGround.img);
 
-		this._world.addSubject(new my.EscapeShip(level.escapeShip, this));
+		this._world.addSubject(new Game.EscapeShip(level.escapeShip, this));
 
 		for ( const ground of level.grounds ) {
-			this._world.addSubject(new my.Ground(ground));
+			this._world.addSubject(new Game.Ground(ground));
 		}
 		for ( const ramp of level.ramps ) {
-			this._world.addSubject(new my.Ramp(ramp));
+			this._world.addSubject(new Game.Ramp(ramp));
 		}
 		for ( const alien of level.aliens ) {
-			this._world.addSubject(new my.Alien(alien, this));
+			this._world.addSubject(new Game.Alien(alien, this));
 		}
 
 		const backHud = new QQ.Hud('img/back.png', 15);
-		backHud.setPosition(1, 1, QQ.Hud.pivot.LEFTTOP );
+		backHud.setPosition(1, 1, QQ.Math.pivot.LEFTTOP );
 		backHud.setClick( () => QQ.seizures.popUp('Pause') );
 		this._huds.push(backHud);
 	}
@@ -50,8 +50,9 @@ QQ.Seizures.SeizureGame = class Game {
 		const aliens = this._getSubjectsByType('alien');
 		if ( aliens.length === 0 && ! this._isFinish ) {
 			this._isFinish = true;
+			this._app.storage('level'+this._levelN, 'DONE');
 			setTimeout(
-					() => QQ.seizures.popUp('EndLevel'),
+					() => QQ.seizures.popUp('EndLevel', this._levelN),
 					500
 				);
 		}

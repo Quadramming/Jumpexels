@@ -20,6 +20,7 @@ QQ.World = class World {
 		this._physics    = null;
 		this._pauseTime  = 0.1;
 		this._pauseable  = false;
+		this._collisions = [];
 	}
 	
 	setPauseable(v) {
@@ -71,6 +72,7 @@ QQ.World = class World {
 					subj.tick(this._timeStep);
 				}
 				if ( this._physics ) {
+					this._collisions = [];
 					Matter.Engine.update(
 							this._physics, 
 							QQ.Math.secToMs(this._timeStep)
@@ -92,7 +94,19 @@ QQ.World = class World {
 	
 	createPhysics() {
 		this._physics = Matter.Engine.create();
-		this._physics.world.gravity.y = -1;
+		this._physics.velocityIterations = 3;
+		this._physics.positionIterations = 3;
+		this._physics.world.gravity.y    = -1;
+		this._physics.timing.timeScale   = 1;
+		
+		
+		const fillCollisions = (collisions) => {
+			for ( const pair of collisions.pairs ) {
+				this._collisions.push(pair);
+			}
+		};
+		Matter.Events.on(this._physics, "collisionStart",  fillCollisions);
+		Matter.Events.on(this._physics, "collisionActive", fillCollisions);
 		
 		/*
 		const render = Matter.Render.create({
@@ -112,7 +126,7 @@ QQ.World = class World {
 				showBroadphase: false,
 				showBounds: false,
 				showVelocity: false,
-				showCollisions: false,
+				showCollisions: true,
 				showSeparations: false,
 				showAxes: false,
 				showPositions: false,
@@ -127,6 +141,10 @@ QQ.World = class World {
 		});
 		Matter.Render.run(render);
 		*/
+	}
+	
+	getCollisions() {
+		return this._collisions;
 	}
 	
 	getSubjectsInRect(rect) {

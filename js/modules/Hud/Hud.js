@@ -68,40 +68,16 @@ QQ.Hud = class Hud {
 		return { x : scaleX, y : scaleY };
 	}
 	
-	setPosition(inX, inY, inPivot) {
+	setPosition(x, y, p) {
 		if ( ! this._sprite.isReady() ) {
-			setTimeout(this.setPosition.bind(this), 1, inX, inY, inPivot);
+			setTimeout(this.setPosition.bind(this), 1, x, y, p);
 		} else {
 			this._fixSize();
-			if ( inX !== undefined) {
-				if ( inPivot !== undefined ) {
-					if ( inPivot === QQ.Hud.pivot.CENTERTOP ) {
-						this._x = inX;
-					} else if ( inPivot === QQ.Hud.pivot.CENTERBOTTOM ) {
-						this._x = inX;
-					} else if ( inPivot === QQ.Hud.pivot.CENTER ) {
-						this._x = inX;
-					} else if ( inPivot === QQ.Hud.pivot.LEFTTOP ) {
-						this._x = inX+this._width/2;
-					}
-				} else {
-					this._x = inX;
-				}
+			if ( x !== undefined ) {
+				this._x = p ? QQ.Math.calcPivotX(p, x, this._width) : x;
 			}
-			if ( inY !== undefined ) {
-				if ( inPivot !== undefined ) {
-					if ( inPivot === QQ.Hud.pivot.CENTERTOP ) {
-						this._y = inY+this._height/2;
-					} else if ( inPivot === QQ.Hud.pivot.CENTERBOTTOM ) {
-						this._y = inY-this._height/2;
-					} else if ( inPivot === QQ.Hud.pivot.CENTER ) {
-						this._y = inY;
-					} else if ( inPivot === QQ.Hud.pivot.LEFTTOP ) {
-						this._y = inY+this._height/2;
-					}
-				} else {
-					this._y = inY;
-				}
+			if ( y !== undefined ) {
+				this._y = p ? QQ.Math.calcPivotY(p, y, this._height, -1) : y;
 			}
 		}
 	}
@@ -123,12 +99,4 @@ QQ.Hud.canvasRatio = function(ratio) {
 	} else {
 		return QQ.Hud.canvasRatio.ratio;
 	}	
-};
-
-QQ.Hud.pivot = {
-	NONE         : 0,
-	CENTER       : 1,
-	LEFTTOP      : 2,
-	CENTERBOTTOM : 3,
-	CENTERTOP    : 4
 };

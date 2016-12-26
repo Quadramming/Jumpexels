@@ -26,7 +26,7 @@ QQ.Touch = class Touch {
 				mouse.emulate(x, y, true);
 			}
 			e.preventDefault();
-		});
+		}, {passive: false});
 
 		window.addEventListener('touchmove', (e) => {
 			let touchobj = e.touches[0];
@@ -36,12 +36,13 @@ QQ.Touch = class Touch {
 				mouse.emulate(x, y, true);
 			}
 			e.preventDefault();
-		});
+		}, {passive: false});
 
 		window.addEventListener('touchend', (e) => {
 			mouse.emulate(x, y, false);
 			e.preventDefault();
-		});
+			return true;
+		}, {passive: false});
 	}
 	
 	_isNumbers(...args) {

@@ -23,14 +23,14 @@ QQ.FpsCounter = class FpsCounter {
 		this._accumFps    = 0;
 		this._fpsToShow   = 0;
 		this._iSlot       = 0;
-		this._maxSlots    = 30;
+		this._maxSlots    = 10;
 		this._details     = false;
 		this._slots       = [];
 		this._font        = '10px defaultFont';
 	}
 
 	showDetails() {
-		this._details = !this._details;
+		this._details = ! this._details;
 	}
 	
 	tick(delta) {

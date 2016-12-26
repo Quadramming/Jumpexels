@@ -16,6 +16,7 @@ QQ.seizures.add('Credits', class Credits {
 		this._camera = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
 		this._click  = false;
 		this._world.addBackground('img/credits.png');
+		app._fpsCounter.showDetails(); // DEBUG
 	}
 
 	tick() {

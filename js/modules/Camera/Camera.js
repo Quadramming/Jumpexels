@@ -252,7 +252,7 @@ QQ.Camera = class Camera {
 	_getInverseMatrix() {
 		return QQ.Matrix.inverse( this._getMatrix() );
 	}
-
+	
 	_getScreenMatrix() {
 		let M = QQ.Matrix.getIdentity();
 			M = QQ.Matrix.mul(M, QQ.Matrix.getRotate(0));

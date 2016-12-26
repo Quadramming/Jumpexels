@@ -32,7 +32,7 @@ QQ.Sprite = class Sprite {
 			console.log('Warning: Try QQ.Sprite.getRatio() when not ready');
 			return 0;
 		}
-		return this._width/this._height;
+		return this._width / this._height;
 	}
 
 	getSize() {
@@ -43,7 +43,7 @@ QQ.Sprite = class Sprite {
 	}
 
 	isReady() {
-		if ( this._ready === false && this._img.complete  ) {
+		if ( this._ready === false && this._img.complete ) {
 			this._width  = this._img.width;
 			this._height = this._img.height;
 			if ( this._isAnimation ) {
@@ -107,19 +107,19 @@ QQ.Sprite = class Sprite {
 				this._curFrame     = passedFrames % this._frames;
 				QQ.Sprite.context.drawImage(
 						this._img, 
-						this._frameWidth * this._curFrame, 0, 
-						this._frameWidth, this._frameHeight, 
-						x, y, 
+						this._frameWidth * this._curFrame, 0,
+						this._frameWidth, this._frameHeight,
+						x, y,
 						this._frameWidth, this._frameHeight
 					);
 			} else {
 				QQ.Sprite.context.drawImage(
-						this._img, 
-						x, y, 
+						this._img,
+						x, y,
 						this._width, this._height
 					);
 			}
-			QQ.Sprite.context.globalAlpha = alpha ;
+			QQ.Sprite.context.globalAlpha = alpha;
 		}
 	}
 	

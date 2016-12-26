@@ -64,7 +64,7 @@ QQ.Canvas = class Canvas {
 	}
 	
 	getWidth() { 
-		return this._width;        
+		return this._width;
 	}
 	
 	getHeight() { 

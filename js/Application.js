@@ -10,13 +10,14 @@ QQ.Application = class Application {
 		this._touch      = new QQ.Touch(this._mouse);
 		this._skipFrames = 0;
 		this._frame      = 0;
+		this._storage    = window.localStorage;
 	}
 	
 	init() {
 		QQ.Sprite.setContext(this._canvas.getContext());
 		QQ.Hud.canvasRatio(this._canvas.getRatio());
-		this._fpsCounter.showDetails();
 		QQ.seizures.set('MainMenu');
+		//QQ.seizures.set('Game', QQ.levels[10], 0);
 		
 		this._mouse.setM1DownCB( () => {
 				if ( this._isMouseInCanvas() ) {
@@ -32,6 +33,14 @@ QQ.Application = class Application {
 				}
 			});
 		this._process();
+	}
+	
+	storage(key, value) {
+		if ( value ) {
+			this._storage.setItem(key, value); 
+		} else {
+			return this._storage.getItem(key); 
+		}
 	}
 	
 	pause() {
