@@ -36,10 +36,10 @@ QQ.Hud = class Hud {
 	
 	getRect() {
 		return { 
-			x1: this._x - this._width/2, 
-			y1: this._y + this._height/2, 
-			x2: this._x + this._width/2, 
-			y2: this._y - this._height/2 
+			x1: this._x - this._width/2,
+			y1: this._y + this._height/2,
+			x2: this._x + this._width/2,
+			y2: this._y - this._height/2
 		};
 	}
 
@@ -58,36 +58,28 @@ QQ.Hud = class Hud {
 	getScale() {
 		let scaleX = 0;
 		let scaleY = 0;
-		if ( this._sprite.isReady() ) {
-			let size = this._sprite.getSize();
-			scaleX   = this._width  / size.width;
-			if ( this._height !== 0 ) {
-				scaleY = this._height / size.height;
-			}
+		let size   = this._sprite.getSize();
+		scaleX     = this._width  / size.width;
+		if ( this._height !== 0 ) {
+			scaleY = this._height / size.height;
 		}
 		return { x : scaleX, y : scaleY };
 	}
 	
 	setPosition(x, y, p) {
-		if ( ! this._sprite.isReady() ) {
-			setTimeout(this.setPosition.bind(this), 1, x, y, p);
-		} else {
-			this._fixSize();
-			if ( x !== undefined ) {
-				this._x = p ? QQ.Math.calcPivotX(p, x, this._width) : x;
-			}
-			if ( y !== undefined ) {
-				this._y = p ? QQ.Math.calcPivotY(p, y, this._height, -1) : y;
-			}
+		this._fixSize();
+		if ( x !== undefined ) {
+			this._x = p ? QQ.Math.calcPivotX(p, x, this._width) : x;
+		}
+		if ( y !== undefined ) {
+			this._y = p ? QQ.Math.calcPivotY(p, y, this._height, -1) : y;
 		}
 	}
 	
 	_fixSize() {
-		if ( this._sprite.isReady() ) {
-			if ( this._height === 0 ) {
-				let ratio = QQ.Hud.canvasRatio();
-				this._height = (this._width/this.getRatio())*ratio;
-			}
+		if ( this._height === 0 ) {
+			let ratio = QQ.Hud.canvasRatio();
+			this._height = (this._width/this.getRatio())*ratio;
 		}
 	}
 	

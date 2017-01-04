@@ -17,7 +17,7 @@ fs.writeFileSync(releaseFile, '// Compiled with JsToOneFile.js\n', {
 	flag     : 'w'
 });
 for ( const file of files ) {
-	let toWrite = '// ' + file + '\n' +
+	let toWrite = '\n// ' + file + '\n' +
 			fs.readFileSync('../'+file, 'utf-8');
 	fs.writeFileSync(releaseFile, toWrite, {
 		encoding : 'utf-8',

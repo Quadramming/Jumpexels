@@ -61,6 +61,8 @@ QQ.Canvas = class Canvas {
 		this._calcSize();
 		document.body.appendChild(this._canvas);
 		window.addEventListener('resize', () => this.resize() );
+		
+		this._context.imageSmoothingEnabled = true;
 	}
 	
 	getWidth() { 
@@ -68,19 +70,19 @@ QQ.Canvas = class Canvas {
 	}
 	
 	getHeight() { 
-		return this._height;       
+		return this._height;
 	}
 	
 	getUt() { 
-		return this._ut;           
+		return this._ut;
 	}
 	
 	getCanvas() { 
-		return this._canvas;       
+		return this._canvas;
 	}
 	
 	getContext() { 
-		return this._context;     
+		return this._context;
 	}
 	
 	getScale() { 

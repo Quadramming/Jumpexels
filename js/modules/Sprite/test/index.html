@@ -33,29 +33,12 @@
 			var time;
 			
 			function main() {
-				time    = new QQ.Time;
-				manager = new QQ.ImgManager;
-				canvas  = new QQ.Canvas('myCanvas', 800, 600);
-				canvas.drawBorder();
-				QQ.Sprite.setContext(canvas.getContext());
-				
-				sprite  = new QQ.Sprite( manager.get('test.jpg') );
-				walk    = new QQ.Sprite( manager.get('walk.jpg') );
-				walk.setAnimation(96, 96, 10, time);
-				
+
 				startAnimation();
 			}
 			
 			function startAnimation() {
-				time.update();
-				sprite.draw(100, 50);
-				walk.draw(100, 100);
-				sprite.draw(QQ.Sprite.pivot.LEFTTOP);
-				walk.draw(QQ.Sprite.pivot.CENTERBOTTOM);
-				walk.draw(QQ.Sprite.pivot.CENTERTOP);
-				window.document.title = 'Sprite ready is : ' + sprite.isReady();
-				
-				requestAnimationFrame(startAnimation);
+
 			}
 
 		</script>

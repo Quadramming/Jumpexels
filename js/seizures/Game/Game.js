@@ -74,7 +74,6 @@ QQ.Seizures.SeizureGame = class Game {
 		if ( this._isFinish ) {
 			return;
 		}
-		
 		for ( const hud of this._huds ) {
 			const isHit = hud.isHit(
 					this._camera.widthToPercent(x), 
@@ -84,22 +83,6 @@ QQ.Seizures.SeizureGame = class Game {
 				hud.click();
 			}
 		}
-		/*
-		var units = this._world.getSubjects(function(subj) {
-				return subj.type() === 'alien';
-			});
-		units.forEach(function(alien) {
-				alien.jump();
-			});
-			
-		if ( this._camera ) {
-			var point   = this._camera.getWorldPoint(x, y);
-			var clicked = this._world.getSubjectAtPoint(point.x, point.y);
-			if ( clicked ) {
-				clicked.click();
-			}
-		}
-		*/
 	}
 	
 	getWorld() {

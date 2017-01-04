@@ -17,7 +17,7 @@ QQ.Application = class Application {
 		QQ.Sprite.setContext(this._canvas.getContext());
 		QQ.Hud.canvasRatio(this._canvas.getRatio());
 		QQ.seizures.set('MainMenu');
-		//QQ.seizures.set('Game', QQ.levels[10], 0);
+		//QQ.seizures.set('Game', QQ.levels['smallwall'], 'nowall');
 		
 		this._mouse.setM1DownCB( () => {
 				if ( this._isMouseInCanvas() ) {

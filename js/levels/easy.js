@@ -1,7 +1,7 @@
-QQ.levels[3] = {
+QQ.levels['easy'] = {
 	
 	backGround : {
-		img : './img/backgrounds/tmp.png'
+		img : 'img/backgrounds/tmp.png'
 	},
 	
 	camera : {
@@ -11,9 +11,9 @@ QQ.levels[3] = {
 	},
 	
 	escapeShip : {
-		size   : { w : 140,  h :  140 },
-		pos    : { x : 130,   y : 300 },
-		travel : { w : 0,  h :  10 },
+		size   : { w : 150,  h :  150 },
+		pos    : { x : 0,   y : 300 },
+		travel : { w : 40,  h :  10 },
 		period : 20
 	},
 	
@@ -30,14 +30,14 @@ QQ.levels[3] = {
 	
 	
 	ramps : [{
-			pos    : { x :   -80, y :  100 },
+			pos    : { x :   0, y :  100 },
 			size   : { w :  100, h :   15 },
-			travel : 80,
-			period : 2.5
+			travel : 100,
+			period : 5
 		}],
 	
 	aliens : [
-		{ pos : { x : -150,    y : 60 } }
+		{ pos : { x : 0,    y : 60 } }
 	]
 	
 };

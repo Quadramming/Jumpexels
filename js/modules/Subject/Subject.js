@@ -11,7 +11,7 @@
 
 QQ.Subject = class Subject {
 	
-	constructor(imgSrc=null, width=1, height=1) {
+	constructor(imgSrc = null, width = 1, height = 1) {
 		this._x           = 0;
 		this._y           = 0;
 		this._width       = width;
@@ -31,10 +31,10 @@ QQ.Subject = class Subject {
 	
 	getRect() { // TODO: MB TOP LEFT BOTTOM RIGHT
 		return {
-			x1: this._x - this._width/2, 
-			y1: this._y + this._height/2, 
-			x2: this._x + this._width/2, 
-			y2: this._y - this._height/2 
+			x1: this._x - this._width/2,
+			y1: this._y + this._height/2,
+			x2: this._x + this._width/2,
+			y2: this._y - this._height/2
 		};
 	}
 	
@@ -96,7 +96,7 @@ QQ.Subject = class Subject {
 	getScale() {
 		let scaleX = 1;
 		let scaleY = 1;
-		if ( this._sprite && this._sprite.isReady() ) {
+		if ( this._sprite ) {
 			let size = this._sprite.getSize();
 			scaleX   = this._width  / size.width;
 			scaleY   = this._height / size.height;

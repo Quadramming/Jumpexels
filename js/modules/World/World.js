@@ -18,7 +18,7 @@ QQ.World = class World {
 		this._subjects   = [];
 		this._background = null;
 		this._physics    = null;
-		this._pauseTime  = 0.1;
+		this._pauseTime  = 0.5;
 		this._pauseable  = false;
 		this._collisions = [];
 	}

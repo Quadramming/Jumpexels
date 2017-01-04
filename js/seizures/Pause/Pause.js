@@ -30,14 +30,7 @@ QQ.seizures.add('Pause', class Pause {
 		rst1.setPosition(0, 6);
 		rst1.click = restart;
 		this._world.addSubject(rst1);
-	
-		/*
-		const rst2 = new QQ.Subject('img/restart.png', 5, 5);
-		rst2.setPosition(-12.5, 17.5);
-		rst2.click = restart;
-		this._world.addSubject(rst2);
-		*/
-	
+		
 		const levels = new QQ.Subject('img/exit.png', 5, 5);
 		levels.setPosition(6, 6);
 		levels.click = () => {
@@ -46,7 +39,7 @@ QQ.seizures.add('Pause', class Pause {
 		};
 		this._world.addSubject(levels);
 		
-		const text = new QQ.Text('Pause', 0, 11, 5);
+		const text = new QQ.Text('Pause', 0, 11, 3);
 		this._world.addSubject(text);
 	}
 

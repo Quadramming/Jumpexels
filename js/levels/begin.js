@@ -1,7 +1,7 @@
-QQ.levels[1] = {
+QQ.levels['begin'] = {
 	
 	backGround : {
-		img : './img/backgrounds/tmp.png'
+		img : 'img/backgrounds/tmp.png'
 	},
 	
 	camera : {

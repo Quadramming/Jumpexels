@@ -19,9 +19,9 @@ QQ.seizures.add('MainMenu', class MainMenu {
 		logo.click = () => QQ.seizures.set('Levels');
 		this._world.addSubject(logo);
 		
-		const title = new QQ.Subject('img/title.png', 20, 20/7);
-		title.setPosition(0, 12);
-		this._world.addSubject(title);
+		
+		const text = new QQ.Text('JUMPEXELS', 0, 14, 3);
+		this._world.addSubject(text);
 		
 		const intro = new QQ.Subject('img/introBt.png', 10, 2);
 		intro.click = () => QQ.seizures.set('Intro');

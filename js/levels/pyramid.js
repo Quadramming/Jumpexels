@@ -1,8 +1,7 @@
-
-QQ.levels[7] = {
+QQ.levels['pyramid'] = {
 	
 	backGround : {
-		img : './img/backgrounds/tmp.png'
+		img : 'img/backgrounds/tmp.png'
 	},
 	
 	camera : {

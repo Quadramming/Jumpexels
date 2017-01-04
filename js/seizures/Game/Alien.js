@@ -1,9 +1,11 @@
+/* global Matter */
+
 'use strict';
 
 QQ.Seizures.SeizureGame.Alien = class Alien extends QQ.Subject {
 	
 	constructor(config, game) {
-		super('./img/animals/parrotSquare.png', 50, 50);
+		super('img/animals/parrotSquare.png', 50, 50);
 		this.setPosition(
 				config.pos.x, config.pos.y, 
 				QQ.Math.pivot.CENTERBOTTOM
@@ -13,6 +15,7 @@ QQ.Seizures.SeizureGame.Alien = class Alien extends QQ.Subject {
 		this._timeToEscape = 300;
 		this._startEscape  = 0;
 		this._jumped       = false;
+		this.tick(0);
 	}
 	
 	escape() {
@@ -41,7 +44,7 @@ QQ.Seizures.SeizureGame.Alien = class Alien extends QQ.Subject {
 					surfs.includes(collision.bodyA);
 			if ( isBodyA || isBodyB ) {
 				const x = body.velocity.x;
-				Matter.Body.setVelocity(body, { x : x, y : 10 });
+				Matter.Body.setVelocity(body, { x : x*1.5, y : 10 });
                 if ( body.angularSpeed < 1e-5 ) {
                     const angularSpeed = QQ.Math.rand(-1, 1)/1000;
                     Matter.Body.setAngularVelocity(body, angularSpeed);

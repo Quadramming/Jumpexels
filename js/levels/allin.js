@@ -1,7 +1,7 @@
-QQ.levels[9] = {
+QQ.levels['allin'] = {
 	
 	backGround : {
-		img : './img/backgrounds/tmp.png'
+		img : 'img/backgrounds/tmp.png'
 	},
 	
 	camera : {

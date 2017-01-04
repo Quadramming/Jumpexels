@@ -15,18 +15,27 @@ QQ.Text = class Text extends QQ.Subject {
 		super(null, size, size);
 		this.setPosition(x, y);
 		this._fit        = fit;
-		this._text       = text;
+		this._text       = String(text);
+		this._multiText  = null;
 		this._ctx        = QQ.application.getContext();
 		this._textHeight = 5;
+		this._align      = 'center';
 		this._setupContext();
 		this._textWidth  = this._ctx.measureText(this._text).width;
+		if ( this._text.indexOf('\n') >= 0 ) {
+			this._multiText = this._text.split('\n');
+		}
 	}
 	
 	_setupContext() {
 		this._ctx.textBaseline = 'middle';
-		this._ctx.textAlign    = 'center';
+		this._ctx.textAlign    = this._align;
 		this._ctx.fillStyle    = '#878787';
-		this._ctx.font         = this._textHeight + 'px courier new';
+		this._ctx.font         = this._textHeight + 'px Ken';
+	}
+	
+	setAlign(a) {
+		this._align = a;
 	}
 	
 	setTextHeight(h) {
@@ -52,7 +61,15 @@ QQ.Text = class Text extends QQ.Subject {
 	
 	draw() {
 		this._setupContext();
-		this._ctx.fillText(this._text, 0, 0);
+		if ( this._multiText ) {
+			let x = 0;
+			for ( const str of this._multiText ) {
+				this._ctx.fillText(str, 0, x*this._textHeight*1.5);
+				++x;
+			}
+		} else {
+			this._ctx.fillText(this._text, 0, 0);
+		}
 	}
 	
 };

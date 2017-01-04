@@ -10,10 +10,12 @@
 
 QQ.Sprite = class Sprite {
 	
-	constructor(img) {
-		this._width       = 0;
-		this._height      = 0;
-		this._ready       = false;
+	constructor(readyImg) {
+		if ( readyImg.complete === false) {
+			alert('QQ.Sprite: img must be complete');
+		}
+		this._width       = readyImg.width;
+		this._height      = readyImg.height;
 		this._alpha       = 1;
 		this._animation   = false;
 		this._frameHeight = 0;
@@ -24,36 +26,17 @@ QQ.Sprite = class Sprite {
 		this._curFrame    = 0;
 		this._time        = null;
 		this._startTime   = 0;
-		this._img         = img;
+		this._img         = readyImg;
 	}
 	
 	getRatio() {
-		if ( ! this.isReady() ) {
-			console.log('Warning: Try QQ.Sprite.getRatio() when not ready');
-			return 0;
-		}
 		return this._width / this._height;
 	}
-
+	
 	getSize() {
-		if ( ! this.isReady() ) {
-			console.log('Warning: Try QQ.Sprite.getSize() when not ready');
-		}
 		return { width: this._width, height: this._height };
 	}
-
-	isReady() {
-		if ( this._ready === false && this._img.complete ) {
-			this._width  = this._img.width;
-			this._height = this._img.height;
-			if ( this._isAnimation ) {
-				this._frames = this._width / this._frameWidth;
-			}
-			this._ready = true;
-		}
-		return this._ready;
-	}
-
+	
 	setAnimation(w, h, fps, time) {
 		this._isAnimation = true;
 		this._frameWidth  = w;
@@ -62,9 +45,6 @@ QQ.Sprite = class Sprite {
 		this._tpf         = Math.round(1000 / fps); // Time per frame
 		this._time        = time;
 		this._startTime   = this._time.now();
-		if ( this.isReady() ) {
-			this._frames  = this._width / this._frameWidth;
-		}
 	}
 
 	setAlpha(a) {
@@ -74,7 +54,7 @@ QQ.Sprite = class Sprite {
 	draw(inX, inY) {
 		const isX = (typeof inX === 'number');
 		const isY = (typeof inY === 'number');
-		if ( this.isReady() && QQ.Sprite.context !== null ) {
+		if ( QQ.Sprite.context ) {
 			let pivot, x, y;
 			//================================================================
 			// Input
@@ -164,7 +144,7 @@ QQ.Sprite.setContext = function(ctx) {
 	QQ.Sprite.context = ctx;
 };
 
-QQ.Sprite.context = null;
+QQ.Sprite.context = false;
 
 QQ.Sprite.pivot = {
 	NONE         : 0,

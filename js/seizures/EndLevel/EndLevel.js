@@ -17,19 +17,22 @@ QQ.seizures.add('EndLevel', class EndLevel {
 		this._click  = false;
 		this._world.addBackground('img/dialog.png');
 		
-		let text = new QQ.Text('Congratulations', 0, 12, 1.5);
+		let text = new QQ.Text('Congratulations', 0, 12, 1);
 		this._world.addSubject(text);
-		text = new QQ.Text('You have won!', 0, 10, 1.5);
+		text = new QQ.Text('You have won!', 0, 10, 1);
 		this._world.addSubject(text);
 		
-		if ( level < QQ.levels.length-1 ) {
-			const back = new QQ.Subject('img/next.png', 5, 5);
-			back.setPosition(-6, 6);
-			back.click = () => {
+		const myLevelIndex   = QQ.levelsOrder.indexOf(level);
+		const nextLevelIndex = myLevelIndex + 1;
+		if ( nextLevelIndex < QQ.levelsOrder.length ) {
+			const nextName = QQ.levelsOrder[nextLevelIndex];
+			const next     = new QQ.Subject('img/next.png', 5, 5);
+			next.setPosition(-6, 6);
+			next.click = () => {
 				QQ.seizures.closePopUp();
-				QQ.seizures.set('Game', QQ.levels[level+1], level+1);
+				QQ.seizures.set('Game', QQ.levels[nextName], nextName);
 			};
-			this._world.addSubject(back);
+			this._world.addSubject(next);
 		}
 		
 		const rst1    = new QQ.Subject('img/restart.png', 5, 5);

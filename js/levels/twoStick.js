@@ -1,7 +1,7 @@
-QQ.levels[6] = {
+QQ.levels['twoStick'] = {
 	
 	backGround : {
-		img : './img/backgrounds/tmp.png'
+		img : 'img/backgrounds/tmp.png'
 	},
 	
 	camera : {
@@ -32,14 +32,15 @@ QQ.levels[6] = {
 	ramps : [{
 			pos    : { x :   0, y :  100 },
 			size   : { w :  100, h :   15 },
-			travel : 50,
-			period : 2
-		}, {
-			pos    : { x :   0, y :  200 },
-			size   : { w :  30, h :   15 },
-			travel : 40,
-			period : 1
-	}],
+			travel : 100,
+			period : 5
+		},{
+			pos    : { x :   0, y :  210 },
+			size   : { w :  100, h :   15 },
+			travel : 100,
+			time   : 2.5,
+			period : 5
+		}],
 	
 	aliens : [
 		{ pos : { x : 0,    y : 60 } }

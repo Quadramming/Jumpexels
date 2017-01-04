@@ -41,17 +41,19 @@ QQ.Camera = class Camera {
 				M     = QQ.Matrix.mul(M, this._mainMatrix);
 
 			this._canvas.getContext('2d').setTransform(
-					M[0][0], M[0][1], 
-					M[1][0], M[1][1], 
+					M[0][0], M[0][1],
+					M[1][0], M[1][1],
 					M[2][0], M[2][1]
 				);
 			subj.draw();
+			/*
 			M = QQ.Matrix.getIdentity();
 			this._canvas.getContext('2d').setTransform(
-					M[0][0], M[0][1], 
-					M[1][0], M[1][1], 
+					M[0][0], M[0][1],
+					M[1][0], M[1][1],
 					M[2][0], M[2][1]
 				);
+			*/
 		}
 		//this._drawAxis();
 	}

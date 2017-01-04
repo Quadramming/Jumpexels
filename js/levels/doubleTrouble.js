@@ -1,7 +1,7 @@
-QQ.levels[5] = {
+QQ.levels['doubleTrouble'] = {
 	
 	backGround : {
-		img : './img/backgrounds/tmp.png'
+		img : 'img/backgrounds/tmp.png'
 	},
 	
 	camera : {
@@ -12,9 +12,9 @@ QQ.levels[5] = {
 	
 	escapeShip : {
 		size   : { w : 150,  h :  150 },
-		pos    : { x : -100,   y : 400 },
-		travel : { w : 5,  h :  5 },
-		period : 10
+		pos    : { x : 0,   y : 400 },
+		travel : { w : 40,  h :  10 },
+		period : 20
 	},
 	
 	grounds : [{
@@ -30,18 +30,16 @@ QQ.levels[5] = {
 	
 	
 	ramps : [{
-			pos    : { x :   -100, y :  100 },
+			pos    : { x :   0, y :  100 },
 			size   : { w :  100, h :   15 },
-			travel : 80,
-			time   : 2,
-			period : 4
-		},{
-			pos    : { x :   100, y :  220 },
-			size   : { w :  100, h :   15 },
-			travel : 60,
-			time   : 2.5,
-			period : 3
-		}],
+			travel : 50,
+			period : 2
+		}, {
+			pos    : { x :   0, y :  200 },
+			size   : { w :  30, h :   15 },
+			travel : 40,
+			period : 1
+	}],
 	
 	aliens : [
 		{ pos : { x : 0,    y : 60 } }

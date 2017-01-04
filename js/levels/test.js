@@ -1,7 +1,7 @@
-QQ.levels[4] = {
+QQ.levels['test'] = {
 	
 	backGround : {
-		img : './img/backgrounds/tmp.png'
+		img : 'img/backgrounds/tmp.png'
 	},
 	
 	camera : {
@@ -28,19 +28,7 @@ QQ.levels[4] = {
 			size   : { w : 100, h : 600 }
 	}],
 	
-	
-	ramps : [{
-			pos    : { x :   0, y :  100 },
-			size   : { w :  100, h :   15 },
-			travel : 100,
-			period : 5
-		},{
-			pos    : { x :   0, y :  210 },
-			size   : { w :  100, h :   15 },
-			travel : 100,
-			time   : 2.5,
-			period : 5
-		}],
+	ramps : [],
 	
 	aliens : [
 		{ pos : { x : 0,    y : 60 } }

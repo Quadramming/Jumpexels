@@ -3,11 +3,11 @@
 QQ.Seizures.SeizureGame.EscapeShip = class EscapeShip extends QQ.Subject {
 	
 	constructor(config, game) {
-		super('./img/spaceShip.png', config.size.w, config.size.h);
+		super('img/spaceShip.png', config.size.w, config.size.h);
 		this.setDefaultPhysics({ isStatic: true, isSensor: true });
 		
 		const world   = game.getWorld();
-		this._angle   = 0;
+		this._a       = 0;
 		this._time    = 0;
 		this._pivotX  = config.pos.x;
 		this._pivotY  = config.pos.y;
@@ -40,13 +40,16 @@ QQ.Seizures.SeizureGame.EscapeShip = class EscapeShip extends QQ.Subject {
 	tick(delta) {
 		this._time += delta;
 		this._time  = QQ.Math.devidePeriod(this._time, this._period);
-		this._angle = this._time/this._period * QQ.Math.PIx2;
-
+		this._a     = this._time/this._period * QQ.Math.PIx2;
 		Matter.Body.setPosition(this.getPhysicsBody(), {
-			x: this._pivotX + this._travelX * Math.sin(this._angle  ),
-			y: this._pivotY + this._travelY * Math.sin(this._angle*2)
+			x: this._pivotX + this._travelX * Math.sin(this._a  ),
+			y: this._pivotY + this._travelY * Math.sin(this._a*2)
 		});
 		this._physicsTick(delta);
+	}
+	
+	getAngle() {
+		return 0;
 	}
 	
 	type() {

@@ -8,8 +8,6 @@
 
 'use strict';
 
-QQ.levels = [];
-
 QQ.Seizures.SeizureLevels = class SeizureLevels {
 	
 	constructor(app) {
@@ -19,9 +17,9 @@ QQ.Seizures.SeizureLevels = class SeizureLevels {
 		this._world       = new QQ.World();
 		this._world.addBackground('img/backgrounds/tmpMenu.png');
 		this._clickStart  = false;
-		this._openedMax   = 3;
+		this._openedMax   = 30;
 		this._opened      = 0;
-		this._addLevels(10);
+		this._addLevels();
 		
 		const intro = new QQ.Subject('img/back.png', 5, 5);
 		intro.click = () => QQ.seizures.set('MainMenu');
@@ -59,27 +57,30 @@ QQ.Seizures.SeizureLevels = class SeizureLevels {
 		}
 	}
 	
-	_addLevels(n) {
-		let perRow = 4;
-		let rows   = Math.ceil(n / perRow);
-		let stepY  = 7;
-		let stepX  = 7;
-		let startY = 10;
-		let startX = -stepX * 1.5;
-		let level  = 1;
+	_addLevels() {
+		const stepY  = 7;
+		const stepX  = 7;
+		const startY = 10;
+		const startX = -stepX * 1.5;
+		const perRow = 4;
+		const n      = QQ.levelsOrder.length;
+		const rows   = Math.ceil(n / perRow);
+		let   level  = 0;
 		for ( let row = 0; row < rows; ++row ) {
-			for ( let i = 0; i < perRow; ++i ) {
-				this._addLevel(startX + i*stepX, startY - stepY*row, level);
-				if ( level === n ) {
-					return;
-				}
+			for ( let i = 0; i < perRow && level < n; ++i ) {
 				++level;
+				this._addLevel(
+					startX + i*stepX,
+					startY - stepY*row,
+					QQ.levelsOrder[level-1],
+					level
+				);
 			}
 		}
 	}
 	
-	_addLevel(x, y, n) {
-		const state  = this._myApp.storage('level' + n);
+	_addLevel(x, y, name, text) {
+		const state  = this._myApp.storage('level' + name);
 		const s      = QQ.Seizures.SeizureLevels.Level.STATUS;
 		let   status = s.OPEN;
 		if ( state === 'DONE' ) {
@@ -92,7 +93,7 @@ QQ.Seizures.SeizureLevels = class SeizureLevels {
 			}
 		}
 		this._world.addSubject(
-			new	SeizureLevels.Level(n, x, y, status)
+			new	SeizureLevels.Level(x, y, name, text, status)
 		);
 	}
 	
@@ -100,37 +101,39 @@ QQ.Seizures.SeizureLevels = class SeizureLevels {
 
 QQ.Seizures.SeizureLevels.Level = class Level extends QQ.Subject {
 	
-	constructor(n, x, y, status) {
+	constructor(x, y, name, text, status) {
 		super('img/level.png', 5, 5);
-		this._levelN      = n;
+		this._name        = name;
 		this._status      = status;
 		this.setPosition(x, y);
 		this._spriteCheck = null;
 		if ( status === Level.STATUS.DONE ) {
-			this._spriteCheck = new QQ.Sprite( QQ.imgManager.get('img/check.png') );
+			this._spriteCheck = new QQ.Sprite( 
+					QQ.imgManager.get('img/check.png')
+				);
 		} else if ( status === Level.STATUS.CLOSED ) {
-			this._spriteCheck = new QQ.Sprite( QQ.imgManager.get('img/cross.png') );
+			this._spriteCheck = new QQ.Sprite( 
+					QQ.imgManager.get('img/cross.png')
+				);
 		}
-		this._text = new QQ.Text(n);
+		this._text = new QQ.Text(text);
 		this._text.setTextHeight(30);
 	}
 	
 	click() {
 		const isOpen = this._status === Level.STATUS.OPEN;
 		const isDone = this._status === Level.STATUS.DONE;
-		if ( isOpen || isDone ) {	
-			QQ.seizures.set('Game', QQ.levels[this._levelN], this._levelN);
+		if ( isOpen || isDone ) {
+			QQ.seizures.set('Game', QQ.levels[this._name], this._name);
 		}
 	}
 	
 	draw() {
-		if ( this._sprite.isReady() ) {
-			super.draw();
-			if ( this._spriteCheck ) {
-				this._spriteCheck.draw();
-			}
-			this._text.draw();
+		super.draw();
+		if ( this._spriteCheck ) {
+			this._spriteCheck.draw();
 		}
+		this._text.draw();
 	}
 	
 };
