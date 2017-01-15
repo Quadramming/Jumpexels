@@ -1,5 +1,6 @@
 QQ.levels      = [];
 QQ.levelsOrder = [
+	'test',
 	'begin',
 	'easy',
 	'jump',
@@ -9,7 +10,6 @@ QQ.levelsOrder = [
 	'bunny',
 	'pyramid',
 	'allin',
-	'test',
 	'wall',
 	'nowall',
 	'smallwall'

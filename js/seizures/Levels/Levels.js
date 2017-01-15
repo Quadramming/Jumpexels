@@ -13,15 +13,15 @@ QQ.Seizures.SeizureLevels = class SeizureLevels {
 	constructor(app) {
 		this._myApp       = app;
 		this._camera      = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
-		this._camera.setClip(0, 0, 0, -60);
+		this._camera.setClip(0, 0, 0, 0);
 		this._world       = new QQ.World();
-		this._world.addBackground('img/backgrounds/tmpMenu.png');
+		this._world.addBackground('img/backgrounds/menu.png');
 		this._clickStart  = false;
-		this._openedMax   = 30;
+		this._openedMax   = 3;
 		this._opened      = 0;
 		this._addLevels();
 		
-		const intro = new QQ.Subject('img/back.png', 5, 5);
+		const intro = new QQ.Subject('img/buttons/back.png', 5, 5);
 		intro.click = () => QQ.seizures.set('MainMenu');
 		intro.setPosition(0, 17);
 		this._world.addSubject(intro);
@@ -102,7 +102,7 @@ QQ.Seizures.SeizureLevels = class SeizureLevels {
 QQ.Seizures.SeizureLevels.Level = class Level extends QQ.Subject {
 	
 	constructor(x, y, name, text, status) {
-		super('img/level.png', 5, 5);
+		super('img/buttons/level.png', 5, 5);
 		this._name        = name;
 		this._status      = status;
 		this.setPosition(x, y);
@@ -117,14 +117,17 @@ QQ.Seizures.SeizureLevels.Level = class Level extends QQ.Subject {
 				);
 		}
 		this._text = new QQ.Text(text);
-		this._text.setTextHeight(30);
+		this._text.setLineHeight(30);
 	}
 	
 	click() {
 		const isOpen = this._status === Level.STATUS.OPEN;
 		const isDone = this._status === Level.STATUS.DONE;
 		if ( isOpen || isDone ) {
-			QQ.seizures.set('Game', QQ.levels[this._name], this._name);
+			QQ.seizures.set('Game', {
+					cfg:  QQ.levels[this._name],
+					name: this._name
+				});
 		}
 	}
 	

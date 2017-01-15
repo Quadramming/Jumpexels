@@ -30,7 +30,7 @@ QQ.Camera = class Camera {
 	
 	draw(subjects) {
 		//this._cleanCanvas();
-		for ( const subj of subjects ) {
+		for ( let subj of subjects ) {
 			let pos   = subj.getPosition();
 			let scale = subj.getScale();
 			let angle = subj.getAngle();
@@ -46,7 +46,7 @@ QQ.Camera = class Camera {
 					M[2][0], M[2][1]
 				);
 			subj.draw();
-			/*
+			/* CLEAR
 			M = QQ.Matrix.getIdentity();
 			this._canvas.getContext('2d').setTransform(
 					M[0][0], M[0][1],
@@ -59,7 +59,7 @@ QQ.Camera = class Camera {
 	}
 	
 	drawHud(huds) {
-		for ( const hud of huds ) {
+		for ( let hud of huds ) {
 			let pos    = hud.getPosition();
 			let scale  = hud.getScale();
 			let scaleX = this.widthPercent(scale.x);
@@ -127,10 +127,10 @@ QQ.Camera = class Camera {
 	
 	getViewRect() {
 		return { 
-			x1: this._x - this._width/2, 
-			y1: this._y + this._height/2, 
-			x2: this._x + this._width/2, 
-			y2: this._y - this._height/2 
+			x1: this._x - this._width/2,
+			y1: this._y + this._height/2,
+			x2: this._x + this._width/2,
+			y2: this._y - this._height/2
 		};
 	}
 	

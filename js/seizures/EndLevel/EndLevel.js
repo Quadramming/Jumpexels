@@ -9,7 +9,7 @@
 'use strict';
 
 QQ.seizures.add('EndLevel', class EndLevel {
-
+	
 	constructor(app, level) {
 		this._myApp  = app;
 		this._world  = new QQ.World();
@@ -17,25 +17,26 @@ QQ.seizures.add('EndLevel', class EndLevel {
 		this._click  = false;
 		this._world.addBackground('img/dialog.png');
 		
-		let text = new QQ.Text('Congratulations', 0, 12, 1);
-		this._world.addSubject(text);
-		text = new QQ.Text('You have won!', 0, 10, 1);
+		let text = new QQ.Text('Congratulations\n\nYou have won!', 0, 13, 1.3);
 		this._world.addSubject(text);
 		
 		const myLevelIndex   = QQ.levelsOrder.indexOf(level);
 		const nextLevelIndex = myLevelIndex + 1;
 		if ( nextLevelIndex < QQ.levelsOrder.length ) {
 			const nextName = QQ.levelsOrder[nextLevelIndex];
-			const next     = new QQ.Subject('img/next.png', 5, 5);
+			const next     = new QQ.Subject('img/buttons/forward.png', 5, 5);
 			next.setPosition(-6, 6);
 			next.click = () => {
 				QQ.seizures.closePopUp();
-				QQ.seizures.set('Game', QQ.levels[nextName], nextName);
+				QQ.seizures.set('Game', {
+					cfg:  QQ.levels[nextName],
+					name: nextName
+				});
 			};
 			this._world.addSubject(next);
 		}
 		
-		const rst1    = new QQ.Subject('img/restart.png', 5, 5);
+		const rst1    = new QQ.Subject('img/buttons/restart.png', 5, 5);
 		rst1.setPosition(0, 6);
 		rst1.click = () => {
 			QQ.seizures.closePopUp();
@@ -43,7 +44,7 @@ QQ.seizures.add('EndLevel', class EndLevel {
 		};
 		this._world.addSubject(rst1);
 		
-		const levels = new QQ.Subject('img/exit.png', 5, 5);
+		const levels = new QQ.Subject('img/buttons/exit.png', 5, 5);
 		levels.setPosition(6, 6);
 		levels.click = () => {
 			QQ.seizures.closePopUp();

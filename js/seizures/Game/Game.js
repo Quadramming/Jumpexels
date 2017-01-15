@@ -10,9 +10,9 @@
 
 QQ.Seizures.SeizureGame = class Game {
 
-	constructor(app, level, levelN) {
+	constructor(app, level) {
 		this._app      = app;
-		this._levelN   = levelN;
+		this._name     = level.name;
 		this._huds     = [];
 		this._world    = new QQ.World();
 		this._camera   = null;
@@ -22,25 +22,25 @@ QQ.Seizures.SeizureGame = class Game {
 		this._world.createPhysics();
 		this._camera = new QQ.Camera(
 				app.getCanvas(), 
-				level.camera.size.w,   level.camera.size.h, 
-				level.camera.lookAt.x, level.camera.lookAt.y
+				level.cfg.camera.size.w,   level.cfg.camera.size.h, 
+				level.cfg.camera.lookAt.x, level.cfg.camera.lookAt.y
 			);
+			
+		this._world.addBackground(level.cfg.backGround.img);
+		
+		this._world.addSubject(new Game.EscapeShip(level.cfg.escapeShip, this));
 
-		this._world.addBackground(level.backGround.img);
-
-		this._world.addSubject(new Game.EscapeShip(level.escapeShip, this));
-
-		for ( const ground of level.grounds ) {
+		for ( let ground of level.cfg.grounds ) {
 			this._world.addSubject(new Game.Ground(ground));
 		}
-		for ( const ramp of level.ramps ) {
+		for ( let ramp of level.cfg.ramps ) {
 			this._world.addSubject(new Game.Ramp(ramp));
 		}
-		for ( const alien of level.aliens ) {
+		for ( let alien of level.cfg.aliens ) {
 			this._world.addSubject(new Game.Alien(alien, this));
 		}
 
-		const backHud = new QQ.Hud('img/back.png', 15);
+		const backHud = new QQ.Hud('img/buttons/back.png', 15);
 		backHud.setPosition(1, 1, QQ.Math.pivot.LEFTTOP );
 		backHud.setClick( () => QQ.seizures.popUp('Pause') );
 		this._huds.push(backHud);
@@ -50,9 +50,9 @@ QQ.Seizures.SeizureGame = class Game {
 		const aliens = this._getSubjectsByType('alien');
 		if ( aliens.length === 0 && ! this._isFinish ) {
 			this._isFinish = true;
-			this._app.storage('level'+this._levelN, 'DONE');
+			this._app.storage('level'+this._name, 'DONE');
 			setTimeout(
-					() => QQ.seizures.popUp('EndLevel', this._levelN),
+					() => QQ.seizures.popUp('EndLevel', this._name),
 					500
 				);
 		}
@@ -74,7 +74,7 @@ QQ.Seizures.SeizureGame = class Game {
 		if ( this._isFinish ) {
 			return;
 		}
-		for ( const hud of this._huds ) {
+		for ( let hud of this._huds ) {
 			const isHit = hud.isHit(
 					this._camera.widthToPercent(x), 
 					this._camera.heightToPercent(y)

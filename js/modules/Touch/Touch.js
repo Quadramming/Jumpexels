@@ -46,7 +46,7 @@ QQ.Touch = class Touch {
 	}
 	
 	_isNumbers(...args) {
-		for ( const arg of args ) {
+		for ( let arg of args ) {
 			if ( typeof arg !== 'number' ) {
 				return false;
 			}

@@ -52,7 +52,7 @@ QQ.World = class World {
 	}
 	
 	getSubjectByPhysics(body) {
-		for ( const subj of this._subjects ) {
+		for ( let subj of this._subjects ) {
 			if ( subj.getPhysicsBody() === body ) {
 				return subj;
 			}
@@ -63,12 +63,14 @@ QQ.World = class World {
 		this._deltaAccum += delta;
 		let ticksDone = 0;
 		if ( this._deltaAccum < this._pauseTime ) {
-			while ( this._deltaAccum > (this._maxTicks+1)*this._timeStep ) {
-				this._deltaAccum -= this._timeStep;
+			if ( this._deltaAccum > (this._maxTicks+1)*this._timeStep ) {
+				this._deltaAccum = this._maxTicks * this._timeStep +
+					this._deltaAccum % this._timeStep;
 			}
+			//c(this._deltaAccum);
 			while ( this._deltaAccum > this._timeStep ) {
 				this._deltaAccum -= this._timeStep;
-				for ( const subj of this._subjects ) {
+				for ( let subj of this._subjects ) {
 					subj.tick(this._timeStep);
 				}
 				if ( this._physics ) {
@@ -80,6 +82,7 @@ QQ.World = class World {
 				}
 				ticksDone++;
 			}
+			//c(ticksDone);
 		} else {
 			this._deltaAccum = 0;
 			if ( this._pauseable ) {
@@ -94,53 +97,18 @@ QQ.World = class World {
 	
 	createPhysics() {
 		this._physics = Matter.Engine.create();
-		this._physics.velocityIterations = 3;
-		this._physics.positionIterations = 3;
+		this._physics.velocityIterations =  4;
+		this._physics.positionIterations =  4;
 		this._physics.world.gravity.y    = -1;
-		this._physics.timing.timeScale   = 1;
-		
+		this._physics.timing.timeScale   =  1;
 		
 		const fillCollisions = (collisions) => {
-			for ( const pair of collisions.pairs ) {
+			for ( let pair of collisions.pairs ) {
 				this._collisions.push(pair);
 			}
 		};
 		Matter.Events.on(this._physics, "collisionStart",  fillCollisions);
 		Matter.Events.on(this._physics, "collisionActive", fillCollisions);
-		
-		/*
-		const render = Matter.Render.create({
-			element: document.body,
-			engine: this._physics,
-			options: {
-				width: 800,
-				height: 600,
-				pixelRatio: 1,
-				background: '#fafafa',
-				wireframeBackground: '#222',
-				hasBounds: false,
-				enabled: true,
-				wireframes: true,
-				showSleeping: true,
-				showDebug: false,
-				showBroadphase: false,
-				showBounds: false,
-				showVelocity: false,
-				showCollisions: true,
-				showSeparations: false,
-				showAxes: false,
-				showPositions: false,
-				showAngleIndicator: false,
-				showIds: false,
-				showShadows: false,
-				showVertexNumbers: false,
-				showConvexHulls: false,
-				showInternalEdges: false,
-				showMousePosition: false
-			}
-		});
-		Matter.Render.run(render);
-		*/
 	}
 	
 	getCollisions() {
@@ -153,7 +121,7 @@ QQ.World = class World {
 			this._background.fitInRect(rect);
 			result.push(this._background);
 		}
-		for ( const subj of this._subjects ) {
+		for ( let subj of this._subjects ) {
 			if ( QQ.Math.isIntersect(rect, subj.getRect()) ) {
 				result.push(subj); 
 			}
@@ -164,8 +132,8 @@ QQ.World = class World {
 	getSubjectAtPoint(x, y) {
 		for ( let i = this._subjects.length-1 ; i >= 0 ; --i ) {
 			const subj = this._subjects[i];
-			if ( QQ.Math.isInside(subj.getRect(), x, y) ) {
-				return subj; 
+			if ( QQ.Math.isInside(subj.getRect(), x, y) && subj.isClickable() ) {
+				return subj;
 			}
 		}
 	}

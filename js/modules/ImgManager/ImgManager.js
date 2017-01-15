@@ -21,7 +21,7 @@ QQ.imgManager = new class ImgManager {
 	}
 
 	get(url) {
-		for ( const img of this._imgs ) {
+		for ( let img of this._imgs ) {
 			if ( img.url === url ) {
 				return img.obj;
 			}
@@ -35,7 +35,7 @@ QQ.imgManager = new class ImgManager {
 	}
 	
 	isAllReady() {
-		for ( const img of this._imgs ) {
+		for ( let img of this._imgs ) {
 			if ( img.obj.complete === false ) {
 				return false;
 			}
@@ -44,7 +44,7 @@ QQ.imgManager = new class ImgManager {
 	}
 
 	isReady(imgObj) {
-		for ( const img of this._imgs ) {
+		for ( let img of this._imgs ) {
 			if ( img.obj === imgObj ) {
 				return img.obj.complete;
 			}

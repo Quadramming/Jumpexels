@@ -5,7 +5,7 @@
 QQ.Seizures.SeizureGame.Alien = class Alien extends QQ.Subject {
 	
 	constructor(config, game) {
-		super('img/animals/parrotSquare.png', 50, 50);
+		super('img/aliens/parrot.png', 50, 50);
 		this.setPosition(
 				config.pos.x, config.pos.y, 
 				QQ.Math.pivot.CENTERBOTTOM
@@ -28,12 +28,11 @@ QQ.Seizures.SeizureGame.Alien = class Alien extends QQ.Subject {
 		const body     = this._physicsBody;
 		const surfaces = this._game.getSurfaces();
 		const surfs    = [];
-		for ( const surface of surfaces ) {
+		for ( let surface of surfaces ) {
 			surfs.push(surface.getPhysicsBody());
 		}
 		const collisions = this._game.getWorld().getCollisions();
-
-		for ( const collision of collisions ) {
+		for ( let collision of collisions ) {
 			var isBodyA = 
 					collision.bodyA === body && 
 					collision.bodyA.position.y > collision.bodyB.bounds.max.y &&
@@ -45,10 +44,10 @@ QQ.Seizures.SeizureGame.Alien = class Alien extends QQ.Subject {
 			if ( isBodyA || isBodyB ) {
 				const x = body.velocity.x;
 				Matter.Body.setVelocity(body, { x : x*1.5, y : 10 });
-                if ( body.angularSpeed < 1e-5 ) {
-                    const angularSpeed = QQ.Math.rand(-1, 1)/1000;
-                    Matter.Body.setAngularVelocity(body, angularSpeed);
-                }
+				if ( body.angularSpeed < 1e-5 ) {
+					const angularSpeed = QQ.Math.rand(-1, 1)/1000;
+					Matter.Body.setAngularVelocity(body, angularSpeed);
+				}
 				this._jumped = true;
 			}
 		}

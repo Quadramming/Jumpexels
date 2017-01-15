@@ -9,10 +9,8 @@ QQ.Seizures.SeizureGame.EscapeShip = class EscapeShip extends QQ.Subject {
 		const world   = game.getWorld();
 		this._a       = 0;
 		this._time    = 0;
-		this._pivotX  = config.pos.x;
-		this._pivotY  = config.pos.y;
-		this._travelX = config.travel.w;
-		this._travelY = config.travel.h;
+		this._pivot   = config.pos;
+		this._travel  = config.travel;
 		this._period  = config.period;
 		
 		Matter.Events.on(game.getWorldPhysics(), 'collisionStart', 
@@ -33,8 +31,7 @@ QQ.Seizures.SeizureGame.EscapeShip = class EscapeShip extends QQ.Subject {
 				}
 			}
 		);
-
-		this.tick(0); // init params
+		this.tick(0);
 	}
 	
 	tick(delta) {
@@ -42,14 +39,10 @@ QQ.Seizures.SeizureGame.EscapeShip = class EscapeShip extends QQ.Subject {
 		this._time  = QQ.Math.devidePeriod(this._time, this._period);
 		this._a     = this._time/this._period * QQ.Math.PIx2;
 		Matter.Body.setPosition(this.getPhysicsBody(), {
-			x: this._pivotX + this._travelX * Math.sin(this._a  ),
-			y: this._pivotY + this._travelY * Math.sin(this._a*2)
+			x: this._pivot.x + this._travel.w * Math.sin(this._a  ),
+			y: this._pivot.y + this._travel.h * Math.sin(this._a*2)
 		});
 		this._physicsTick(delta);
-	}
-	
-	getAngle() {
-		return 0;
 	}
 	
 	type() {

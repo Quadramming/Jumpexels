@@ -17,7 +17,7 @@ QQ.seizures.add('Pause', class Pause {
 		this._click  = false;
 		this._world.addBackground('img/dialog.png');
 		
-		const back = new QQ.Subject('img/forward.png', 5, 5);
+		const back = new QQ.Subject('img/buttons/next.png', 5, 5);
 		back.setPosition(-6, 6);
 		back.click = () => QQ.seizures.closePopUp();
 		this._world.addSubject(back);
@@ -26,12 +26,12 @@ QQ.seizures.add('Pause', class Pause {
 			QQ.seizures.closePopUp();
 			QQ.seizures.reset();
 		};
-		const rst1    = new QQ.Subject('img/restart.png', 5, 5);
+		const rst1    = new QQ.Subject('img/buttons/restart.png', 5, 5);
 		rst1.setPosition(0, 6);
 		rst1.click = restart;
 		this._world.addSubject(rst1);
 		
-		const levels = new QQ.Subject('img/exit.png', 5, 5);
+		const levels = new QQ.Subject('img/buttons/exit.png', 5, 5);
 		levels.setPosition(6, 6);
 		levels.click = () => {
 			QQ.seizures.closePopUp();

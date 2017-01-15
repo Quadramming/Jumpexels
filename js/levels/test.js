@@ -1,7 +1,7 @@
 QQ.levels['test'] = {
 	
 	backGround : {
-		img : 'img/backgrounds/tmp.png'
+		img : 'img/backgrounds/castle.png'
 	},
 	
 	camera : {
@@ -12,7 +12,7 @@ QQ.levels['test'] = {
 	
 	escapeShip : {
 		size   : { w : 150,  h :  150 },
-		pos    : { x : 0,   y : 400 },
+		pos    : { x : 0,   y : -400 },
 		travel : { w : 40,  h :  10 },
 		period : 20
 	},

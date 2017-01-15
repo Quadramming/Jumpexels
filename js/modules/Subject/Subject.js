@@ -17,16 +17,36 @@ QQ.Subject = class Subject {
 		this._width       = width;
 		this._height      = height;
 		this._angle       = 0;
+		this._ctx         = QQ.application.getContext();
 		this._physicsBody = null;
 		this._sprite = imgSrc ?
-			new QQ.Sprite( QQ.imgManager.get(imgSrc) ) : 
+			new QQ.Sprite( QQ.imgManager.get(imgSrc) ) :
 			null;
+	}
+	
+	setSize(width, height) {
+		this._width       = width;
+		this._height      = height;
 	}
 	
 	draw() {
 		if ( this._sprite ) {
 			this._sprite.draw();
 		}
+	}
+	
+	drawBorder() {
+		const scale = this.getScale();
+		this._ctx.beginPath();
+		this._ctx.rect(
+				-this._width/scale.x/2,
+				-this._height/scale.y/2,
+				this._width/scale.x,
+				this._height/scale.y
+			);
+		this._ctx.lineWidth   = 1;
+		this._ctx.strokeStyle = '#000000';
+		this._ctx.stroke();
 	}
 	
 	getRect() { // TODO: MB TOP LEFT BOTTOM RIGHT
@@ -102,6 +122,10 @@ QQ.Subject = class Subject {
 			scaleY   = this._height / size.height;
 		}
 		return { x : scaleX, y : scaleY };
+	}
+	
+	isClickable() {
+		return true;
 	}
 	
 	setPosition(x, y, p) {

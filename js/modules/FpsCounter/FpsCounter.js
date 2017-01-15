@@ -53,7 +53,7 @@ QQ.FpsCounter = class FpsCounter {
 			ctx.textBaseline = 'middle'; 
 			ctx.textAlign    = 'center'; 
 			let i = 0;
-			for ( const slot of this._slots ) {
+			for ( let slot of this._slots ) {
 				ctx.fillStyle = 'green';
 				if ( slot > 99 ) {
 					ctx.fillStyle = 'white';
@@ -68,7 +68,7 @@ QQ.FpsCounter = class FpsCounter {
 				++i;
 			}
 		}
-		document.title = this._fpsToShow + ' FPS';
+		//document.title = this._fpsToShow + ' FPS';
 	}
 
 };

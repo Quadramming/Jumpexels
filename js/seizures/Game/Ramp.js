@@ -8,46 +8,34 @@ QQ.Seizures.SeizureGame.Ramp = class Ramp extends QQ.Subject {
 		super('img/ramp.png', config.size.w, config.size.h);
 		this.setDefaultPhysics({ isStatic: true });
 		this._time = config.time || 0;
+		this._prev = {x : 0, y : 0};
 		if ( config.pos ) {
-			this._pivotX = config.pos.x;
-			this._prevX  = this._pivotX;
-			this._pivotY = config.pos.y;
-			this._period = config.period || null;
-			this._range  = config.travel || null;
-			this._angle  = 0;
+			this._pivot  = { x : config.pos.x, y : config.pos.y };
+			this._period = config.period;
+			this._range  = config.travel;
 		} else {
-			this._prev   = {x : 0, y : 0};
 			this._f      = config.f;
 			Matter.Body.setPosition(this._physicsBody, this._f(0));
-			this._physicsTick(0);
 		}
+		this.tick(0);
 	}
 	
 	tick(delta) {
+		this._time     += delta;
+		let pos         = {};
 		if ( this._f ) {
-			this._time   += delta;
-			const {x, y}  = this._f(this._time);
-			Matter.Body.setVelocity(this._physicsBody, {
-					x: x - this._prev.x,
-					y: y - this._prev.y
-				});
-			Matter.Body.setPosition(this._physicsBody, {x, y});
-			this._prev = {x, y};
+			pos         = this._f(this._time);
 		} else {
-			this._time  += delta;
-			this._time   = QQ.Math.devidePeriod(this._time, this._period);
-			this._angle  = this._time/this._period * QQ.Math.PIx2;
-			const x      = this._pivotX + this._range * Math.sin(this._angle);
-			Matter.Body.setVelocity(this.getPhysicsBody(), {
-					x: x - this._prevX,
-					y: 0
-				});
-			Matter.Body.setPosition(this.getPhysicsBody(), {
-					x: x,
-					y: this._pivotY
-				});
-			this._prevX = x;
+			this._a     = this._time/this._period * QQ.Math.PIx2;
+			pos.x       = this._pivot.x + this._range * Math.sin(this._a);
+			pos.y       = this._pivot.y;
 		}
+		Matter.Body.setVelocity(this._physicsBody, {
+				x: pos.x - this._prev.x,
+				y: pos.y - this._prev.y
+			});
+		Matter.Body.setPosition(this._physicsBody, pos);
+		this._prev      = pos;
 		this._physicsTick(delta);
 	}
 	

@@ -41,17 +41,17 @@ QQ.Seizures = class Seizures {
 		}
 	}
 	
-	set(sz, ...input) {
+	set(sz, input) {
 		if ( this._loading !== null ) {
 			this._seizure = this._loading;
 		}
-		this._reset   = () => this.set(sz, ...input);
-		this._seizure = new this._seizures[sz](QQ.application, ...input);
+		this._reset   = () => this.set(sz, input);
+		this._seizure = new this._seizures[sz](QQ.application, input);
 		/*
 		setTimeout(
 			() => {
-				this._reset   = () => this.set(sz, ...input);
-				this._seizure = new this._seizures[sz](QQ.application, ...input);
+				this._reset   = () => this.set(sz, input);
+				this._seizure = new this._seizures[sz](QQ.application, input);
 			},
 			200
 		);

@@ -11,71 +11,115 @@
 
 QQ.Text = class Text extends QQ.Subject {
 	
-	constructor(text, x=0, y=0, size=1, fit=QQ.Text.fit.HEIGHT) {
-		super(null, size, size);
-		this.setPosition(x, y);
+	constructor(text, x=0, y=0, fitSize=1, fit=QQ.Text.fit.HEIGHT) {
+		super(null, 0, 0);
+		this._fitSize    = fitSize;
+		this._textX      = x;
+		this._textY      = y;
+		this._textHeight = 0;
+		this._textWidth  = 0;
+		this._pxInUnit   = 0;
+		this._ratio      = 0;
 		this._fit        = fit;
-		this._text       = String(text);
-		this._multiText  = null;
-		this._ctx        = QQ.application.getContext();
-		this._textHeight = 5;
 		this._align      = 'center';
+		this._font       = 'Ken';
+		this._lineSpace  = 0;
+		this._lineHeight = 20 + this._lineSpace;
+		this._text       = String(text).split('\n');
+		this._lines      = this._text.length;
+		this._calcSizes();
+	}
+	
+	isClickable() {
+		return false;
+	}
+	
+	setSize(width, height) {
+		this._width  = width;
+		this._height = height;
+	}
+	
+	setFont(font) {
+		this._font = font;
+		this._calcSizes();
+	}
+	
+	setAlign(align) {
+		this._align = align;
+	}
+	
+	setLineHeight(h) {
+		this._lineHeight = h + this._lineSpace;
+		this._calcSizes();
+	}
+	
+	setLineSpace(s) {
+		this._lineHeight -= this._lineSpace;
+		this._lineSpace = s;
+		this._lineHeight += this._lineSpace;
+		this._calcSizes();
+	}
+	
+	getScale() {
+		let scaleX = (this._width  / this._textHeight) / this._ratio;
+		let scaleY = this._height / this._textHeight;
+		return { x : scaleX, y : scaleY };
+	}
+	
+	draw() {
 		this._setupContext();
-		this._textWidth  = this._ctx.measureText(this._text).width;
-		if ( this._text.indexOf('\n') >= 0 ) {
-			this._multiText = this._text.split('\n');
+		let offsetX = 0; // center
+		let offsetY = - (this._lineHeight/2)*(this._lines-1);
+		if ( this._align === 'left' ) {
+			offsetX = - (this._textWidth/2);
+		} else if ( this._align === 'right' ) {
+			offsetX = (this._textWidth/2);
 		}
+		let x      = 0;
+		for ( let str of this._text ) {
+			this._ctx.fillText(str, offsetX, offsetY + x*this._lineHeight);
+			++x;
+		}
+		//this.drawBorder();
 	}
 	
 	_setupContext() {
 		this._ctx.textBaseline = 'middle';
 		this._ctx.textAlign    = this._align;
 		this._ctx.fillStyle    = '#878787';
-		this._ctx.font         = this._textHeight + 'px Ken';
+		const size = this._lineHeight - this._lineSpace;
+		this._ctx.font         = size + 'px ' + this._font;
 	}
 	
-	setAlign(a) {
-		this._align = a;
-	}
-	
-	setTextHeight(h) {
-		this._textHeight = h;
+	_calcSizes() {
 		this._setupContext();
-		this._textWidth  = this._ctx.measureText(this._text).width;
-	}
-	
-	getScale() {
-		let scaleX, scaleY;
-		if ( this._fit === Text.fit.WIDTH ) {
-			scaleX = this._width  / this._textWidth;
-			scaleY = this._height / this._textWidth;
-		} else if ( this._fit === Text.fit.HEIGHT ) {
-			scaleX = this._width  / this._textHeight;
-			scaleY = this._height / this._textHeight;
-		} else {
-			scaleX = this._width  / this._textWidth;
-			scaleY = this._height / this._textHeight;
-		}
-		return { x : scaleX, y : scaleY };
-	}
-	
-	draw() {
-		this._setupContext();
-		if ( this._multiText ) {
-			let x = 0;
-			for ( const str of this._multiText ) {
-				this._ctx.fillText(str, 0, x*this._textHeight*1.5);
-				++x;
+		this._textHeight = this._lineHeight * this._text.length;
+		this._textWidth  = 0;
+		for ( let str of this._text ) {
+			const len = this._ctx.measureText(str).width;
+			if ( len > this._textWidth ) {
+				this._textWidth = len;
 			}
-		} else {
-			this._ctx.fillText(this._text, 0, 0);
 		}
+		if ( this._fit === Text.fit.WIDTH ) {
+			this._pxInUnit = this._textWidth / this._fitSize;
+		} else { // HEIGHT
+			this._pxInUnit = this._lineHeight / this._fitSize;
+		}
+		this._ratio    = this._textWidth / this._textHeight;
+		this.setSize(
+			this._textWidth  / this._pxInUnit,
+			this._textHeight / this._pxInUnit
+		);
+		this.setPosition(
+			this._textX,
+			this._textY - ((this._height/this._lines)/2)*(this._lines-1)
+		);
 	}
 	
 };
 
 QQ.Text.fit = {
 	WIDTH         : 0,
-	HEIGHT        : 1,
-	BOTH          : 2
+	HEIGHT        : 1
 };

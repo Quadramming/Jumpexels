@@ -1,1 +1,1 @@
-node JsToOneFile.js
+nodejs JsToOneFile.js
