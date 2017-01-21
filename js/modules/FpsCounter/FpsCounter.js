@@ -1,21 +1,3 @@
-//================================================================
-// Name: QQ.FpsCounter
-// Version: 16.04.21
-// 
-// Interface:
-//
-// tick(delta);
-//   Tick every FPS.
-// 
-// show(context);
-//   Draw FPS at context and title.
-//   
-// showDetails();
-//   Show/hide FPS at given context.
-//================================================================
-
-'use strict';
-
 QQ.FpsCounter = class FpsCounter {
 	
 	constructor() {

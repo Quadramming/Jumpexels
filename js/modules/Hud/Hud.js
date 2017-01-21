@@ -1,13 +1,3 @@
-//================================================================
-// Name: QQ.
-// Version: 16..
-// 
-// Interface:
-// 
-//================================================================
-
-'use strict';
-
 QQ.Hud = class Hud {
 	
 	constructor(imgSrc, width = 0, height = 0) {
@@ -18,6 +8,7 @@ QQ.Hud = class Hud {
 		this._x           = 0;
 		this._y           = 0;
 		this._onClick     = null;
+		this._fixSize();
 	}
 	
 	isHit(inX, inY) {
@@ -60,14 +51,11 @@ QQ.Hud = class Hud {
 		let scaleY = 0;
 		let size   = this._sprite.getSize();
 		scaleX     = this._width  / size.width;
-		if ( this._height !== 0 ) {
-			scaleY = this._height / size.height;
-		}
+		scaleY     = this._height / size.height;
 		return { x : scaleX, y : scaleY };
 	}
 	
 	setPosition(x, y, p) {
-		this._fixSize();
 		if ( x !== undefined ) {
 			this._x = p ? QQ.Math.calcPivotX(p, x, this._width) : x;
 		}

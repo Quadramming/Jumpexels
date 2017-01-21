@@ -1,13 +1,3 @@
-//================================================================
-// Name: 
-// Version: 16..
-// 
-// Interface:
-// 
-//================================================================
-
-'use strict';
-
 QQ.Seizures.SeizureLevels = class SeizureLevels {
 	
 	constructor(app) {

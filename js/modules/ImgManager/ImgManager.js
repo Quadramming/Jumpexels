@@ -1,19 +1,3 @@
-//================================================================
-// Name: QQ.ImgManager
-// Version: 16.04.22
-// 
-// Interface:
-//
-// get(url);
-//   Return Image object from cache or creates new.
-//   
-// isReady(imgObj);
-//   True if imgObj is loaded.
-//================================================================
-
-'use strict';
-
-
 QQ.imgManager = new class ImgManager {
 
 	constructor() {

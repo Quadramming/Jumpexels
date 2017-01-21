@@ -1,13 +1,3 @@
-//================================================================
-// Name: QQ
-// Version: 16..
-// 
-// Interface:
-// 
-//================================================================
-
-'use strict';
-
 QQ.Seizures.SeizureLoading = class SeizureLoading {
 
 	constructor(app) {

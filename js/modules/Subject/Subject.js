@@ -1,14 +1,3 @@
-//================================================================
-// Name: QQ.Subject
-// Version: 16..
-// 
-// Interface:
-// 
-//================================================================
-
-/* global Matter */
-'use strict';
-
 QQ.Subject = class Subject {
 	
 	constructor(imgSrc = null, width = 1, height = 1) {

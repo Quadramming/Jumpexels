@@ -1,28 +1,3 @@
-//================================================================
-// Name: QQ.Matrix
-// Version: 16.04.23
-// 
-// Creates Matrix namespace for matrix operations
-// 
-// Interface:
-// 
-// getIdentity();
-// 
-// getScale(x, y);
-// 
-// getMove(x, y);
-// 
-// getRotate(a);
-// 
-// determinant(A);
-// 
-// inverse(A);
-// 
-// mul(A, B);
-//================================================================
-
-'use strict';
-
 QQ.Matrix = {};
 
 {

@@ -1,5 +1,3 @@
-'use strict';
-
 window.QQ           = window.QQ || {};
 window.QQ.Debug     = {
 

@@ -1,13 +1,3 @@
-//================================================================
-// Name: QQ.Levels
-// Version: 16..
-// 
-// Interface:
-// 
-//================================================================
-
-'use strict';
-
 QQ.Seizures.SeizureGame = class Game {
 
 	constructor(app, level) {

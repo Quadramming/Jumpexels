@@ -1,14 +1,3 @@
-//================================================================
-// Name: QQ.Subject
-// Version: 16..
-// 
-// Interface:
-// 
-//================================================================
-
-/* global Matter */
-'use strict';
-
 QQ.Text = class Text extends QQ.Subject {
 	
 	constructor(text, x=0, y=0, fitSize=1, fit=QQ.Text.fit.HEIGHT) {

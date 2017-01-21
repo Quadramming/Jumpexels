@@ -1,5 +1,3 @@
-'use strict';
-
 QQ.Application = class Application {
 
 	constructor() {
@@ -15,7 +13,9 @@ QQ.Application = class Application {
 	
 	init() {
 		QQ.Sprite.setContext(this._canvas.getContext());
-		QQ.Hud.canvasRatio(this._canvas.getRatio());
+		this._canvas.setOnCalcSize( () => {
+			QQ.Hud.canvasRatio(this._canvas.getRatio());
+		});
 		QQ.seizures.set('MainMenu');
 		/*
 			QQ.seizures.set('Game', {
@@ -91,7 +91,7 @@ QQ.Application = class Application {
 	}
 	
 	_process(time) {
-		//requestAnimationFrame(this._process.bind(this));
+		requestAnimationFrame(this._process.bind(this));
 		
 		this._frame = ++this._frame % (this._skipFrames+1);
 		if ( this._frame === 0 ) {
@@ -99,7 +99,7 @@ QQ.Application = class Application {
 			this._draw();
 		}
 		
-		setTimeout(this._process.bind(this), 1);
+		//setTimeout(this._process.bind(this), 1);
 	}
 	
 	_tick() {

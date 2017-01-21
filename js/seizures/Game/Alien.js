@@ -1,7 +1,3 @@
-/* global Matter */
-
-'use strict';
-
 QQ.Seizures.SeizureGame.Alien = class Alien extends QQ.Subject {
 	
 	constructor(config, game) {

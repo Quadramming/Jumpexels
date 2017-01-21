@@ -1,18 +1,7 @@
-//================================================================
-// Name: QQ.World
-// Version: 16..
-// 
-// Interface:
-// 
-//================================================================
-
-/* global Matter */
-'use strict';
-
 QQ.World = class World {
 	
 	constructor() {
-		this._maxTicks   = 5;
+		this._maxTicks   = 1;
 		this._timeStep   = 0.0166;
 		this._deltaAccum = 0;
 		this._subjects   = [];
@@ -67,7 +56,6 @@ QQ.World = class World {
 				this._deltaAccum = this._maxTicks * this._timeStep +
 					this._deltaAccum % this._timeStep;
 			}
-			//c(this._deltaAccum);
 			while ( this._deltaAccum > this._timeStep ) {
 				this._deltaAccum -= this._timeStep;
 				for ( let subj of this._subjects ) {
@@ -82,7 +70,6 @@ QQ.World = class World {
 				}
 				ticksDone++;
 			}
-			//c(ticksDone);
 		} else {
 			this._deltaAccum = 0;
 			if ( this._pauseable ) {

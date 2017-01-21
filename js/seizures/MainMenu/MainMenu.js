@@ -1,13 +1,3 @@
-//================================================================
-// Name: QQ.MainMenu
-// Version: 16..
-// 
-// Interface:
-// 
-//================================================================
-
-'use strict';
-
 QQ.seizures.add('MainMenu', class MainMenu {
 	
 	constructor(app) {

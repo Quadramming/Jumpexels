@@ -1,31 +1,3 @@
-//================================================================
-// Name: QQ.Mouse
-// Version: 16.04.23
-// 
-// Interface:
-//
-// getX();
-//   Get X position
-// 
-// getY();
-//   Get Y position
-// 
-// getM1();
-//   Is mouse1 down
-// 
-// setM1DownCB(f);
-//   Set callback for mouse1 down
-//   
-// setM1UpCB(f);
-//   Set callback for mouse1 up
-//   
-// emulate(x, y, m);
-//   Emulate mouse event.
-//   
-//================================================================
-
-'use strict';
-
 QQ.Mouse = class Mouse {
 	
 	constructor() {

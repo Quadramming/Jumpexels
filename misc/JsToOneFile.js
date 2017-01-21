@@ -1,18 +1,16 @@
-const fs = require('fs');
-const releaseFile = '../release.js';
+const fs          = require('fs');
+const releaseFile = '../release.big.js';
+const file        = fs.readFileSync('../index.html', 'utf-8');
+const regexp      = /<script.*javascript.*src='(.*?)'>/ig;
+let   script      = regexp.exec(file);
+const files       = []; 
 
-const file = fs.readFileSync('../index.html', 'utf-8');
-
-const regexp = /<script.*javascript.*src='(.*?)'>/ig;
-let   script = regexp.exec(file);
-const files  = []; 
-
-while ( script ) {	
+while ( script ) {
 	files.push( script[1] );
 	script = regexp.exec(file);
 }
 
-fs.writeFileSync(releaseFile, '// Compiled with JsToOneFile.js\n', {
+fs.writeFileSync(releaseFile, "// Compiled with JsToOneFile.js\n'use strict';", {
 	encoding : 'utf-8',
 	flag     : 'w'
 });

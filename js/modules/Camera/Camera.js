@@ -1,13 +1,3 @@
-//================================================================
-// Name: QQ.Camera
-// Version: 16..
-// 
-// Interface:
-// 
-//================================================================
-
-'use strict';
-
 QQ.Camera = class Camera {
 	
 	constructor(canvas, width, height, x = 0, y = 0) {
@@ -64,18 +54,15 @@ QQ.Camera = class Camera {
 			let scale  = hud.getScale();
 			let scaleX = this.widthPercent(scale.x);
 			let scaleY = this.heightPercent(scale.y);
-			if ( scaleY === 0 ) {
-				scaleY = scaleX;
-			}
 			let M = QQ.Matrix.getIdentity();
 				M = QQ.Matrix.mul(M, QQ.Matrix.getScale(scaleX, scaleY));
-			    M = QQ.Matrix.mul(M, QQ.Matrix.getMove(
-						this.widthPercent(pos.x), 
+				M = QQ.Matrix.mul(M, QQ.Matrix.getMove(
+						this.widthPercent(pos.x),
 						this.heightPercent(pos.y))
 					);
 			this._canvas.getContext('2d').setTransform(
-					M[0][0], M[0][1], 
-					M[1][0], M[1][1], 
+					M[0][0], M[0][1],
+					M[1][0], M[1][1],
 					M[2][0], M[2][1]
 				);
 			hud.draw();

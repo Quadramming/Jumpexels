@@ -1,13 +1,3 @@
-//================================================================
-// Name: 
-// Version: 16..
-// 
-// Interface:
-// 
-//================================================================
-
-'use strict';
-
 QQ.seizures.add('EndLevel', class EndLevel {
 	
 	constructor(app, level) {

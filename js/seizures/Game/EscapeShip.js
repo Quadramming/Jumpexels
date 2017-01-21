@@ -1,5 +1,3 @@
-'use strict';
-
 QQ.Seizures.SeizureGame.EscapeShip = class EscapeShip extends QQ.Subject {
 	
 	constructor(config, game) {

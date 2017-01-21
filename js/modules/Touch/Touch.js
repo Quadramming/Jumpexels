@@ -1,17 +1,3 @@
-//================================================================
-// Name: QQ.Touch
-// Version: 16.04.25
-// 
-// Class emulate mouse on touch devices. Uses mouse module.
-// 
-// Interface:
-// 
-// Touch(mouse);
-//   Creates object with help of mouse class.
-//================================================================
-
-'use strict';
-
 QQ.Touch = class Touch {
 
 	constructor(mouse) {

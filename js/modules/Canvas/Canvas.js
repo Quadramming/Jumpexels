@@ -1,46 +1,3 @@
-//================================================================
-// Name: QQ.Canvas
-// Version: 16.08.19
-// 
-// Interface:
-//
-// Canvas(id, w, h);
-//   id - DOM id of canvas
-//   w  - width (max)
-//   h  - height (max)
-//   Canvas will be fit in window. 
-//   If w or h is undefined canvas will be fullscreened.
-//
-// getWidth();
-//   Get width.
-// 
-// getHeight();
-//   Get height.
-// 
-// getUt();
-//   Get 1 UniT (1% from height).
-// 
-// getCanvas();
-//   Get canvas.
-// 
-// getContext();
-//   Get context.
-// 
-// getScale();
-//   Get scale.
-//
-// resize();
-//   Resize canvas after window resize.
-//   
-// drawBorder();
-//   Draw border of canvas.
-//
-// remove();
-//   Remove canvas element from DOM.
-//================================================================
-
-'use strict';
-
 QQ.Canvas = class Canvas {
 	
 	constructor(id, initW, initH, maximize = false) {
@@ -54,6 +11,7 @@ QQ.Canvas = class Canvas {
 		this._ut         = null;
 		this._canvas     = document.createElement('canvas');
 		this._context    = this._canvas.getContext('2d');
+		this._onCalcSize = () => {};
 		
 		this._canvas.id             = id;
 		this._canvas.style.position = 'absolute';
@@ -89,8 +47,15 @@ QQ.Canvas = class Canvas {
 		return this._scale;
 	}
 	
-	getRatio() { 
-		return this._width / this._height; 
+	getRatio() {
+		return this._width / this._height;
+	}
+	
+	setOnCalcSize(fn) {
+		this._onCalcSize = fn;
+		// We alreade calced in constructor
+		// that is why we call fn instant
+		fn();
 	}
 	
 	resize() {
@@ -148,6 +113,7 @@ QQ.Canvas = class Canvas {
 			}
 		}
 		this._calcCanvasSize();
+		this._onCalcSize();
 	}
 	
 	_calcCanvasSize() {

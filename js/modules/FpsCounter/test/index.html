@@ -4,12 +4,14 @@
 		<title>FPS counter test</title>
 		<meta charset='utf-8' />
 		
+		<script type='text/javascript'>
+			var QQ = {};
+		</script>
 		<script type='text/javascript' src='../FpsCounter.js'></script>
 		<script type='text/javascript'>
-			
 			var ctx;
 			var nowTime = Date.now();
-			fpsCounter = new QQ.FpsCounter();
+			var fpsCounter = new QQ.FpsCounter();
 			
 			function clean() {
 				ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -25,12 +27,13 @@
 			}
 			
 			function startAnimation() {
-				requestAnimationFrame(startAnimation);
+				
 				clean();
 				var prevTime = nowTime;
 				nowTime      = Date.now();
 				fpsCounter.tick( (nowTime - prevTime) / 1000);
 				fpsCounter.show(ctx);
+				requestAnimationFrame(startAnimation);
 			}
 
 		</script>

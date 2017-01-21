@@ -1,5 +1,3 @@
-'use strict';
-
 QQ.Seizures.SeizureGame.Ground = class Ground extends QQ.Subject {
 	
 	constructor(config) {

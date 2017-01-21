@@ -1,25 +1,4 @@
-//================================================================
 // ES5 ONLY
-//
-// Name: QQ.Includer
-// Version: 16.11.22
-// 
-// Interface:
-//
-// js(file, callback, forced);
-// js(file, forced);
-//   To include JS files. Forced flag will reload file if he already loaded.
-//   Callback will happend when ALL JS files will be loaded (Not only this).
-// 
-// allowWarnings(bool);
-//   Show or don't show warnings in console.
-// 
-// onLoad(callback);
-//   Callback will be called when all JS files will be loaded. 
-//   
-//================================================================
-
-'use strict';
 
 QQ.includer = function () {
 	

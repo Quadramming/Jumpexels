@@ -1,7 +1,3 @@
-/* global Matter */
-
-'use strict';
-
 QQ.Seizures.SeizureGame.Ramp = class Ramp extends QQ.Subject {
 	
 	constructor(config) {
