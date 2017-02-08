@@ -1,10 +1,10 @@
-QQ.seizures.add('Pause', class Pause {
-
-	constructor(app) {
-		this._myApp  = app;
-		this._world  = new QQ.World();
-		this._camera = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
-		this._click  = false;
+QQ.seizures.add('Pause', class Pause
+	extends QQ.Seizures.SeizureBase
+{
+	
+	constructor() {
+		super();
+		this._camera.init(30, 40, 0, 0);
 		this._world.addBackground('img/dialog.png');
 		
 		const back = new QQ.Subject('img/buttons/next.png', 5, 5);
@@ -32,27 +32,5 @@ QQ.seizures.add('Pause', class Pause {
 		const text = new QQ.Text('Pause', 0, 11, 3);
 		this._world.addSubject(text);
 	}
-
-	tick() {
-	}
-
-	draw() {
-		const rect   = this._camera.getViewRect();
-		const toDraw = this._world.getSubjectsInRect(rect);
-		this._camera.draw(toDraw);
-	}
-
-	click() {
-		this._click = true;
-	}
-
-	clickUp(x, y) {
-		const point   = this._camera.getWorldPoint(x, y);
-		const clicked = this._world.getSubjectAtPoint(point.x, point.y);
-		if ( clicked && this._click ) {
-			clicked.click();
-		}
-		this._click = false;
-	}
-
+	
 });

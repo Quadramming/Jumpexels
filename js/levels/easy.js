@@ -12,8 +12,8 @@ QQ.levels['easy'] = {
 	
 	escapeShip : {
 		size   : { w : 150,  h :  150 },
-		pos    : { x : 0,   y : 300 },
-		travel : { w : 40,  h :  10 },
+		pos    : { x : 0,    y : 300 },
+		travel : { w : 40,   h :  10 },
 		period : 20
 	},
 	

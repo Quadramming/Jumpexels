@@ -1,10 +1,12 @@
-QQ.Seizures.SeizureLevels = class SeizureLevels {
+QQ.Seizures.SeizureLevels = class SeizureLevels
+	extends QQ.Seizures.SeizureBase
+{
 	
-	constructor(app) {
-		this._myApp       = app;
-		this._camera      = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
+	constructor() {
+		super();
+		this._camera.init(30, 40, 0, 0);
 		this._camera.setClip(0, 0, 0, 0);
-		this._world       = new QQ.World();
+		
 		this._world.addBackground('img/backgrounds/menu.png');
 		this._clickStart  = false;
 		this._openedMax   = 3;
@@ -12,39 +14,13 @@ QQ.Seizures.SeizureLevels = class SeizureLevels {
 		this._addLevels();
 		
 		const intro = new QQ.Subject('img/buttons/back.png', 5, 5);
-		intro.click = () => QQ.seizures.set('MainMenu');
+		intro.click = () => QQ.seizures.set('Main');
 		intro.setPosition(0, 17);
 		this._world.addSubject(intro);
 	}
 	
 	tick(delta) {
-		let mouse = this._myApp.getMouseXY();
-		let m1    = this._myApp.isM1Pressed() && this._clickStart;
-		this._camera.tickScroll(mouse.x, mouse.y, m1);
-		this._world.tick(delta);
-	}
-	
-	draw() {
-		const rect   = this._camera.getViewRect();
-		const toDraw = this._world.getSubjectsInRect(rect);
-		this._camera.draw(toDraw);
-	}
-	
-	click() {
-		this._clickStart = true;
-	}
-	
-	clickUp(x, y) {
-		if ( this._clickStart ) {
-			if ( ! this._camera.isScrolling() ) {
-				const point   = this._camera.getWorldPoint(x, y);
-				const clicked = this._world.getSubjectAtPoint(point.x, point.y);
-				if ( clicked ) {
-					clicked.click();
-				}
-			}
-			this._clickStart = false;	
-		}
+		this.tickScroll();
 	}
 	
 	_addLevels() {
@@ -70,7 +46,7 @@ QQ.Seizures.SeizureLevels = class SeizureLevels {
 	}
 	
 	_addLevel(x, y, name, text) {
-		const state  = this._myApp.storage('level' + name);
+		const state  = this._app.storage('level' + name);
 		const s      = QQ.Seizures.SeizureLevels.Level.STATUS;
 		let   status = s.OPEN;
 		if ( state === 'DONE' ) {
@@ -99,12 +75,12 @@ QQ.Seizures.SeizureLevels.Level = class Level extends QQ.Subject {
 		this._spriteCheck = null;
 		if ( status === Level.STATUS.DONE ) {
 			this._spriteCheck = new QQ.Sprite( 
-					QQ.imgManager.get('img/check.png')
-				);
+				QQ.imgManager.get('img/check.png')
+			);
 		} else if ( status === Level.STATUS.CLOSED ) {
-			this._spriteCheck = new QQ.Sprite( 
-					QQ.imgManager.get('img/cross.png')
-				);
+			this._spriteCheck = new QQ.Sprite(
+				QQ.imgManager.get('img/cross.png')
+			);
 		}
 		this._text = new QQ.Text(text);
 		this._text.setLineHeight(30);
@@ -115,9 +91,9 @@ QQ.Seizures.SeizureLevels.Level = class Level extends QQ.Subject {
 		const isDone = this._status === Level.STATUS.DONE;
 		if ( isOpen || isDone ) {
 			QQ.seizures.set('Game', {
-					cfg:  QQ.levels[this._name],
-					name: this._name
-				});
+				cfg:  QQ.levels[this._name],
+				name: this._name
+			});
 		}
 	}
 	

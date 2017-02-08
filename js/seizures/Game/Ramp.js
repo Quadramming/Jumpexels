@@ -35,7 +35,6 @@ QQ.Seizures.SeizureGame.Ramp = class Ramp extends QQ.Subject {
 		this._physicsTick(delta);
 	}
 	
-	
 	type() {
 		return 'ramp';
 	}

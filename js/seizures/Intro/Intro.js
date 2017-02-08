@@ -1,10 +1,10 @@
-QQ.seizures.add('Intro', class Intro {
+QQ.seizures.add('Intro', class Intro
+	extends QQ.Seizures.SeizureBase
+{
 	
-	constructor(app) {
-		this._myApp  = app;
-		this._world  = new QQ.World();
-		this._camera = new QQ.Camera(app.getCanvas(), 30, 40, 0, -14);
-		this._camera.setClip(0, 0, -14, -14);
+	constructor() {
+		super();
+		this._camera.init(30, 40, 0, -14);
 		this._world.addBackground('img/backgrounds/menu.png');
 		
 		let intro = new QQ.Text('INTRO', 0, -4, 3);
@@ -15,34 +15,13 @@ QQ.seizures.add('Intro', class Intro {
 		text.setLineSpace(20);
 		this._world.addSubject(text);
 		
-		this._addBackButton(0,   0, QQ.Math.pivot.CENTERBOTTOM);
-	}
-	
-	tick() {
-		let mouse = this._myApp.getMouseXY();
-		this._camera.tickScroll(mouse.x, mouse.y, this._myApp.isM1Pressed());
-	}
-	
-	draw() {
-		const rect   = this._camera.getViewRect();
-		const toDraw = this._world.getSubjectsInRect(rect);
-		this._camera.draw(toDraw);
-	}
-	
-	clickUp(x, y) {
-		if ( ! this._camera.isScrolling() ) {
-			const point   = this._camera.getWorldPoint(x, y);
-			const clicked = this._world.getSubjectAtPoint(point.x, point.y);
-			if ( clicked ) {
-				clicked.click();
-			}
-		}
+		this._addBackButton(0, 0, QQ.Math.pivot.CENTERBOTTOM);
 	}
 	
 	_addBackButton(x, y, pivot) {
 		let back = new QQ.Subject('img/buttons/back.png', 5, 5);
 		back.setPosition(x, y, pivot);
-		back.click = () => QQ.seizures.set('MainMenu');
+		back.click = () => QQ.seizures.set('Main');
 		this._world.addSubject(back);
 	}
 	

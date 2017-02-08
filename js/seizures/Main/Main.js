@@ -1,8 +1,10 @@
-QQ.seizures.add('MainMenu', class MainMenu {
+QQ.seizures.add('Main', class Main
+	extends QQ.Seizures.SeizureBase
+{
 	
-	constructor(app) {
-		this._world  = new QQ.World();
-		this._camera = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
+	constructor() {
+		super();
+		this._camera.init(30, 40, 0, 0);
 		this._world.addBackground('img/backgrounds/menu.png');
 		
 		const text = new QQ.Text('JUMPEXELS', 0, 15, 3);
@@ -33,28 +35,6 @@ QQ.seizures.add('MainMenu', class MainMenu {
 		this._world.addSubject(credits);
 		const creditsText = new QQ.Text('CREDITS', 0, -12, 2);
 		this._world.addSubject(creditsText);
-	}
-	
-	tick(delta) {
-		if ( this._world ) {
-			this._world.tick(delta);
-		}
-	}
-	
-	draw() {
-		if ( this._camera ) {
-			const rect   = this._camera.getViewRect();
-			const toDraw = this._world.getSubjectsInRect(rect);
-			this._camera.draw(toDraw);
-		}
-	}
-	
-	click(x, y) {
-		const point   = this._camera.getWorldPoint(x, y);
-		const clicked = this._world.getSubjectAtPoint(point.x, point.y);
-		if ( clicked ) {
-			clicked.click();
-		}
 	}
 	
 });

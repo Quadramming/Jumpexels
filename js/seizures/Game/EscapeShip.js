@@ -11,7 +11,7 @@ QQ.Seizures.SeizureGame.EscapeShip = class EscapeShip extends QQ.Subject {
 		this._travel  = config.travel;
 		this._period  = config.period;
 		
-		Matter.Events.on(game.getWorldPhysics(), 'collisionStart', 
+		Matter.Events.on(game.getWorldPhysics(), 'collisionStart',
 			(event) => {
 				const pairs = event.pairs;
 				const me    = this.getPhysicsBody();

@@ -1,9 +1,10 @@
-QQ.seizures.add('EndLevel', class EndLevel {
+QQ.seizures.add('EndLevel', class EndLevel
+	extends QQ.Seizures.SeizureBase
+{
 	
-	constructor(app, level) {
-		this._myApp  = app;
-		this._world  = new QQ.World();
-		this._camera = new QQ.Camera(app.getCanvas(), 30, 40, 0, 0);
+	constructor(level) {
+		super();
+		this._camera.init(30, 40, 0, 0);
 		this._click  = false;
 		this._world.addBackground('img/dialog.png');
 		
@@ -42,33 +43,5 @@ QQ.seizures.add('EndLevel', class EndLevel {
 		};
 		this._world.addSubject(levels);
 	}
-
-	tick() {
-	}
-
-	draw() {
-		const rect   = this._camera.getViewRect();
-		const toDraw = this._world.getSubjectsInRect(rect);
-		this._camera.draw(toDraw);
-	}
-
-	click() {
-		this._click = true;
-	}
-
-	clickUp(x, y) {
-		const point   = this._camera.getWorldPoint(x, y);
-		const clicked = this._world.getSubjectAtPoint(point.x, point.y);
-		if ( clicked && this._click ) {
-			clicked.click();
-		}
-		this._click = false;
-		/*
-		if ( this._click ) {
-			QQ.seizures.closePopUp();
-			QQ.seizures.set('Levels');
-		}
-		*/
-	}
-
+	
 });

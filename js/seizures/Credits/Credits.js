@@ -1,9 +1,10 @@
-QQ.seizures.add('Credits', class Credits {
-
-	constructor(app) {
-		this._myApp  = app;
-		this._world  = new QQ.World();
-		this._camera = new QQ.Camera(app.getCanvas(), 30, 40, 0, -14);
+QQ.seizures.add('Credits', class Credits
+	extends QQ.Seizures.SeizureBase
+{
+	
+	constructor() {
+		super();
+		this._camera.init(30, 40, 0, -14);
 		this._camera.setClip(0, 0, -14, -41);
 		this._world.addBackground('img/backgrounds/menu.png');
 		
@@ -20,37 +21,18 @@ QQ.seizures.add('Credits', class Credits {
 		
 		let fps = new QQ.Subject(null, 5, 5);
 		fps.setPosition(10, -60, QQ.Math.pivot.CENTERBOTTOM);
-		fps.click = () => app._fpsCounter.showDetails(); // DEBUG
+		fps.click = () => this._app._fpsCounter.showDetails(); // DEBUG
 		this._world.addSubject(fps);
-		
 	}
 	
-	tick() {
-		let mouse = this._myApp.getMouseXY();
-		this._camera.tickScroll(mouse.x, mouse.y, this._myApp.isM1Pressed());
-	}
-	
-	draw() {
-		const rect   = this._camera.getViewRect();
-		const toDraw = this._world.getSubjectsInRect(rect);
-		this._camera.draw(toDraw);
-		
-	}
-	
-	clickUp(x, y) {
-		if ( ! this._camera.isScrolling() ) {
-			const point   = this._camera.getWorldPoint(x, y);
-			const clicked = this._world.getSubjectAtPoint(point.x, point.y);
-			if ( clicked ) {
-				clicked.click();
-			}
-		}
+	tick(delta) {
+		this.tickScroll();
 	}
 	
 	_addBackButton(x, y, pivot) {
 		let back = new QQ.Subject('img/buttons/back.png', 5, 5);
 		back.setPosition(x, y, pivot);
-		back.click = () => QQ.seizures.set('MainMenu');
+		back.click = () => QQ.seizures.set('Main');
 		this._world.addSubject(back);
 	}
 	
