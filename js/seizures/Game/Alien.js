@@ -1,7 +1,7 @@
-QQ.Seizures.SeizureGame.Alien = class Alien extends QQ.Subject {
+QQ.Seizures.SeizureGame.Alien = class Alien extends QQ.SubjectPhysics {
 	
 	constructor(config, game) {
-		super('img/aliens/parrot.png', 50, 50);
+		super({}, 'img/aliens/parrot.png', 50, 50);
 		this.setPosition(
 			config.pos.x, config.pos.y,
 			QQ.Math.pivot.CENTERBOTTOM
@@ -67,7 +67,7 @@ QQ.Seizures.SeizureGame.Alien = class Alien extends QQ.Subject {
 				this._jumped = false;
 			}
 		}
-		this._physicsTick(delta);
+		super.tick(delta);
 	}
 	
 	click() {

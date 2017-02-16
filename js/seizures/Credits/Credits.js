@@ -17,9 +17,9 @@ QQ.seizures.add('Credits', class Credits
 		this._world.addSubject(text);
 		
 		this._addBackButton(0,   0, QQ.Math.pivot.CENTERBOTTOM);
-		this._addBackButton(0,   -60, QQ.Math.pivot.CENTERBOTTOM);
+		this._addBackButton(0, -60, QQ.Math.pivot.CENTERBOTTOM);
 		
-		let fps = new QQ.Subject(null, 5, 5);
+		let fps = new QQ.SubjectBase(5, 5);
 		fps.setPosition(10, -60, QQ.Math.pivot.CENTERBOTTOM);
 		fps.click = () => this._app._fpsCounter.showDetails(); // DEBUG
 		this._world.addSubject(fps);

@@ -1,8 +1,12 @@
-QQ.Seizures.SeizureGame.Ramp = class Ramp extends QQ.Subject {
+QQ.Seizures.SeizureGame.Ramp = class Ramp extends QQ.SubjectPhysics {
 	
 	constructor(config) {
-		super('img/ramp.png', config.size.w, config.size.h);
-		this.setDefaultPhysics({ isStatic: true });
+		super(
+				{ isStatic: true },
+				'img/ramp.png',
+				config.size.w,
+				config.size.h
+			);
 		this._time = config.time || 0;
 		this._prev = {x : 0, y : 0};
 		if ( config.pos ) {
@@ -32,7 +36,7 @@ QQ.Seizures.SeizureGame.Ramp = class Ramp extends QQ.Subject {
 			});
 		Matter.Body.setPosition(this._physicsBody, pos);
 		this._prev      = pos;
-		this._physicsTick(delta);
+		super.tick(delta);
 	}
 	
 	type() {

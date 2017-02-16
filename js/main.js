@@ -20,5 +20,11 @@ window.addEventListener('load', () => {
 		'img/spaceShip.png'
 	];
 	
-	QQ.engine.start(imgs);
+	const appConfig = {
+		width:    600,
+		height:   800,
+		maximize: false
+	};
+	
+	QQ.engine.start(imgs, appConfig);
 });

@@ -3,7 +3,7 @@ QQ.Seizures.SeizureGame = class Game
 {
 	
 	constructor(level) {
-		super();
+		super(true);
 		this._name     = level.name;
 		this._isFinish = false;
 		
@@ -13,7 +13,6 @@ QQ.Seizures.SeizureGame = class Game
 		);
 		
 		this._world.setPauseable(true);
-		this._world.createPhysics();
 		this._world.addBackground(level.cfg.backGround.img);
 		
 		this._world.addSubject(new Game.EscapeShip(level.cfg.escapeShip, this));

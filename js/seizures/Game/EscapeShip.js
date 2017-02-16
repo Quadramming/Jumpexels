@@ -1,8 +1,12 @@
-QQ.Seizures.SeizureGame.EscapeShip = class EscapeShip extends QQ.Subject {
+QQ.Seizures.SeizureGame.EscapeShip = class EscapeShip extends QQ.SubjectPhysics {
 	
 	constructor(config, game) {
-		super('img/spaceShip.png', config.size.w, config.size.h);
-		this.setDefaultPhysics({ isStatic: true, isSensor: true });
+		super(
+				{ isStatic: true, isSensor: true },
+				'img/spaceShip.png',
+				config.size.w,
+				config.size.h
+			);
 		
 		const world   = game.getWorld();
 		this._a       = 0;
@@ -40,7 +44,7 @@ QQ.Seizures.SeizureGame.EscapeShip = class EscapeShip extends QQ.Subject {
 			x: this._pivot.x + this._travel.w * Math.sin(this._a  ),
 			y: this._pivot.y + this._travel.h * Math.sin(this._a*2)
 		});
-		this._physicsTick(delta);
+		super.tick(delta);
 	}
 	
 	type() {
