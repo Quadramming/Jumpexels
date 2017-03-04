@@ -9,7 +9,6 @@ QQ.seizures.add('GameHud', class GameHud
 		const back = new QQ.Subject('img/buttons/back.png', 5, 5);
 		back.setPosition(-12, 17);
 		back.click = () => {
-			this._prevent = true;
 			QQ.seizures.popUp('Pause');
 		};
 		this._world.addSubject(back);

@@ -27,13 +27,13 @@ QQ.seizures.add('EndLevel', class EndLevel
 			this._world.addSubject(next);
 		}
 		
-		const rst1    = new QQ.Subject('img/buttons/restart.png', 5, 5);
-		rst1.setPosition(0, 6);
-		rst1.click = () => {
+		const restart = new QQ.Subject('img/buttons/restart.png', 5, 5);
+		restart.setPosition(0, 6);
+		restart.click = () => {
 			QQ.seizures.closePopUp();
 			QQ.seizures.reset();
 		};
-		this._world.addSubject(rst1);
+		this._world.addSubject(restart);
 		
 		const levels = new QQ.Subject('img/buttons/exit.png', 5, 5);
 		levels.setPosition(6, 6);

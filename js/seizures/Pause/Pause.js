@@ -16,10 +16,10 @@ QQ.seizures.add('Pause', class Pause
 			QQ.seizures.closePopUp();
 			QQ.seizures.reset();
 		};
-		const rst1    = new QQ.Subject('img/buttons/restart.png', 5, 5);
-		rst1.setPosition(0, 6);
-		rst1.click = restart;
-		this._world.addSubject(rst1);
+		const rst = new QQ.Subject('img/buttons/restart.png', 5, 5);
+		rst.setPosition(0, 6);
+		rst.click = restart;
+		this._world.addSubject(rst);
 		
 		const levels = new QQ.Subject('img/buttons/exit.png', 5, 5);
 		levels.setPosition(6, 6);
