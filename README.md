@@ -1,2 +1,0 @@
-# Jumpexels
-Game about jumps
